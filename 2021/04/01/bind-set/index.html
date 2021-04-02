@@ -23,20 +23,20 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="欢迎大家来到我博客，这是搭建的第一个博客，若有不妥之处，请联系我。本博客是使用的hexo来搭建的，具体的使用方法在上一篇《hello-world》中已经注明。如果搭建想看具体的搭建过程的话，我一会整理一个较为完整的文档出来，方便大家一起学习。">
+<meta name="description" content="bind的实现bind的作用：bind的作用：将函数绑定至某个对象，bind() 方法会创建一个函数，函数体内this对象的值会被绑定到传入bind() 函数的值 第一种-柯理化函数思想我也不知道柯理化函数思想是啥思想，反正就这样实现就对了 123456789&#x2F;&#x2F; slice() 方法不会改变原始数组，从已有的数组中返回选定的元素Function.prototype.bind">
 <meta property="og:type" content="article">
-<meta property="og:title" content="first blog">
-<meta property="og:url" content="http://example.com/2021/04/01/first-blog/index.html">
+<meta property="og:title" content="bind的实现">
+<meta property="og:url" content="http://example.com/2021/04/01/bind-set/index.html">
 <meta property="og:site_name" content="尘世幽梦的BLOG">
-<meta property="og:description" content="欢迎大家来到我博客，这是搭建的第一个博客，若有不妥之处，请联系我。本博客是使用的hexo来搭建的，具体的使用方法在上一篇《hello-world》中已经注明。如果搭建想看具体的搭建过程的话，我一会整理一个较为完整的文档出来，方便大家一起学习。">
+<meta property="og:description" content="bind的实现bind的作用：bind的作用：将函数绑定至某个对象，bind() 方法会创建一个函数，函数体内this对象的值会被绑定到传入bind() 函数的值 第一种-柯理化函数思想我也不知道柯理化函数思想是啥思想，反正就这样实现就对了 123456789&#x2F;&#x2F; slice() 方法不会改变原始数组，从已有的数组中返回选定的元素Function.prototype.bind">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-04-01T01:39:32.000Z">
-<meta property="article:modified_time" content="2021-04-01T01:52:43.800Z">
+<meta property="article:published_time" content="2021-04-01T06:46:03.000Z">
+<meta property="article:modified_time" content="2021-04-01T07:40:40.101Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2021/04/01/first-blog/">
+<link rel="canonical" href="http://example.com/2021/04/01/bind-set/">
 
 
 <script class="page-configurations">
@@ -48,7 +48,7 @@
     lang   : 'en'
   };
 </script>
-<title>first blog | 尘世幽梦的BLOG</title>
+<title>bind的实现 | 尘世幽梦的BLOG</title>
   
 
 
@@ -134,7 +134,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -147,6 +147,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#bind%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">bind的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bind%E7%9A%84%E4%BD%9C%E7%94%A8%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">bind的作用：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D-%E6%9F%AF%E7%90%86%E5%8C%96%E5%87%BD%E6%95%B0%E6%80%9D%E6%83%B3"><span class="nav-number">1.1.1.</span> <span class="nav-text">第一种-柯理化函数思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D-es6%E5%86%99%E6%B3%95%EF%BC%88%E2%80%A6%E6%89%A9%E5%B1%95%E7%AC%A6%EF%BC%89"><span class="nav-number">1.1.2.</span> <span class="nav-text">第二种-es6写法（…扩展符）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E7%A7%8D-%E6%88%91%E6%B2%A1%E7%9C%8B%E6%87%82"><span class="nav-number">1.1.3.</span> <span class="nav-text">第三种-我没看懂</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -199,7 +200,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/01/first-blog/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/01/bind-set/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -212,7 +213,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          first blog
+          bind的实现
         </h1>
 
         <div class="post-meta-container">
@@ -224,7 +225,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2021-04-01 09:39:32 / Modified: 09:52:43" itemprop="dateCreated datePublished" datetime="2021-04-01T09:39:32+08:00">2021-04-01</time>
+      <time title="Created: 2021-04-01 14:46:03 / Modified: 15:40:40" itemprop="dateCreated datePublished" datetime="2021-04-01T14:46:03+08:00">2021-04-01</time>
     </span>
 
   
@@ -237,7 +238,12 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>欢迎大家来到我博客，这是搭建的第一个博客，若有不妥之处，请联系我。<br>本博客是使用的hexo来搭建的，具体的使用方法在上一篇《hello-world》中已经注明。<br>如果搭建想看具体的搭建过程的话，我一会整理一个较为完整的文档出来，方便大家一起学习。</p>
+        <h1 id="bind的实现"><a href="#bind的实现" class="headerlink" title="bind的实现"></a>bind的实现</h1><h2 id="bind的作用："><a href="#bind的作用：" class="headerlink" title="bind的作用："></a>bind的作用：</h2><p>bind的作用：将函数绑定至某个对象，bind() 方法会创建一个函数，函数体内this对象的值会被绑定到传入bind() 函数的值</p>
+<h3 id="第一种-柯理化函数思想"><a href="#第一种-柯理化函数思想" class="headerlink" title="第一种-柯理化函数思想"></a>第一种-柯理化函数思想</h3><p>我也不知道柯理化函数思想是啥思想，反正就这样实现就对了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; slice() 方法不会改变原始数组，从已有的数组中返回选定的元素</span><br><span class="line">Function.prototype.bind &#x3D; function(context) &#123;</span><br><span class="line">  var args &#x3D; Array.prototype.slice.call(arguments, 1); &#x2F;&#x2F; 将类数组arguments转化成数组，同时从索引为1的位置提取片段</span><br><span class="line">  var _this &#x3D; this;</span><br><span class="line">  return function() &#123;</span><br><span class="line">    var thisArgs &#x3D; [].slice(arguments)</span><br><span class="line">    return _this.apply(context, args.concat(thisArgs))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第二种-es6写法（…扩展符）"><a href="#第二种-es6写法（…扩展符）" class="headerlink" title="第二种-es6写法（…扩展符）"></a>第二种-es6写法（…扩展符）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Function.prototype.bind &#x3D; function(context, ...curArgs) &#123;</span><br><span class="line">  let self &#x3D; this;</span><br><span class="line">  return function(...args) &#123;</span><br><span class="line">    return self.apply(context, [...curAargs, ...args])</span><br><span class="line">  &#125;</span><br><span class="line">&#125; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="第三种-我没看懂"><a href="#第三种-我没看懂" class="headerlink" title="第三种-我没看懂"></a>第三种-我没看懂</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function bind(fn, context)&#123;</span><br><span class="line">  return function ()&#123;</span><br><span class="line">     return fn.apply(context, arguments);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -251,13 +257,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/03/31/hello-world/" rel="prev" title="Hello World-222">
-                  <i class="fa fa-chevron-left"></i> Hello World-222
+                <a href="/2021/04/01/first-blog/" rel="prev" title="first blog">
+                  <i class="fa fa-chevron-left"></i> first blog
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/04/01/bind-set/" rel="next" title="bind的实现">
-                  bind的实现 <i class="fa fa-chevron-right"></i>
+                <a href="/2021/04/02/Virtual-DOM/" rel="next" title="虚拟DOM(Virtual DOM)">
+                  虚拟DOM(Virtual DOM) <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

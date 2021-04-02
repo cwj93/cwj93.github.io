@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="虚拟DOM我们都知道我们平时会使用js来操作DOM树，来改变页面的渲染效果，但是真实DOM的渲染比较消耗性能，于是为了解决浏览器的性能问题就有了虚拟DOM，用js来模拟DOM节点实现虚拟DOM 浏览器渲染引擎工作流程创建DOM树1用html分析器，分析html元素，构建一颗DOM树（标记化和树构建） 创建stylerules1用css分析器，分析css文件和元素上的inline样式，生成页面的样式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="虚拟DOM(Virtual DOM)">
+<meta property="og:url" content="http://example.com/2021/04/02/Virtual-DOM/index.html">
+<meta property="og:site_name" content="尘世幽梦的BLOG">
+<meta property="og:description" content="虚拟DOM我们都知道我们平时会使用js来操作DOM树，来改变页面的渲染效果，但是真实DOM的渲染比较消耗性能，于是为了解决浏览器的性能问题就有了虚拟DOM，用js来模拟DOM节点实现虚拟DOM 浏览器渲染引擎工作流程创建DOM树1用html分析器，分析html元素，构建一颗DOM树（标记化和树构建） 创建stylerules1用css分析器，分析css文件和元素上的inline样式，生成页面的样式">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-04-02T06:03:56.000Z">
+<meta property="article:modified_time" content="2021-04-02T06:34:38.692Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/04/02/Virtual-DOM/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+<title>虚拟DOM(Virtual DOM) | 尘世幽梦的BLOG</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">尘世幽梦的BLOG</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%99%9A%E6%8B%9FDOM"><span class="nav-number">1.</span> <span class="nav-text">虚拟DOM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%BC%95%E6%93%8E%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">浏览器渲染引擎工作流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BADOM%E6%A0%91"><span class="nav-number">1.1.1.</span> <span class="nav-text">创建DOM树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAstylerules"><span class="nav-number">1.1.2.</span> <span class="nav-text">创建stylerules</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BArender%EF%BC%88renderObject%EF%BC%89%E6%A0%91"><span class="nav-number">1.1.3.</span> <span class="nav-text">创建render（renderObject）树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%83%E5%B1%80%EF%BC%88Layout%EF%BC%89"><span class="nav-number">1.1.4.</span> <span class="nav-text">布局（Layout）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BB%98%E5%88%B6%EF%BC%88Painting%EF%BC%89"><span class="nav-number">1.1.5.</span> <span class="nav-text">浏览器绘制（Painting）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%9F%E5%AE%9EDOM%E4%B8%8E%E8%99%9A%E6%8B%9FDOM%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">1.2.</span> <span class="nav-text">真实DOM与虚拟DOM的比较</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9C%9F%E5%AE%9EDOM"><span class="nav-number">1.2.1.</span> <span class="nav-text">真实DOM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9FDOM-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">虚拟DOM</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#diff%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">diff算法</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/02/Virtual-DOM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          虚拟DOM(Virtual DOM)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-04-02 14:03:56 / Modified: 14:34:38" itemprop="dateCreated datePublished" datetime="2021-04-02T14:03:56+08:00">2021-04-02</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="虚拟DOM"><a href="#虚拟DOM" class="headerlink" title="虚拟DOM"></a>虚拟DOM</h1><p>我们都知道我们平时会使用js来操作DOM树，来改变页面的渲染效果，但是真实DOM的渲染比较消耗性能，于是为了解决浏览器的性能问题就有了虚拟DOM，用js来模拟DOM节点实现虚拟DOM</p>
+<h2 id="浏览器渲染引擎工作流程"><a href="#浏览器渲染引擎工作流程" class="headerlink" title="浏览器渲染引擎工作流程"></a>浏览器渲染引擎工作流程</h2><h3 id="创建DOM树"><a href="#创建DOM树" class="headerlink" title="创建DOM树"></a>创建DOM树</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用html分析器，分析html元素，构建一颗DOM树（标记化和树构建）</span><br></pre></td></tr></table></figure>
+<h3 id="创建stylerules"><a href="#创建stylerules" class="headerlink" title="创建stylerules"></a>创建stylerules</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用css分析器，分析css文件和元素上的inline样式，生成页面的样式表</span><br></pre></td></tr></table></figure>
+<h3 id="创建render（renderObject）树"><a href="#创建render（renderObject）树" class="headerlink" title="创建render（renderObject）树"></a>创建render（renderObject）树</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">将DOM树和样式表关联起来，构建一颗Render树，每一个DOM节点都有attach属性，接收样式信息，返回一个render对象，这些render对象最终构建成一个Render树</span><br></pre></td></tr></table></figure>
+<h3 id="布局（Layout）"><a href="#布局（Layout）" class="headerlink" title="布局（Layout）"></a>布局（Layout）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">有了render树之后，浏览器就会开始布局，为每一个DOM节点确定一个在显示屏上的精确的坐标</span><br></pre></td></tr></table></figure>
+<h3 id="浏览器绘制（Painting）"><a href="#浏览器绘制（Painting）" class="headerlink" title="浏览器绘制（Painting）"></a>浏览器绘制（Painting）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">有了render和节点的精确坐标后，浏览器就会调用每个节点的paint方法，把节点绘制出来</span><br></pre></td></tr></table></figure>
+
+<h2 id="真实DOM与虚拟DOM的比较"><a href="#真实DOM与虚拟DOM的比较" class="headerlink" title="真实DOM与虚拟DOM的比较"></a>真实DOM与虚拟DOM的比较</h2><h3 id="真实DOM"><a href="#真实DOM" class="headerlink" title="真实DOM"></a>真实DOM</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">DOM有几次更新就执行几次DOM操作</span><br><span class="line">在传统的开发中，用js操作DOM时，浏览器会从构建DOM树开始，从头到尾执行一次浏览器渲染流程。如果在一次操作中，需要更新10个DOM节点，那么浏览器在接收到第一个更新请求的时候并不知道后面还有9次操作，因此会马上执行浏览器渲染流程，最终会执行10次DOM的更新操作。</span><br><span class="line">频繁的操作可能会导致页面卡顿，给用户带来不好的体验</span><br></pre></td></tr></table></figure>
+<h3 id="虚拟DOM-1"><a href="#虚拟DOM-1" class="headerlink" title="虚拟DOM"></a>虚拟DOM</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">在虚拟DOM中，一次操作需要更新10个节点的话，虚拟DOM不会立即执行DOM更行操作，而是先通过diff算法，将更新的内容保存到本地的一个js对象中，然后最终再将这个js对象一次性关联到DOM树中，再去执行浏览器的渲染流程。</span><br><span class="line">用js模拟DOM节点的好处是，页面更新时，可以先全部反应在js对象（虚拟DOM）上，操作内存中的js对象的速度更快，等页面完成后，再将最终的js对象映射成真实的DOM,交给浏览器绘制</span><br></pre></td></tr></table></figure>
+
+<h2 id="diff算法"><a href="#diff算法" class="headerlink" title="diff算法"></a>diff算法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">4种情况:</span><br><span class="line">节点类型变了REPLACE</span><br><span class="line">节点类型一样，属性或者属性值变了PROPS</span><br><span class="line">文本变了TEXT</span><br><span class="line">移动-增加-删除子节点REORDER</span><br></pre></td></tr></table></figure>
+<p>以上部分内容来源于[<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/af0b398602bc]">https://www.jianshu.com/p/af0b398602bc]</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/04/01/bind-set/" rel="prev" title="bind的实现">
+                  <i class="fa fa-chevron-left"></i> bind的实现
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
