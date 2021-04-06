@@ -23,20 +23,20 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="description" content="深拷贝的原理深复制—&gt;实现原理，先新建一个空对象，内存中新开辟一块地址，把被复制对象的所有可枚举的(注意可枚举的对象)属性方法一一复制过来，注意要用递归来复制子对象里面的所有属性和方法，直到子子…..属性为基本数据类型 浅拷贝的原理浅复制—&gt;就是将一个对象的内存地址的”编号”复制给另一个对象 深拷贝实现方法深拷贝-递归去复制所有层级属性123456789101112131415func">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World-222">
-<meta property="og:url" content="http://example.com/2021/03/31/hello-world/index.html">
+<meta property="og:title" content="深拷贝&amp;&amp;浅拷贝">
+<meta property="og:url" content="http://example.com/2021/04/06/%E6%B7%B1%E6%8B%B7%E8%B4%9D-%E6%B5%85%E6%8B%B7%E8%B4%9D/index.html">
 <meta property="og:site_name" content="尘世幽梦的BLOG">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="深拷贝的原理深复制—&gt;实现原理，先新建一个空对象，内存中新开辟一块地址，把被复制对象的所有可枚举的(注意可枚举的对象)属性方法一一复制过来，注意要用递归来复制子对象里面的所有属性和方法，直到子子…..属性为基本数据类型 浅拷贝的原理浅复制—&gt;就是将一个对象的内存地址的”编号”复制给另一个对象 深拷贝实现方法深拷贝-递归去复制所有层级属性123456789101112131415func">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-03-31T08:07:40.967Z">
-<meta property="article:modified_time" content="2021-04-01T02:00:53.971Z">
+<meta property="article:published_time" content="2021-04-06T07:42:08.000Z">
+<meta property="article:modified_time" content="2021-04-06T07:58:34.539Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2021/03/31/hello-world/">
+<link rel="canonical" href="http://example.com/2021/04/06/%E6%B7%B1%E6%8B%B7%E8%B4%9D-%E6%B5%85%E6%8B%B7%E8%B4%9D/">
 
 
 <script class="page-configurations">
@@ -48,7 +48,7 @@
     lang   : 'en'
   };
 </script>
-<title>Hello World-222 | 尘世幽梦的BLOG</title>
+<title>深拷贝&&浅拷贝 | 尘世幽梦的BLOG</title>
   
 
 
@@ -147,7 +147,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start-%E5%BF%AB%E9%80%9F%E5%90%AF%E5%8A%A8"><span class="nav-number">1.</span> <span class="nav-text">Quick Start 快速启动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E5%B8%96%E5%AD%90"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post 创建一个新的帖子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server-%E8%BF%90%E8%A1%8C%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">Run server 运行服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files-%E7%94%9F%E6%88%90%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files 生成静态文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites-%E9%83%A8%E7%BD%B2%E5%88%B0%E8%BF%9C%E7%A8%8B%E7%AB%99%E7%82%B9"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites 部署到远程站点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8A%E4%BC%A0%E5%88%B0%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.5.</span> <span class="nav-text">上传到远程服务器的步骤</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E6%8B%B7%E8%B4%9D%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">深拷贝的原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%85%E6%8B%B7%E8%B4%9D%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">浅拷贝的原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E6%8B%B7%E8%B4%9D%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">深拷贝实现方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B1%E6%8B%B7%E8%B4%9D-%E9%80%92%E5%BD%92%E5%8E%BB%E5%A4%8D%E5%88%B6%E6%89%80%E6%9C%89%E5%B1%82%E7%BA%A7%E5%B1%9E%E6%80%A7"><span class="nav-number">3.1.</span> <span class="nav-text">深拷贝-递归去复制所有层级属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B1%E6%8B%B7%E8%B4%9D-JSON%E5%AF%B9%E8%B1%A1%E7%9A%84parse%E5%92%8Cstringify"><span class="nav-number">3.2.</span> <span class="nav-text">深拷贝-JSON对象的parse和stringify</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B1%E6%8B%B7%E8%B4%9D-%E2%80%A6%E6%89%A9%E5%B1%95%E7%AC%A6"><span class="nav-number">3.3.</span> <span class="nav-text">深拷贝-…扩展符</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -200,7 +200,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/31/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/06/%E6%B7%B1%E6%8B%B7%E8%B4%9D-%E6%B5%85%E6%8B%B7%E8%B4%9D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -213,7 +213,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Hello World-222
+          深拷贝&&浅拷贝
         </h1>
 
         <div class="post-meta-container">
@@ -223,16 +223,10 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
+      
 
-      <time title="Created: 2021-03-31 16:07:40" itemprop="dateCreated datePublished" datetime="2021-03-31T16:07:40+08:00">2021-03-31</time>
+      <time title="Created: 2021-04-06 15:42:08 / Modified: 15:58:34" itemprop="dateCreated datePublished" datetime="2021-04-06T15:42:08+08:00">2021-04-06</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-01 10:00:53" itemprop="dateModified" datetime="2021-04-01T10:00:53+08:00">2021-04-01</time>
-      </span>
 
   
 </div>
@@ -244,20 +238,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start-快速启动"><a href="#Quick-Start-快速启动" class="headerlink" title="Quick Start 快速启动"></a>Quick Start 快速启动</h2><h3 id="Create-a-new-post-创建一个新的帖子"><a href="#Create-a-new-post-创建一个新的帖子" class="headerlink" title="Create a new post 创建一个新的帖子"></a>Create a new post 创建一个新的帖子</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+        <h2 id="深拷贝的原理"><a href="#深拷贝的原理" class="headerlink" title="深拷贝的原理"></a>深拷贝的原理</h2><p>深复制—&gt;实现原理，先新建一个空对象，内存中新开辟一块地址，把被复制对象的所有可枚举的(注意可枚举的对象)属性方法一一复制过来，注意要用递归来复制子对象里面的所有属性和方法，直到子子…..属性为基本数据类型</p>
+<h2 id="浅拷贝的原理"><a href="#浅拷贝的原理" class="headerlink" title="浅拷贝的原理"></a>浅拷贝的原理</h2><p>浅复制—&gt;就是将一个对象的内存地址的”编号”复制给另一个对象</p>
+<h2 id="深拷贝实现方法"><a href="#深拷贝实现方法" class="headerlink" title="深拷贝实现方法"></a>深拷贝实现方法</h2><h3 id="深拷贝-递归去复制所有层级属性"><a href="#深拷贝-递归去复制所有层级属性" class="headerlink" title="深拷贝-递归去复制所有层级属性"></a>深拷贝-递归去复制所有层级属性</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">function deepClone(obj)&#123;</span><br><span class="line">  let objClone &#x3D; Array.isArray(obj)?[]:&#123;&#125;;    </span><br><span class="line">  if(obj &amp;&amp; typeof obj&#x3D;&#x3D;&#x3D;&quot;object&quot;)&#123;</span><br><span class="line">    for(key in obj)&#123;</span><br><span class="line">      if(obj.hasOwnProperty(key))&#123;  &#x2F;&#x2F; 判断对象是否包含特定的自身（非继承）属性，返回一个布尔值</span><br><span class="line">        if(obj[key]&amp;&amp;typeof obj[key] &#x3D;&#x3D;&#x3D;&quot;object&quot;)&#123; &#x2F;&#x2F;判断ojb子元素是否为对象，如果是，递归复制</span><br><span class="line">          objClone[key] &#x3D; deepClone(obj[key]);</span><br><span class="line">        &#125;else&#123; &#x2F;&#x2F;如果不是，简单复制</span><br><span class="line">          objClone[key] &#x3D; obj[key];</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;    </span><br><span class="line">  return objClone;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server-运行服务器"><a href="#Run-server-运行服务器" class="headerlink" title="Run server 运行服务器"></a>Run server 运行服务器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<h3 id="深拷贝-JSON对象的parse和stringify"><a href="#深拷贝-JSON对象的parse和stringify" class="headerlink" title="深拷贝-JSON对象的parse和stringify"></a>深拷贝-JSON对象的parse和stringify</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JSON.parse(JSON.stringify(obj))</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files-生成静态文件"><a href="#Generate-static-files-生成静态文件" class="headerlink" title="Generate static files 生成静态文件"></a>Generate static files 生成静态文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites-部署到远程站点"><a href="#Deploy-to-remote-sites-部署到远程站点" class="headerlink" title="Deploy to remote sites 部署到远程站点"></a>Deploy to remote sites 部署到远程站点</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-<h3 id="上传到远程服务器的步骤"><a href="#上传到远程服务器的步骤" class="headerlink" title="上传到远程服务器的步骤"></a>上传到远程服务器的步骤</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean // 清除缓存文件 (db.json) 和已生成的静态文件 (public)</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+<h3 id="深拷贝-…扩展符"><a href="#深拷贝-…扩展符" class="headerlink" title="深拷贝-…扩展符"></a>深拷贝-…扩展符</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let bb &#x3D; [1,2,&#123;w: &#39;1&#39;&#125;]</span><br><span class="line">let aa &#x3D; [...bb]</span><br><span class="line">aa[0] &#x3D; &#39;2&#39;</span><br><span class="line">&#x2F;&#x2F;bb[0] &#x3D; &#39;3&#39;</span><br><span class="line">console.log(bb) &#x2F;&#x2F; [1,2,&#123;w: &#39;1&#39;&#125;]</span><br><span class="line">console.log(aa) &#x2F;&#x2F; [&#39;&#39;,2,&#123;w: &#39;1&#39;&#125;]</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -270,11 +257,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
+                <a href="/2021/04/06/Object-prototype-toString-call-%E7%9A%84%E4%BD%BF%E7%94%A8/" rel="prev" title="Object.prototype.toString.call()的使用-判断对象类型">
+                  <i class="fa fa-chevron-left"></i> Object.prototype.toString.call()的使用-判断对象类型
+                </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/04/01/first-blog/" rel="next" title="first blog">
-                  first blog <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
