@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -185,6 +185,238 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/08/%E9%97%AD%E5%8C%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/08/%E9%97%AD%E5%8C%85/" class="post-title-link" itemprop="url">闭包</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-04-08 14:50:14 / Modified: 16:16:38" itemprop="dateCreated datePublished" datetime="2021-04-08T14:50:14+08:00">2021-04-08</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h1><p>最近几天刷题都刷到与闭包有关的题目，发现对于闭包一知半解的，感觉很难受，于是打算深入了解一下闭包。</p>
+<h3 id="一、概念"><a href="#一、概念" class="headerlink" title="一、概念"></a>一、概念</h3><p>闭包就是能够读取其他函数内部变量的函数。在js中可以理解为”函数中的函数”</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">functon fn1() &#123;</span><br><span class="line">  var mm &#x3D; &#39;妹妹&#39;</span><br><span class="line">  function fn2() &#123;</span><br><span class="line">    alert(mm); &#x2F;&#x2F; 妹妹</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、闭包的作用"><a href="#二、闭包的作用" class="headerlink" title="二、闭包的作用"></a>二、闭包的作用</h3><ul>
+<li>可以读取内部函数的变量</li>
+<li>可以将变量始终保存在内存中</li>
+</ul>
+<h3 id="三、使用闭包的注意事项"><a href="#三、使用闭包的注意事项" class="headerlink" title="三、使用闭包的注意事项"></a>三、使用闭包的注意事项</h3><ul>
+<li>滥用闭包的话，可能会导致内存泄露。因为闭包会使得函数内部的变量都保存到内存中，是内存的消耗过大，会造成网页性能问题。</li>
+<li>闭包会在父函数外部，改变父函数内部变量的值</li>
+</ul>
+<h3 id="四、一道非常经典的闭包题目"><a href="#四、一道非常经典的闭包题目" class="headerlink" title="四、一道非常经典的闭包题目"></a>四、一道非常经典的闭包题目</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function fun(n,o)&#123;</span><br><span class="line">    console.log(o);</span><br><span class="line">    return &#123;</span><br><span class="line">        fun:function(m)&#123;</span><br><span class="line">            return fun(m,n);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> var a &#x3D; fun(0);   a.fun(1);   a.fun(2);  a.fun(3);</span><br><span class="line"> var b &#x3D; fun(0).fun(1).fun(2).fun(3);</span><br><span class="line"> var c &#x3D; fun(0).fun(1);  c.fun(2);  c.fun(3);</span><br></pre></td></tr></table></figure>
+<p>解答：</p>
+<ul>
+<li><p>首先，我们仔细看看定义的fun函数，里面第一层返回了一个对象{fun: function(){}}，对象里面定义了一个fun函数，然后返回了fun(m,n)方法</p>
+</li>
+<li><p>一、var a = fun(0);   a.fun(1);   a.fun(2);  a.fun(3);输出什么</p>
+<ul>
+<li>首先，a = fun(0);此时我们根据上面定义的函数可以得知，a其实等于一个对象{fun: function(){}}。所以此时会输出undefined</li>
+<li>接着，a.fun(1);由于此时a是一个对象，里面定义了fun函数，所以此时调用的对象内部的fun方法，此方法返回了fun(m,n)函数，那么此时就相当于是调用的fun(1, 0),故输出0</li>
+<li>紧接着的都跟第二步一样，都是输出0</li>
+</ul>
+</li>
+<li><p>二、var b = fun(0).fun(1).fun(2).fun(3);</p>
+<ul>
+<li>首先，在调用fun(0)时，得到一个对象{}，里面包含fun函数，此时fun(0)输出undefined</li>
+<li>接着，在上面的基础上调用fun(1),此时的fun函数是返回的对象的fun匿名函数，此匿名函数返回fun(m,n)函数，那么此时相当于是直接调用了fun(1,0),返回一个对象{fun: function(m){return fun(m, 1)}}，此时输出 0</li>
+<li>再接着，调用fun(2),此时调用的fun(2)返回的对象里的fun匿名函数，那么此时也就是调用的外部的fun(n,o)函数，即fun(2,1),返回的是一个对象{fun: function(m){return fun(m, 2)}},此时输出 1</li>
+<li>最后一个fun(3),调用的就是上一个的对象里的fun函数，那么此时执行的就是fun(3,2),故此时输出 2</li>
+</ul>
+</li>
+<li><p>三、var c = fun(0).fun(1);  c.fun(2);  c.fun(3);</p>
+<ul>
+<li>首先，fun(0)相当于是fun(0, undefined)，返回一个对象{fun: function(m){return fun(m, 0)}},故直接输出0.</li>
+<li>接着fun(0).fun(1)就相当于是对象里的fun函数，即执行的是fun(1, 0)，返回一个对象{fun: function(m){return fun(m, 1)}},故输出 0</li>
+<li>再接着c.fun(2)就是执行的对象里的fun函数，即fun(2,1),故输出1</li>
+<li>最后c.fun(3)与c.fun(2)一样，输出 1</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/07/%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/07/%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/" class="post-title-link" itemprop="url">面试题汇总</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-07 10:30:03" itemprop="dateCreated datePublished" datetime="2021-04-07T10:30:03+08:00">2021-04-07</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-08 14:29:24" itemprop="dateModified" datetime="2021-04-08T14:29:24+08:00">2021-04-08</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="面试题汇总"><a href="#面试题汇总" class="headerlink" title="面试题汇总"></a>面试题汇总</h1><p>今日偶然在掘金中看到了一篇关于面试题的文章，里面的题目非常经典，能够考察到的知识点非常丰富，有利于我们查漏补缺。我在此做个记录，便于自己日后方便查找。此处放一个文章作者的github地址[<a target="_blank" rel="noopener" href="https://github.com/Advanced-Frontend/Daily-Interview-Question]%E3%80%82%E9%82%A3%E4%B9%88%E5%B0%B1%E8%AE%A9%E6%88%91%E4%BB%AC%E4%B8%80%E8%B5%B7%E6%9D%A5%E6%84%89%E5%BF%AB%E5%9C%B0%E5%81%9A%E9%A2%98%E5%90%A7%E3%80%82%E3%80%82%E3%80%82">https://github.com/Advanced-Frontend/Daily-Interview-Question]。那么就让我们一起来愉快地做题吧。。。</a></p>
+<h2 id="第-162-题：实现对象的-Map-函数类似-Array-prototype-map"><a href="#第-162-题：实现对象的-Map-函数类似-Array-prototype-map" class="headerlink" title="第 162 题：实现对象的 Map 函数类似 Array.prototype.map"></a>第 162 题：实现对象的 Map 函数类似 Array.prototype.map</h2><p>实现思路：</p>
+<ul>
+<li>首先，要求实现对象Map，那么就需要先搞清楚Array.prototype.map的内部实现逻辑<ul>
+<li>array.map(function(currentValue,index,arr), thisValue)</li>
+<li>Array.prototype.map是返回一个新的数组</li>
+<li>Array.prototype.map有两个参数，第一个参数是回调函数有三个参数value, index, arr，第二个参数是对象作为该执行回调时使用，传递给函数，用作 “this” 的值。如果省略了 thisValue，或者传入 null、undefined，那么回调函数的 this 为全局对象</li>
+</ul>
+</li>
+</ul>
+<p>Array.prototype.map的实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; callbackFn--回调函数，thisArg--this指向，默认不传为全局对象</span><br><span class="line">Array.prototype.map &#x3D; function (callbackFn, thisArg) &#123;</span><br><span class="line">  let arr &#x3D; [];</span><br><span class="line">  const _me &#x3D; this;</span><br><span class="line">  const _context &#x3D; thisArg ? thisArg : _me; &#x2F;&#x2F; 定义上下文对象</span><br><span class="line">  let curArr &#x3D; Object(_me); &#x2F;&#x2F; 获取调用map方法的数组</span><br><span class="line">  if(typeof callbackFn !&#x3D; &#39;function&#39;) &#123;</span><br><span class="line">    throw new TypeError(&#96;$&#123;callbackFn&#125; is no function&#96;);</span><br><span class="line">  &#125;</span><br><span class="line">  curArr.forEach((item, index) &#x3D;&gt; &#123;</span><br><span class="line">    arr.push(callbackFn.call(_context, item, index, curArr)) &#x2F;&#x2F; 将回调结果放入数组中</span><br><span class="line">  &#125;)</span><br><span class="line">  return arr; &#x2F;&#x2F; 返回map后的数组</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对象的 Map 函数的实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">function Map(callback, thisValue) &#123;</span><br><span class="line">  let _this &#x3D; this;</span><br><span class="line">  let _obj &#x3D; &#123;&#125;;</span><br><span class="line">  let curObj &#x3D; Object(this); &#x2F;&#x2F; 获取调用Map方法的对象</span><br><span class="line">  &#x2F;&#x2F;如果callback不是函数,则抛出TypeError异常.  </span><br><span class="line">  &#x2F;&#x2F;Object.prototype.toString.call(callback) !&#x3D; &quot;[object Function]&quot;</span><br><span class="line">  if(typeof callback !&#x3D; &#39;function&#39;) &#123;</span><br><span class="line">    throw new TypeError(callback + &quot; is not a function&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  if(thisValue) &#123;</span><br><span class="line">    _this &#x3D; thisValue</span><br><span class="line">  &#125;</span><br><span class="line">  for(let key in curObj)&#123;</span><br><span class="line">    &#x2F;&#x2F; 判断当前属性是否属于当前对象，若不加这层判断的话，该循环会将Map本身也遍历进去</span><br><span class="line">    if(curObj.hasOwnProperty(key)) &#123;</span><br><span class="line">      &#x2F;&#x2F; 三个参数：curObj[key]-当前key对应的值，key-当前的key，curObj-原对象</span><br><span class="line">      _obj[key] &#x3D; callback.call(_this, curObj[key], key, curObj)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return _obj</span><br><span class="line">&#125;</span><br><span class="line">Object.prototype.Map &#x3D; Map; &#x2F;&#x2F; 挂载到对象原型上</span><br><span class="line">var a &#x3D; &#123;&#39;name&#39;: &#39;cwj&#39;,&#39;age&#39;: 18, &#39;sex&#39;: &#39;男&#39;&#125;</span><br><span class="line">var o &#x3D; a.Map(function(value,key,obj)&#123;</span><br><span class="line">	return value + &#39;11&#39;</span><br><span class="line">&#125;)</span><br><span class="line">console.log(a) &#x2F;&#x2F; &#123;name: &quot;cwj&quot;, age: 18, sex: &quot;男&quot;&#125;</span><br><span class="line">console.log(o) &#x2F;&#x2F; &#123;name: &quot;cwj11&quot;, age: &quot;1811&quot;, sex: &quot;男11&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="第161题-用最精炼的代码实现数组非零非负最小值-index"><a href="#第161题-用最精炼的代码实现数组非零非负最小值-index" class="headerlink" title="第161题 用最精炼的代码实现数组非零非负最小值 index"></a>第161题 用最精炼的代码实现数组非零非负最小值 index</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 例如：[10,21,0,-7,35,7,9,23,18] 输出 5, 7 最小</span><br><span class="line">function getIndex(arr)&#123;</span><br><span class="line">      let index&#x3D;null;</span><br><span class="line">      ...</span><br><span class="line">      return index;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实现：</p>
+<ul>
+<li>首先，仔细阅读题目要求，要求的是非零非负，那么就可以用大于0(&gt; 0)表示</li>
+<li>其次，要求是最小值，那么我们就应该想到直接使用Math.min()方法,要注意min()方法的参数不是数组哈，需要将数组解构</li>
+<li>接着，要求输出的是最小值的索引值index，那么数组有一个方法是可以返回数组中元素所在的索引findIndex(). </li>
+</ul>
+<p>此处可以扩展一下find()和findIndex()方法的比较</p>
+<ul>
+<li>find()–find()函数用来查找目标元素，找到就返回该元素，找不到返回undefined</li>
+<li>findIndex()–findIndex()函数也是查找目标元素，找到就返回元素的位置，找不到就返回-1</li>
+<li>都是查找回调函数,都含有三个参数，<ul>
+<li>value–每一次迭代查找的数组元素</li>
+<li>index–每一次迭代查找的数组元素索引</li>
+<li>arr–被查找的数组</li>
+</ul>
+</li>
+<li>语法<ul>
+<li>[1,2,3,4].find((value, index, arr) =&gt; { return value &gt; 1}) // 2</li>
+<li>[1,2,3,4].findIndex((value, index, arr) =&gt; { return value &gt; 1}) // 1</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function getIndex(arr)&#123;</span><br><span class="line">      let index&#x3D;null;</span><br><span class="line">      &#x2F;&#x2F; 此处是实现代码开始</span><br><span class="line">      let newArr &#x3D; arr.filter(v &#x3D;&gt; v &gt; 0)</span><br><span class="line">      index &#x3D; arr.findIndex(i &#x3D;&gt; i &#x3D;&#x3D; Math.min(...newArr))</span><br><span class="line">      &#x2F;&#x2F; 此处是实现代码结束</span><br><span class="line">      return index;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="第-160-题：输出以下代码运行结果，为什么？如果希望每隔-1s-输出一个结果，应该如何改造？注意不可改动-square-方法"><a href="#第-160-题：输出以下代码运行结果，为什么？如果希望每隔-1s-输出一个结果，应该如何改造？注意不可改动-square-方法" class="headerlink" title="第 160 题：输出以下代码运行结果，为什么？如果希望每隔 1s 输出一个结果，应该如何改造？注意不可改动 square 方法"></a>第 160 题：输出以下代码运行结果，为什么？如果希望每隔 1s 输出一个结果，应该如何改造？注意不可改动 square 方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">const list &#x3D; [1, 2, 3]</span><br><span class="line">const square &#x3D; num &#x3D;&gt; &#123;</span><br><span class="line">  return new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">    setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">      resolve(num * num)</span><br><span class="line">    &#125;, 1000)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function test() &#123;</span><br><span class="line">  list.forEach(async x&#x3D;&gt; &#123;</span><br><span class="line">    const res &#x3D; await square(x)</span><br><span class="line">    console.log(res)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line">test()</span><br></pre></td></tr></table></figure>
+<p>实现：forEach是不能阻塞的，默认是请求并行发起，所以是同时输出1、4、9</p>
+<ul>
+<li>forEach是不能阻塞的，默认是请求并行发起</li>
+</ul>
+<p>扩展：</p>
+<ul>
+<li>数组的其他常用循环方法<ul>
+<li>forEach()–不能终止循环(无法使用break语句或者return语句终止)，forEach方法对数组的每个元素执行一次提供的函数，forEach循环里不能有break或continue， 会产生报错 callback可以使用return但return的结果没有作用，只是提前结束函数运行，也就是calback总是返回undefined forEach返回值undefined</li>
+<li>for of–for…of语句在可迭代对象上创建一个迭代循环，执行语句; 和for循环一样，会等待await执行完后继续执行</li>
+<li>forEach和map,await不生效；使用break或continue会报错</li>
+<li>for循环、for…in,for…of，支持await，for和for…of中可以使用break和continue；for…in会忽略continue和break<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">async function test() &#123;</span><br><span class="line">  for (let i &#x3D; 0; i &lt; list.length; i++) &#123;</span><br><span class="line">    let x &#x3D; list[i]</span><br><span class="line">    const res &#x3D; await square(x)</span><br><span class="line">    console.log(res)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+for of 语法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">async function test() &#123;</span><br><span class="line">  for (let x of list) &#123;</span><br><span class="line">    const res &#x3D; await square(x)</span><br><span class="line">    console.log(res)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+axios 源码里所用到的，利用 promise 本身的链式调用来实现串行<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let promise &#x3D; Promise.resolve()</span><br><span class="line">function test(i &#x3D; 0) &#123;</span><br><span class="line">  if (i &#x3D;&#x3D;&#x3D; list.length) return</span><br><span class="line">  promise &#x3D; promise.then(() &#x3D;&gt; square(list[i]))</span><br><span class="line">  test(i + 1)</span><br><span class="line">&#125;</span><br><span class="line">test()</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
