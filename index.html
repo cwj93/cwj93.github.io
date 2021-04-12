@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -185,6 +185,186 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/12/%E5%89%8D%E7%AB%AF%E6%9D%83%E9%99%90%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/12/%E5%89%8D%E7%AB%AF%E6%9D%83%E9%99%90%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88/" class="post-title-link" itemprop="url">前端权限设计方案</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-04-12 09:52:02 / Modified: 14:47:19" itemprop="dateCreated datePublished" datetime="2021-04-12T09:52:02+08:00">2021-04-12</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="前端权限设计方案"><a href="#前端权限设计方案" class="headerlink" title="前端权限设计方案"></a>前端权限设计方案</h1><p>以此记录一下在掘金看到的一篇关于前端权限设计方案的文章，故在此放上掘金的访问地址，以便以后查看。</p>
+<p>链接：[<a target="_blank" rel="noopener" href="https://juejin.cn/post/6949453195987025927]">https://juejin.cn/post/6949453195987025927]</a></p>
+<h3 id="登录权限"><a href="#登录权限" class="headerlink" title="登录权限"></a>登录权限</h3><p>一般在vue中的登录权限控制是通过路由meta属性来控制的。在路由管理页面，每一个路由都有自己对应的meta(元数据)属性，可以用来存放一些路由状态相关的信息。</p>
+<ol>
+<li>首先在路由meta属性中设置登录权限字段<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">export const routes &#x3D; [</span><br><span class="line">  &#123;</span><br><span class="line">    path: &#39;&#x2F;login&#39;, &#x2F;&#x2F;登录页面</span><br><span class="line">    name: &#39;login&#39;,</span><br><span class="line">    component: Login,</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    path:&quot;&#x2F;personCenter&quot;, &#x2F;&#x2F; 个人中心</span><br><span class="line">    name:&quot;personCenter&quot;,</span><br><span class="line">    component: PersonCenter, </span><br><span class="line">    meta:&#123;</span><br><span class="line">      isNeedLogin: true &#x2F;&#x2F;是否需要登录</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure></li>
+<li>接着就可以在main.js（路由挂载页面）通过路由导航守卫来处理登录逻辑<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const router &#x3D; new VueRouter(&#123; ... &#125;)</span><br><span class="line"></span><br><span class="line">router.beforeEach((to, from, next) &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; to: Route: 即将要进入的目标 路由对象</span><br><span class="line">  &#x2F;&#x2F; from: Route: 当前导航正要离开的路由</span><br><span class="line">  &#x2F;&#x2F; next: Function: 一定要调用该方法来 resolve 这个钩子</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="菜单权限"><a href="#菜单权限" class="headerlink" title="菜单权限"></a>菜单权限</h3><p>菜单权限的话，需要配合后端，后端对应角色的权限菜单返回给前端</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/09/vue%E6%95%B0%E6%8D%AE%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/09/vue%E6%95%B0%E6%8D%AE%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">vue数据双向绑定原理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-09 16:17:16" itemprop="dateCreated datePublished" datetime="2021-04-09T16:17:16+08:00">2021-04-09</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-12 16:26:56" itemprop="dateModified" datetime="2021-04-12T16:26:56+08:00">2021-04-12</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="vue数据双向绑定原理"><a href="#vue数据双向绑定原理" class="headerlink" title="vue数据双向绑定原理"></a>vue数据双向绑定原理</h1><p>vue数据双向绑定主要是依赖于Object.defineProperty( )来做数据劫持。</p>
+<ul>
+<li>数据双向绑定即是视图变化更新数据，数据变化更新视图。</li>
+<li>视图变化更新数据，我们可以通过事件监听来实现，比如input标签的’input’事件。</li>
+<li>数据变化如何更新视图 ? vue中是通过Object.defineProperty(obj, ‘keyName’, {})方法来实现，该方法具有get/set方法，var o = obj[‘keyName’]会触发get()方法，返回处理后的值。obj[‘keyName’] = ‘赋值’，会触发set方法赋值。</li>
+<li>那么vue中就是通过Object.defineProperty()方法来劫持data属性的，遍历data对象中的所有属性，对其属性进行劫持，然后在对应的get()方法中，判断是否需要监听该属性，需要就将其添加到订阅器中，，在对应的set()方法中，如果数据发生变化，那就去通过订阅者，订阅者就会执行对应的更新的函数（所有订阅者都会更新）。</li>
+</ul>
+<h2 id="Object-defineProperty"><a href="#Object-defineProperty" class="headerlink" title="Object.defineProperty( )"></a>Object.defineProperty( )</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var Book &#x3D; &#123;&#125;</span><br><span class="line">var name &#x3D; &#39;&#39;;</span><br><span class="line">Object.defineProperty(Book, &#39;name&#39;, &#123;</span><br><span class="line">  set: function (value) &#123;</span><br><span class="line">    name &#x3D; value;</span><br><span class="line">    console.log(&#39;你取了一个书名叫做&#39; + value);</span><br><span class="line">  &#125;,</span><br><span class="line">  get: function () &#123;</span><br><span class="line">    return &#39;《&#39; + name + &#39;》&#39;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"> </span><br><span class="line">Book.name &#x3D; &#39;vue权威指南&#39;;  &#x2F;&#x2F; 你取了一个书名叫做vue权威指南</span><br><span class="line">console.log(Book.name);  &#x2F;&#x2F; 《vue权威指南》</span><br></pre></td></tr></table></figure>
+<p>我们通过Object.defineProperty( )设置了对象Book的name属性，对其get和set进行重写操作，顾名思义，get就是在读取name属性这个值触发的函数，set就是在设置name属性这个值触发的函数，所以当执行 Book.name = ‘vue权威指南’ 这个语句时，控制台会打印出 “你取了一个书名叫做vue权威指南”，紧接着，当读取这个属性时，就会输出 “《vue权威指南》”，因为我们在get函数里面对该值做了加工了。如果这个时候我们执行下下面的语句，控制台会输出什么？</p>
+<p>我们先从Vue 构造函数出发，把vue的执行思路过一遍</p>
+<ol>
+<li><p>vue初始化对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var vm &#x3D; new Vue(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    obj: &#123;</span><br><span class="line">      a: &#39;1&#39;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  created: function() &#123;</span><br><span class="line">    console.log(this.obj);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p><img src="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225032257-1498304708.png" alt="结果"></p>
+</li>
+<li><p>对比一下Object.defineProperty数据劫持一个对象，看看输出什么</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var Book &#x3D; &#123;&#125;</span><br><span class="line">var name &#x3D; &#39;&#39;;</span><br><span class="line">Object.defineProperty(Book, &#39;name&#39;, &#123;</span><br><span class="line">  set: function (value) &#123;</span><br><span class="line">    name &#x3D; value;</span><br><span class="line">    console.log(&#39;你取了一个书名叫做&#39; + value);</span><br><span class="line">  &#125;,</span><br><span class="line">  get: function () &#123;</span><br><span class="line">    return &#39;《&#39; + name + &#39;》&#39;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"> </span><br><span class="line">Book.name &#x3D; &#39;vue权威指南&#39;;  &#x2F;&#x2F; 你取了一个书名叫做vue权威指南</span><br><span class="line">console.log(Book.name);  &#x2F;&#x2F; 《vue权威指南》</span><br></pre></td></tr></table></figure>
+<p><img src="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225238960-1133794938.png"></p>
+</li>
+<li><p>实现mvvm主要包含两个方面，数据变化更新视图，视图变化更新数据：</p>
+</li>
+</ol>
+<p>实现数据的双向绑定：</p>
+<ol>
+<li><p>实现一个监听器Observer，用来劫持并监听所有属性，如果有变动的，就通知订阅者。</p>
+</li>
+<li><p>实现一个订阅者Watcher，可以收到属性的变化通知并执行相应的函数，从而更新视图。</p>
+</li>
+<li><p>实现一个解析器Compile，可以扫描和解析每个节点的相关指令，并根据初始化模板数据以及初始化相应的订阅器。<br><img src="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225458132-1434604303.png"></p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line">function defineReactive(data, key, val) &#123;</span><br><span class="line">    observe(val); &#x2F;&#x2F; 递归遍历所有子属性</span><br><span class="line">    var dep &#x3D; new Dep(); </span><br><span class="line">    Object.defineProperty(data, key, &#123;</span><br><span class="line">        enumerable: true,</span><br><span class="line">        configurable: true,</span><br><span class="line">        get: function() &#123;</span><br><span class="line">            if (Dep.target) &#123;.  &#x2F;&#x2F; 判断是否需要添加订阅者</span><br><span class="line">                dep.addSub(Dep.target); &#x2F;&#x2F; 在这里添加一个订阅者</span><br><span class="line">            &#125;</span><br><span class="line">            return val;</span><br><span class="line">        &#125;,</span><br><span class="line">        set: function(newVal) &#123;</span><br><span class="line">            if (val &#x3D;&#x3D;&#x3D; newVal) &#123;</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line">            val &#x3D; newVal;</span><br><span class="line">            console.log(&#39;属性&#39; + key + &#39;已经被监听了，现在值为：“&#39; + newVal.toString() + &#39;”&#39;);</span><br><span class="line">            dep.notify(); &#x2F;&#x2F; 如果数据变化，通知所有订阅者</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line">Dep.target &#x3D; null;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 订阅器-负责收集订阅者-在属性变化的时候执行对应订阅者的更新函数</span><br><span class="line">function Dep () &#123;</span><br><span class="line">    this.subs &#x3D; [];</span><br><span class="line">&#125;</span><br><span class="line">Dep.prototype &#x3D; &#123;</span><br><span class="line">    addSub: function(sub) &#123;</span><br><span class="line">        this.subs.push(sub);</span><br><span class="line">    &#125;,</span><br><span class="line">    notify: function() &#123;</span><br><span class="line">        this.subs.forEach(function(sub) &#123;</span><br><span class="line">            sub.update();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 监听器-观察者</span><br><span class="line">function observe(data) &#123;</span><br><span class="line">    if (!data || typeof data !&#x3D;&#x3D; &#39;object&#39;) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    Object.keys(data).forEach(function(key) &#123;</span><br><span class="line">        defineReactive(data, key, data[key]);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br><span class="line">&#x2F;&#x2F; 订阅者</span><br><span class="line">function Watcher(vm, exp, cb) &#123;</span><br><span class="line">    this.cb &#x3D; cb;</span><br><span class="line">    this.vm &#x3D; vm;</span><br><span class="line">    this.exp &#x3D; exp;</span><br><span class="line">    this.value &#x3D; this.get();  &#x2F;&#x2F; 将自己添加到订阅器的操作</span><br><span class="line">&#125;</span><br><span class="line">Watcher.prototype &#x3D; &#123;</span><br><span class="line">    update: function() &#123;</span><br><span class="line">        this.run();</span><br><span class="line">    &#125;,</span><br><span class="line">    run: function() &#123;</span><br><span class="line">        var value &#x3D; this.vm.data[this.exp];</span><br><span class="line">        var oldVal &#x3D; this.value;</span><br><span class="line">        if (value !&#x3D;&#x3D; oldVal) &#123;</span><br><span class="line">            this.value &#x3D; value;</span><br><span class="line">            this.cb.call(this.vm, value, oldVal);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    get: function() &#123;</span><br><span class="line">        Dep.target &#x3D; this;  &#x2F;&#x2F; 缓存自己</span><br><span class="line">        var value &#x3D; this.vm.data[this.exp]  &#x2F;&#x2F; 强制执行监听器里的get函数</span><br><span class="line">        Dep.target &#x3D; null;  &#x2F;&#x2F; 释放自己</span><br><span class="line">        return value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 构造函数-将Observer和Watcher关联起来</span><br><span class="line">function SelfVue (data, el, exp) &#123;</span><br><span class="line">    var self &#x3D; this;</span><br><span class="line">    this.data &#x3D; data;</span><br><span class="line"> </span><br><span class="line">    Object.keys(data).forEach(function(key) &#123;</span><br><span class="line">        self.proxyKeys(key);  &#x2F;&#x2F; 绑定代理属性</span><br><span class="line">    &#125;);</span><br><span class="line"> </span><br><span class="line">    observe(data); &#x2F;&#x2F; 监听器-观察者</span><br><span class="line">    el.innerHTML &#x3D; this.data[exp];  &#x2F;&#x2F; 初始化模板数据的值</span><br><span class="line">    &#x2F;&#x2F; 初始化订阅者-将自己添加到订阅器的操作</span><br><span class="line">    new Watcher(this, exp, function (value) &#123;</span><br><span class="line">        el.innerHTML &#x3D; value;</span><br><span class="line">    &#125;);</span><br><span class="line">    return this;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 在new SelfVue的时候做一个代理处理，让访问selfVue的属性代理为访问selfVue.data的属性</span><br><span class="line">SelfVue.prototype &#x3D; &#123;</span><br><span class="line">    proxyKeys: function (key) &#123;</span><br><span class="line">        var self &#x3D; this;</span><br><span class="line">        Object.defineProperty(this, key, &#123;</span><br><span class="line">            enumerable: false,</span><br><span class="line">            configurable: true,</span><br><span class="line">            get: function proxyGetter() &#123;</span><br><span class="line">                return self.data[key];</span><br><span class="line">            &#125;,</span><br><span class="line">            set: function proxySetter(newVal) &#123;</span><br><span class="line">                self.data[key] &#x3D; newVal;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">var library &#x3D; &#123;</span><br><span class="line">    book1: &#123;</span><br><span class="line">        name: &#39;&#39;</span><br><span class="line">    &#125;,</span><br><span class="line">    book2: &#39;&#39;</span><br><span class="line">&#125;;</span><br><span class="line">observe(library);</span><br><span class="line">library.book1.name &#x3D; &#39;vue权威指南&#39;; &#x2F;&#x2F; 属性name已经被监听了，现在值为：“vue权威指南”</span><br><span class="line">library.book2 &#x3D; &#39;没有此书籍&#39;;  &#x2F;&#x2F; 属性book2已经被监听了，现在值为：“没有此书籍”</span><br></pre></td></tr></table></figure>
+<p>简单实现（不带DOM节点解析）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h1 id&#x3D;&quot;name&quot;&gt;&#123;&#123;name&#125;&#125;&lt;&#x2F;h1&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;script src&#x3D;&quot;js&#x2F;observer.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;script src&#x3D;&quot;js&#x2F;watcher.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;script src&#x3D;&quot;js&#x2F;index.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;script type&#x3D;&quot;text&#x2F;javascript&quot;&gt;</span><br><span class="line">    var ele &#x3D; document.querySelector(&#39;#name&#39;);</span><br><span class="line">    var selfVue &#x3D; new SelfVue(&#123;</span><br><span class="line">        name: &#39;hello world&#39;</span><br><span class="line">    &#125;, ele, &#39;name&#39;);</span><br><span class="line"> </span><br><span class="line">    window.setTimeout(function () &#123;</span><br><span class="line">        console.log(&#39;name值改变了&#39;);</span><br><span class="line">        selfVue.data.name &#x3D; &#39;canfoo&#39;;</span><br><span class="line">    &#125;, 2000);</span><br><span class="line"> </span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Compile解析器的实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p>此文详解来源于此博客[<a target="_blank" rel="noopener" href="https://www.cnblogs.com/canfoo/p/6891868.html]">https://www.cnblogs.com/canfoo/p/6891868.html]</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -850,89 +1030,9 @@ axios 源码里所用到的，利用 promise 本身的链式调用来实现串�
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/31/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/31/hello-world/" class="post-title-link" itemprop="url">Hello World-222</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-03-31 16:07:40" itemprop="dateCreated datePublished" datetime="2021-03-31T16:07:40+08:00">2021-03-31</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-01 10:00:53" itemprop="dateModified" datetime="2021-04-01T10:00:53+08:00">2021-04-01</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start-快速启动"><a href="#Quick-Start-快速启动" class="headerlink" title="Quick Start 快速启动"></a>Quick Start 快速启动</h2><h3 id="Create-a-new-post-创建一个新的帖子"><a href="#Create-a-new-post-创建一个新的帖子" class="headerlink" title="Create a new post 创建一个新的帖子"></a>Create a new post 创建一个新的帖子</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server-运行服务器"><a href="#Run-server-运行服务器" class="headerlink" title="Run server 运行服务器"></a>Run server 运行服务器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files-生成静态文件"><a href="#Generate-static-files-生成静态文件" class="headerlink" title="Generate static files 生成静态文件"></a>Generate static files 生成静态文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites-部署到远程站点"><a href="#Deploy-to-remote-sites-部署到远程站点" class="headerlink" title="Deploy to remote sites 部署到远程站点"></a>Deploy to remote sites 部署到远程站点</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-<h3 id="上传到远程服务器的步骤"><a href="#上传到远程服务器的步骤" class="headerlink" title="上传到远程服务器的步骤"></a>上传到远程服务器的步骤</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean // 清除缓存文件 (db.json) 和已生成的静态文件 (public)</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
 
 
 <script>

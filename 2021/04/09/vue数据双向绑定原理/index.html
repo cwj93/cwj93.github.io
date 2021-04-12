@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="vue数据双向绑定原理vue数据双向绑定主要是依赖于Object.defineProperty( )来做数据劫持。  数据双向绑定即是视图变化更新数据，数据变化更新视图。 视图变化更新数据，我们可以通过事件监听来实现，比如input标签的’input’事件。 数据变化如何更新视图 ? vue中是通过Object.defineProperty(obj, ‘keyName’, {})方法来实现，该方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue数据双向绑定原理">
+<meta property="og:url" content="http://example.com/2021/04/09/vue%E6%95%B0%E6%8D%AE%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="尘世幽梦的BLOG">
+<meta property="og:description" content="vue数据双向绑定原理vue数据双向绑定主要是依赖于Object.defineProperty( )来做数据劫持。  数据双向绑定即是视图变化更新数据，数据变化更新视图。 视图变化更新数据，我们可以通过事件监听来实现，比如input标签的’input’事件。 数据变化如何更新视图 ? vue中是通过Object.defineProperty(obj, ‘keyName’, {})方法来实现，该方法">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225032257-1498304708.png">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225238960-1133794938.png">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225458132-1434604303.png">
+<meta property="article:published_time" content="2021-04-09T08:17:16.000Z">
+<meta property="article:modified_time" content="2021-04-12T08:26:56.768Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225032257-1498304708.png">
+
+
+<link rel="canonical" href="http://example.com/2021/04/09/vue%E6%95%B0%E6%8D%AE%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+<title>vue数据双向绑定原理 | 尘世幽梦的BLOG</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">尘世幽梦的BLOG</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vue%E6%95%B0%E6%8D%AE%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">vue数据双向绑定原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Object-defineProperty"><span class="nav-number">1.1.</span> <span class="nav-text">Object.defineProperty( )</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/09/vue%E6%95%B0%E6%8D%AE%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          vue数据双向绑定原理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-09 16:17:16" itemprop="dateCreated datePublished" datetime="2021-04-09T16:17:16+08:00">2021-04-09</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-12 16:26:56" itemprop="dateModified" datetime="2021-04-12T16:26:56+08:00">2021-04-12</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="vue数据双向绑定原理"><a href="#vue数据双向绑定原理" class="headerlink" title="vue数据双向绑定原理"></a>vue数据双向绑定原理</h1><p>vue数据双向绑定主要是依赖于Object.defineProperty( )来做数据劫持。</p>
+<ul>
+<li>数据双向绑定即是视图变化更新数据，数据变化更新视图。</li>
+<li>视图变化更新数据，我们可以通过事件监听来实现，比如input标签的’input’事件。</li>
+<li>数据变化如何更新视图 ? vue中是通过Object.defineProperty(obj, ‘keyName’, {})方法来实现，该方法具有get/set方法，var o = obj[‘keyName’]会触发get()方法，返回处理后的值。obj[‘keyName’] = ‘赋值’，会触发set方法赋值。</li>
+<li>那么vue中就是通过Object.defineProperty()方法来劫持data属性的，遍历data对象中的所有属性，对其属性进行劫持，然后在对应的get()方法中，判断是否需要监听该属性，需要就将其添加到订阅器中，，在对应的set()方法中，如果数据发生变化，那就去通过订阅者，订阅者就会执行对应的更新的函数（所有订阅者都会更新）。</li>
+</ul>
+<h2 id="Object-defineProperty"><a href="#Object-defineProperty" class="headerlink" title="Object.defineProperty( )"></a>Object.defineProperty( )</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var Book &#x3D; &#123;&#125;</span><br><span class="line">var name &#x3D; &#39;&#39;;</span><br><span class="line">Object.defineProperty(Book, &#39;name&#39;, &#123;</span><br><span class="line">  set: function (value) &#123;</span><br><span class="line">    name &#x3D; value;</span><br><span class="line">    console.log(&#39;你取了一个书名叫做&#39; + value);</span><br><span class="line">  &#125;,</span><br><span class="line">  get: function () &#123;</span><br><span class="line">    return &#39;《&#39; + name + &#39;》&#39;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"> </span><br><span class="line">Book.name &#x3D; &#39;vue权威指南&#39;;  &#x2F;&#x2F; 你取了一个书名叫做vue权威指南</span><br><span class="line">console.log(Book.name);  &#x2F;&#x2F; 《vue权威指南》</span><br></pre></td></tr></table></figure>
+<p>我们通过Object.defineProperty( )设置了对象Book的name属性，对其get和set进行重写操作，顾名思义，get就是在读取name属性这个值触发的函数，set就是在设置name属性这个值触发的函数，所以当执行 Book.name = ‘vue权威指南’ 这个语句时，控制台会打印出 “你取了一个书名叫做vue权威指南”，紧接着，当读取这个属性时，就会输出 “《vue权威指南》”，因为我们在get函数里面对该值做了加工了。如果这个时候我们执行下下面的语句，控制台会输出什么？</p>
+<p>我们先从Vue 构造函数出发，把vue的执行思路过一遍</p>
+<ol>
+<li><p>vue初始化对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var vm &#x3D; new Vue(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    obj: &#123;</span><br><span class="line">      a: &#39;1&#39;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  created: function() &#123;</span><br><span class="line">    console.log(this.obj);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p><img src="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225032257-1498304708.png" alt="结果"></p>
+</li>
+<li><p>对比一下Object.defineProperty数据劫持一个对象，看看输出什么</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var Book &#x3D; &#123;&#125;</span><br><span class="line">var name &#x3D; &#39;&#39;;</span><br><span class="line">Object.defineProperty(Book, &#39;name&#39;, &#123;</span><br><span class="line">  set: function (value) &#123;</span><br><span class="line">    name &#x3D; value;</span><br><span class="line">    console.log(&#39;你取了一个书名叫做&#39; + value);</span><br><span class="line">  &#125;,</span><br><span class="line">  get: function () &#123;</span><br><span class="line">    return &#39;《&#39; + name + &#39;》&#39;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"> </span><br><span class="line">Book.name &#x3D; &#39;vue权威指南&#39;;  &#x2F;&#x2F; 你取了一个书名叫做vue权威指南</span><br><span class="line">console.log(Book.name);  &#x2F;&#x2F; 《vue权威指南》</span><br></pre></td></tr></table></figure>
+<p><img src="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225238960-1133794938.png"></p>
+</li>
+<li><p>实现mvvm主要包含两个方面，数据变化更新视图，视图变化更新数据：</p>
+</li>
+</ol>
+<p>实现数据的双向绑定：</p>
+<ol>
+<li><p>实现一个监听器Observer，用来劫持并监听所有属性，如果有变动的，就通知订阅者。</p>
+</li>
+<li><p>实现一个订阅者Watcher，可以收到属性的变化通知并执行相应的函数，从而更新视图。</p>
+</li>
+<li><p>实现一个解析器Compile，可以扫描和解析每个节点的相关指令，并根据初始化模板数据以及初始化相应的订阅器。<br><img src="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225458132-1434604303.png"></p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line">function defineReactive(data, key, val) &#123;</span><br><span class="line">    observe(val); &#x2F;&#x2F; 递归遍历所有子属性</span><br><span class="line">    var dep &#x3D; new Dep(); </span><br><span class="line">    Object.defineProperty(data, key, &#123;</span><br><span class="line">        enumerable: true,</span><br><span class="line">        configurable: true,</span><br><span class="line">        get: function() &#123;</span><br><span class="line">            if (Dep.target) &#123;.  &#x2F;&#x2F; 判断是否需要添加订阅者</span><br><span class="line">                dep.addSub(Dep.target); &#x2F;&#x2F; 在这里添加一个订阅者</span><br><span class="line">            &#125;</span><br><span class="line">            return val;</span><br><span class="line">        &#125;,</span><br><span class="line">        set: function(newVal) &#123;</span><br><span class="line">            if (val &#x3D;&#x3D;&#x3D; newVal) &#123;</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line">            val &#x3D; newVal;</span><br><span class="line">            console.log(&#39;属性&#39; + key + &#39;已经被监听了，现在值为：“&#39; + newVal.toString() + &#39;”&#39;);</span><br><span class="line">            dep.notify(); &#x2F;&#x2F; 如果数据变化，通知所有订阅者</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line">Dep.target &#x3D; null;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 订阅器-负责收集订阅者-在属性变化的时候执行对应订阅者的更新函数</span><br><span class="line">function Dep () &#123;</span><br><span class="line">    this.subs &#x3D; [];</span><br><span class="line">&#125;</span><br><span class="line">Dep.prototype &#x3D; &#123;</span><br><span class="line">    addSub: function(sub) &#123;</span><br><span class="line">        this.subs.push(sub);</span><br><span class="line">    &#125;,</span><br><span class="line">    notify: function() &#123;</span><br><span class="line">        this.subs.forEach(function(sub) &#123;</span><br><span class="line">            sub.update();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 监听器-观察者</span><br><span class="line">function observe(data) &#123;</span><br><span class="line">    if (!data || typeof data !&#x3D;&#x3D; &#39;object&#39;) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    Object.keys(data).forEach(function(key) &#123;</span><br><span class="line">        defineReactive(data, key, data[key]);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br><span class="line">&#x2F;&#x2F; 订阅者</span><br><span class="line">function Watcher(vm, exp, cb) &#123;</span><br><span class="line">    this.cb &#x3D; cb;</span><br><span class="line">    this.vm &#x3D; vm;</span><br><span class="line">    this.exp &#x3D; exp;</span><br><span class="line">    this.value &#x3D; this.get();  &#x2F;&#x2F; 将自己添加到订阅器的操作</span><br><span class="line">&#125;</span><br><span class="line">Watcher.prototype &#x3D; &#123;</span><br><span class="line">    update: function() &#123;</span><br><span class="line">        this.run();</span><br><span class="line">    &#125;,</span><br><span class="line">    run: function() &#123;</span><br><span class="line">        var value &#x3D; this.vm.data[this.exp];</span><br><span class="line">        var oldVal &#x3D; this.value;</span><br><span class="line">        if (value !&#x3D;&#x3D; oldVal) &#123;</span><br><span class="line">            this.value &#x3D; value;</span><br><span class="line">            this.cb.call(this.vm, value, oldVal);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    get: function() &#123;</span><br><span class="line">        Dep.target &#x3D; this;  &#x2F;&#x2F; 缓存自己</span><br><span class="line">        var value &#x3D; this.vm.data[this.exp]  &#x2F;&#x2F; 强制执行监听器里的get函数</span><br><span class="line">        Dep.target &#x3D; null;  &#x2F;&#x2F; 释放自己</span><br><span class="line">        return value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 构造函数-将Observer和Watcher关联起来</span><br><span class="line">function SelfVue (data, el, exp) &#123;</span><br><span class="line">    var self &#x3D; this;</span><br><span class="line">    this.data &#x3D; data;</span><br><span class="line"> </span><br><span class="line">    Object.keys(data).forEach(function(key) &#123;</span><br><span class="line">        self.proxyKeys(key);  &#x2F;&#x2F; 绑定代理属性</span><br><span class="line">    &#125;);</span><br><span class="line"> </span><br><span class="line">    observe(data); &#x2F;&#x2F; 监听器-观察者</span><br><span class="line">    el.innerHTML &#x3D; this.data[exp];  &#x2F;&#x2F; 初始化模板数据的值</span><br><span class="line">    &#x2F;&#x2F; 初始化订阅者-将自己添加到订阅器的操作</span><br><span class="line">    new Watcher(this, exp, function (value) &#123;</span><br><span class="line">        el.innerHTML &#x3D; value;</span><br><span class="line">    &#125;);</span><br><span class="line">    return this;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 在new SelfVue的时候做一个代理处理，让访问selfVue的属性代理为访问selfVue.data的属性</span><br><span class="line">SelfVue.prototype &#x3D; &#123;</span><br><span class="line">    proxyKeys: function (key) &#123;</span><br><span class="line">        var self &#x3D; this;</span><br><span class="line">        Object.defineProperty(this, key, &#123;</span><br><span class="line">            enumerable: false,</span><br><span class="line">            configurable: true,</span><br><span class="line">            get: function proxyGetter() &#123;</span><br><span class="line">                return self.data[key];</span><br><span class="line">            &#125;,</span><br><span class="line">            set: function proxySetter(newVal) &#123;</span><br><span class="line">                self.data[key] &#x3D; newVal;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">var library &#x3D; &#123;</span><br><span class="line">    book1: &#123;</span><br><span class="line">        name: &#39;&#39;</span><br><span class="line">    &#125;,</span><br><span class="line">    book2: &#39;&#39;</span><br><span class="line">&#125;;</span><br><span class="line">observe(library);</span><br><span class="line">library.book1.name &#x3D; &#39;vue权威指南&#39;; &#x2F;&#x2F; 属性name已经被监听了，现在值为：“vue权威指南”</span><br><span class="line">library.book2 &#x3D; &#39;没有此书籍&#39;;  &#x2F;&#x2F; 属性book2已经被监听了，现在值为：“没有此书籍”</span><br></pre></td></tr></table></figure>
+<p>简单实现（不带DOM节点解析）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h1 id&#x3D;&quot;name&quot;&gt;&#123;&#123;name&#125;&#125;&lt;&#x2F;h1&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;script src&#x3D;&quot;js&#x2F;observer.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;script src&#x3D;&quot;js&#x2F;watcher.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;script src&#x3D;&quot;js&#x2F;index.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;script type&#x3D;&quot;text&#x2F;javascript&quot;&gt;</span><br><span class="line">    var ele &#x3D; document.querySelector(&#39;#name&#39;);</span><br><span class="line">    var selfVue &#x3D; new SelfVue(&#123;</span><br><span class="line">        name: &#39;hello world&#39;</span><br><span class="line">    &#125;, ele, &#39;name&#39;);</span><br><span class="line"> </span><br><span class="line">    window.setTimeout(function () &#123;</span><br><span class="line">        console.log(&#39;name值改变了&#39;);</span><br><span class="line">        selfVue.data.name &#x3D; &#39;canfoo&#39;;</span><br><span class="line">    &#125;, 2000);</span><br><span class="line"> </span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Compile解析器的实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p>此文详解来源于此博客[<a target="_blank" rel="noopener" href="https://www.cnblogs.com/canfoo/p/6891868.html]">https://www.cnblogs.com/canfoo/p/6891868.html]</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/04/08/%E9%97%AD%E5%8C%85/" rel="prev" title="闭包">
+                  <i class="fa fa-chevron-left"></i> 闭包
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/04/12/%E5%89%8D%E7%AB%AF%E6%9D%83%E9%99%90%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88/" rel="next" title="前端权限设计方案">
+                  前端权限设计方案 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
