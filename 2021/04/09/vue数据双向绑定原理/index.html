@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225238960-1133794938.png">
 <meta property="og:image" content="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225458132-1434604303.png">
 <meta property="article:published_time" content="2021-04-09T08:17:16.000Z">
-<meta property="article:modified_time" content="2021-04-12T08:26:56.768Z">
+<meta property="article:modified_time" content="2021-04-20T09:07:07.558Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225032257-1498304708.png">
@@ -151,7 +151,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vue%E6%95%B0%E6%8D%AE%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">vue数据双向绑定原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Object-defineProperty"><span class="nav-number">1.1.</span> <span class="nav-text">Object.defineProperty( )</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vue%E6%95%B0%E6%8D%AE%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">vue数据双向绑定原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81"><span class="nav-number">1.1.</span> <span class="nav-text">伪代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Object-defineProperty"><span class="nav-number">1.2.</span> <span class="nav-text">Object.defineProperty( )</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -164,7 +164,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -235,7 +235,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-12 16:26:56" itemprop="dateModified" datetime="2021-04-12T16:26:56+08:00">2021-04-12</time>
+        <time title="Modified: 2021-04-20 17:07:07" itemprop="dateModified" datetime="2021-04-20T17:07:07+08:00">2021-04-20</time>
       </span>
 
   
@@ -254,7 +254,10 @@
 <li>视图变化更新数据，我们可以通过事件监听来实现，比如input标签的’input’事件。</li>
 <li>数据变化如何更新视图 ? vue中是通过Object.defineProperty(obj, ‘keyName’, {})方法来实现，该方法具有get/set方法，var o = obj[‘keyName’]会触发get()方法，返回处理后的值。obj[‘keyName’] = ‘赋值’，会触发set方法赋值。</li>
 <li>那么vue中就是通过Object.defineProperty()方法来劫持data属性的，遍历data对象中的所有属性，对其属性进行劫持，然后在对应的get()方法中，判断是否需要监听该属性，需要就将其添加到订阅器中，，在对应的set()方法中，如果数据发生变化，那就去通过订阅者，订阅者就会执行对应的更新的函数（所有订阅者都会更新）。</li>
+<li>当对数据进行更新操作时，比如 obj.key = ‘new val’ 就会触发 setter 的拦截，从而检测新值和旧值是否相等，如果相等什么也不做，如果不相等，则更新值，然后由 dep 通知 watcher 进行更新。所以，异步更新 的入口点就是 setter 中最后调用的 dep.notify() 方法。</li>
 </ul>
+<h2 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">function selfVue(options) &#123;</span><br><span class="line">    var self &#x3D; this;</span><br><span class="line">    this.data &#x3D; options.data;</span><br><span class="line">    this.methods &#x3D; option.methods;</span><br><span class="line">    &#x2F;&#x2F; 在new SelfVue的时候做一个代理处理，让访问selfVue的属性代理为访问selfVue.data的属性</span><br><span class="line">    Object.keys(this.data).forEach(function(key) &#123;</span><br><span class="line">        self.proxyKeys(key);</span><br><span class="line">    &#125;);</span><br><span class="line">    &#x2F;&#x2F; 递归遍历所有属性，Object.defineProperty()监听所有属性</span><br><span class="line">    observe(this.data); </span><br><span class="line">    &#x2F;&#x2F; 1.解析模板指令，并替换模板数据，初始化视图。2将模板指令对应的节点绑定对应的更新函数，初始化相应的订阅器</span><br><span class="line">    &#x2F;&#x2F; 1.el.innerHTML &#x3D; this.data[exp];  &#x2F;&#x2F; 初始化模板数据的值</span><br><span class="line">    &#x2F;&#x2F; 2.new Watcher(this, exp, function (value) &#123;el.innerHTML &#x3D; value;&#125;);</span><br><span class="line">    new Compile(options.el, this);</span><br><span class="line">    &#x2F;&#x2F; 所有事情处理好后执行mounted函数</span><br><span class="line">    options.mounted.call(this); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h2 id="Object-defineProperty"><a href="#Object-defineProperty" class="headerlink" title="Object.defineProperty( )"></a>Object.defineProperty( )</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var Book &#x3D; &#123;&#125;</span><br><span class="line">var name &#x3D; &#39;&#39;;</span><br><span class="line">Object.defineProperty(Book, &#39;name&#39;, &#123;</span><br><span class="line">  set: function (value) &#123;</span><br><span class="line">    name &#x3D; value;</span><br><span class="line">    console.log(&#39;你取了一个书名叫做&#39; + value);</span><br><span class="line">  &#125;,</span><br><span class="line">  get: function () &#123;</span><br><span class="line">    return &#39;《&#39; + name + &#39;》&#39;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"> </span><br><span class="line">Book.name &#x3D; &#39;vue权威指南&#39;;  &#x2F;&#x2F; 你取了一个书名叫做vue权威指南</span><br><span class="line">console.log(Book.name);  &#x2F;&#x2F; 《vue权威指南》</span><br></pre></td></tr></table></figure>
 <p>我们通过Object.defineProperty( )设置了对象Book的name属性，对其get和set进行重写操作，顾名思义，get就是在读取name属性这个值触发的函数，set就是在设置name属性这个值触发的函数，所以当执行 Book.name = ‘vue权威指南’ 这个语句时，控制台会打印出 “你取了一个书名叫做vue权威指南”，紧接着，当读取这个属性时，就会输出 “《vue权威指南》”，因为我们在get函数里面对该值做了加工了。如果这个时候我们执行下下面的语句，控制台会输出什么？</p>
 <p>我们先从Vue 构造函数出发，把vue的执行思路过一遍</p>

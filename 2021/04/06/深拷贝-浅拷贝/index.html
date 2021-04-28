@@ -31,7 +31,7 @@
 <meta property="og:description" content="深拷贝的原理深复制—&gt;实现原理，先新建一个空对象，内存中新开辟一块地址，把被复制对象的所有可枚举的(注意可枚举的对象)属性方法一一复制过来，注意要用递归来复制子对象里面的所有属性和方法，直到子子…..属性为基本数据类型 浅拷贝的原理浅复制—&gt;就是将一个对象的内存地址的”编号”复制给另一个对象 深拷贝实现方法深拷贝-递归去复制所有层级属性123456789101112131415func">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-04-06T07:42:08.000Z">
-<meta property="article:modified_time" content="2021-04-06T07:58:34.539Z">
+<meta property="article:modified_time" content="2021-04-22T02:30:35.583Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
@@ -160,7 +160,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -223,10 +223,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-04-06 15:42:08 / Modified: 15:58:34" itemprop="dateCreated datePublished" datetime="2021-04-06T15:42:08+08:00">2021-04-06</time>
+      <time title="Created: 2021-04-06 15:42:08" itemprop="dateCreated datePublished" datetime="2021-04-06T15:42:08+08:00">2021-04-06</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-22 10:30:35" itemprop="dateModified" datetime="2021-04-22T10:30:35+08:00">2021-04-22</time>
+      </span>
 
   
 </div>
@@ -241,6 +247,7 @@
         <h2 id="深拷贝的原理"><a href="#深拷贝的原理" class="headerlink" title="深拷贝的原理"></a>深拷贝的原理</h2><p>深复制—&gt;实现原理，先新建一个空对象，内存中新开辟一块地址，把被复制对象的所有可枚举的(注意可枚举的对象)属性方法一一复制过来，注意要用递归来复制子对象里面的所有属性和方法，直到子子…..属性为基本数据类型</p>
 <h2 id="浅拷贝的原理"><a href="#浅拷贝的原理" class="headerlink" title="浅拷贝的原理"></a>浅拷贝的原理</h2><p>浅复制—&gt;就是将一个对象的内存地址的”编号”复制给另一个对象</p>
 <h2 id="深拷贝实现方法"><a href="#深拷贝实现方法" class="headerlink" title="深拷贝实现方法"></a>深拷贝实现方法</h2><h3 id="深拷贝-递归去复制所有层级属性"><a href="#深拷贝-递归去复制所有层级属性" class="headerlink" title="深拷贝-递归去复制所有层级属性"></a>深拷贝-递归去复制所有层级属性</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">function deepClone(obj)&#123;</span><br><span class="line">  let objClone &#x3D; Array.isArray(obj)?[]:&#123;&#125;;    </span><br><span class="line">  if(obj &amp;&amp; typeof obj&#x3D;&#x3D;&#x3D;&quot;object&quot;)&#123;</span><br><span class="line">    for(key in obj)&#123;</span><br><span class="line">      if(obj.hasOwnProperty(key))&#123;  &#x2F;&#x2F; 判断对象是否包含特定的自身（非继承）属性，返回一个布尔值</span><br><span class="line">        if(obj[key]&amp;&amp;typeof obj[key] &#x3D;&#x3D;&#x3D;&quot;object&quot;)&#123; &#x2F;&#x2F;判断ojb子元素是否为对象，如果是，递归复制</span><br><span class="line">          objClone[key] &#x3D; deepClone(obj[key]);</span><br><span class="line">        &#125;else&#123; &#x2F;&#x2F;如果不是，简单复制</span><br><span class="line">          objClone[key] &#x3D; obj[key];</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;    </span><br><span class="line">  return objClone;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function deepCopy(s) &#123;</span><br><span class="line">    const d &#x3D; &#123;&#125;</span><br><span class="line">    for (let k in s) &#123;</span><br><span class="line">        if (typeof s[k] &#x3D;&#x3D; &#39;object&#39;) &#123;</span><br><span class="line">            d[k] &#x3D; deepCopy(s[k])</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            d[k] &#x3D; s[k]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return d</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h3 id="深拷贝-JSON对象的parse和stringify"><a href="#深拷贝-JSON对象的parse和stringify" class="headerlink" title="深拷贝-JSON对象的parse和stringify"></a>深拷贝-JSON对象的parse和stringify</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JSON.parse(JSON.stringify(obj))</span><br></pre></td></tr></table></figure>
 

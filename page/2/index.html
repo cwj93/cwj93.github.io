@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -185,6 +185,598 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/07/%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/07/%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/" class="post-title-link" itemprop="url">面试题汇总</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-07 10:30:03" itemprop="dateCreated datePublished" datetime="2021-04-07T10:30:03+08:00">2021-04-07</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-25 08:54:27" itemprop="dateModified" datetime="2021-04-25T08:54:27+08:00">2021-04-25</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="面试题汇总"><a href="#面试题汇总" class="headerlink" title="面试题汇总"></a>面试题汇总</h1><p>今日偶然在掘金中看到了一篇关于面试题的文章，里面的题目非常经典，能够考察到的知识点非常丰富，有利于我们查漏补缺。我在此做个记录，便于自己日后方便查找。此处放一个文章作者的github地址[<a target="_blank" rel="noopener" href="https://github.com/Advanced-Frontend/Daily-Interview-Question]%E3%80%82%E9%82%A3%E4%B9%88%E5%B0%B1%E8%AE%A9%E6%88%91%E4%BB%AC%E4%B8%80%E8%B5%B7%E6%9D%A5%E6%84%89%E5%BF%AB%E5%9C%B0%E5%81%9A%E9%A2%98%E5%90%A7%E3%80%82%E3%80%82%E3%80%82">https://github.com/Advanced-Frontend/Daily-Interview-Question]。那么就让我们一起来愉快地做题吧。。。</a></p>
+<h2 id="第-162-题：实现对象的-Map-函数类似-Array-prototype-map"><a href="#第-162-题：实现对象的-Map-函数类似-Array-prototype-map" class="headerlink" title="第 162 题：实现对象的 Map 函数类似 Array.prototype.map"></a>第 162 题：实现对象的 Map 函数类似 Array.prototype.map</h2><p>  实现思路：<br>    + 首先，要求实现对象Map，那么就需要先搞清楚Array.prototype.map的内部实现逻辑<br>      + array.map(function(currentValue,index,arr), thisValue)<br>      + Array.prototype.map是返回一个新的数组<br>      + Array.prototype.map有两个参数，第一个参数是回调函数有三个参数value, index, arr，第二个参数是对象作为该执行回调时使用，传递给函数，用作 “this” 的值。如果省略了 thisValue，或者传入 null、undefined，那么回调函数的 this 为全局对象</p>
+<p>  Array.prototype.map的实现：<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; callbackFn--回调函数，thisArg--this指向，默认不传为全局对象</span><br><span class="line">Array.prototype.map &#x3D; function (callbackFn, thisArg) &#123;</span><br><span class="line">  let arr &#x3D; [];</span><br><span class="line">  const _me &#x3D; this;</span><br><span class="line">  const _context &#x3D; thisArg ? thisArg : _me; &#x2F;&#x2F; 定义上下文对象</span><br><span class="line">  let curArr &#x3D; Object(_me); &#x2F;&#x2F; 获取调用map方法的数组</span><br><span class="line">  if(typeof callbackFn !&#x3D; &#39;function&#39;) &#123;</span><br><span class="line">    throw new TypeError(&#96;$&#123;callbackFn&#125; is no function&#96;);</span><br><span class="line">  &#125;</span><br><span class="line">  curArr.forEach((item, index) &#x3D;&gt; &#123;</span><br><span class="line">    arr.push(callbackFn.call(_context, item, index, curArr)) &#x2F;&#x2F; 将回调结果放入数组中</span><br><span class="line">  &#125;)</span><br><span class="line">  return arr; &#x2F;&#x2F; 返回map后的数组</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>  对象的 Map 函数的实现<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">function Map(callback, thisValue) &#123;</span><br><span class="line">  let _this &#x3D; this;</span><br><span class="line">  let _obj &#x3D; &#123;&#125;;</span><br><span class="line">  let curObj &#x3D; Object(this); &#x2F;&#x2F; 获取调用Map方法的对象</span><br><span class="line">  &#x2F;&#x2F;如果callback不是函数,则抛出TypeError异常.  </span><br><span class="line">  &#x2F;&#x2F;Object.prototype.toString.call(callback) !&#x3D; &quot;[object Function]&quot;</span><br><span class="line">  if(typeof callback !&#x3D; &#39;function&#39;) &#123;</span><br><span class="line">    throw new TypeError(callback + &quot; is not a function&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  if(thisValue) &#123;</span><br><span class="line">    _this &#x3D; thisValue</span><br><span class="line">  &#125;</span><br><span class="line">  for(let key in curObj)&#123;</span><br><span class="line">    &#x2F;&#x2F; 判断当前属性是否属于当前对象，若不加这层判断的话，该循环会将Map本身也遍历进去</span><br><span class="line">    if(curObj.hasOwnProperty(key)) &#123;</span><br><span class="line">      &#x2F;&#x2F; 三个参数：curObj[key]-当前key对应的值，key-当前的key，curObj-原对象</span><br><span class="line">      _obj[key] &#x3D; callback.call(_this, curObj[key], key, curObj)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return _obj</span><br><span class="line">&#125;</span><br><span class="line">Object.prototype.Map &#x3D; Map; &#x2F;&#x2F; 挂载到对象原型上</span><br><span class="line">var a &#x3D; &#123;&#39;name&#39;: &#39;cwj&#39;,&#39;age&#39;: 18, &#39;sex&#39;: &#39;男&#39;&#125;</span><br><span class="line">var o &#x3D; a.Map(function(value,key,obj)&#123;</span><br><span class="line">  return value + &#39;11&#39;</span><br><span class="line">&#125;)</span><br><span class="line">console.log(a) &#x2F;&#x2F; &#123;name: &quot;cwj&quot;, age: 18, sex: &quot;男&quot;&#125;</span><br><span class="line">console.log(o) &#x2F;&#x2F; &#123;name: &quot;cwj11&quot;, age: &quot;1811&quot;, sex: &quot;男11&quot;&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="第161题-用最精炼的代码实现数组非零非负最小值-index"><a href="#第161题-用最精炼的代码实现数组非零非负最小值-index" class="headerlink" title="第161题 用最精炼的代码实现数组非零非负最小值 index"></a>第161题 用最精炼的代码实现数组非零非负最小值 index</h2>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 例如：[10,21,0,-7,35,7,9,23,18] 输出 5, 7 最小</span><br><span class="line">function getIndex(arr)&#123;</span><br><span class="line">      let index&#x3D;null;</span><br><span class="line">      ...</span><br><span class="line">      return index;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  实现：</p>
+<ul>
+<li>首先，仔细阅读题目要求，要求的是非零非负，那么就可以用大于0(&gt; 0)表示</li>
+<li>其次，要求是最小值，那么我们就应该想到直接使用Math.min()方法,要注意min()方法的参数不是数组哈，需要将数组解构</li>
+<li>接着，要求输出的是最小值的索引值index，那么数组有一个方法是可以返回数组中元素所在的索引findIndex(). </li>
+</ul>
+<p>  此处可以扩展一下find()和findIndex()方法的比较</p>
+<ul>
+<li>find()–find()函数用来查找目标元素，找到就返回该元素，找不到返回undefined</li>
+<li>findIndex()–findIndex()函数也是查找目标元素，找到就返回元素的位置，找不到就返回-1</li>
+<li>都是查找回调函数,都含有三个参数，<ul>
+<li>value–每一次迭代查找的数组元素</li>
+<li>index–每一次迭代查找的数组元素索引</li>
+<li>arr–被查找的数组</li>
+</ul>
+</li>
+<li>语法<ul>
+<li>[1,2,3,4].find((value, index, arr) =&gt; { return value &gt; 1}) // 2</li>
+<li>[1,2,3,4].findIndex((value, index, arr) =&gt; { return value &gt; 1}) // 1</li>
+</ul>
+</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function getIndex(arr)&#123;</span><br><span class="line">      let index&#x3D;null;</span><br><span class="line">      &#x2F;&#x2F; 此处是实现代码开始</span><br><span class="line">      let newArr &#x3D; arr.filter(v &#x3D;&gt; v &gt; 0)</span><br><span class="line">      index &#x3D; arr.findIndex(i &#x3D;&gt; i &#x3D;&#x3D; Math.min(...newArr))</span><br><span class="line">      &#x2F;&#x2F; 此处是实现代码结束</span><br><span class="line">      return index;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="第-160-题：输出以下代码运行结果，为什么？如果希望每隔-1s-输出一个结果，应该如何改造？注意不可改动-square-方法"><a href="#第-160-题：输出以下代码运行结果，为什么？如果希望每隔-1s-输出一个结果，应该如何改造？注意不可改动-square-方法" class="headerlink" title="第 160 题：输出以下代码运行结果，为什么？如果希望每隔 1s 输出一个结果，应该如何改造？注意不可改动 square 方法"></a>第 160 题：输出以下代码运行结果，为什么？如果希望每隔 1s 输出一个结果，应该如何改造？注意不可改动 square 方法</h2>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">const list &#x3D; [1, 2, 3]</span><br><span class="line">const square &#x3D; num &#x3D;&gt; &#123;</span><br><span class="line">  return new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">    setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">      resolve(num * num)</span><br><span class="line">    &#125;, 1000)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function test() &#123;</span><br><span class="line">  list.forEach(async x&#x3D;&gt; &#123;</span><br><span class="line">    const res &#x3D; await square(x)</span><br><span class="line">    console.log(res)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line">test()</span><br></pre></td></tr></table></figure>
+
+<p>  实现：forEach是不能阻塞的，默认是请求并行发起，所以是同时输出1、4、9</p>
+<ul>
+<li>forEach是不能阻塞的，默认是请求并行发起</li>
+</ul>
+<p>  扩展：</p>
+<ul>
+<li>数组的其他常用循环方法<ul>
+<li>forEach()–不能终止循环(无法使用break语句或者return语句终止)，forEach方法对数组的每个元素执行一次提供的函数，forEach循环里不能有break或continue， 会产生报错 callback可以使用return但return的结果没有作用，只是提前结束函数运行，也就是calback总是返回undefined forEach返回值undefined</li>
+<li>for of–for…of语句在可迭代对象上创建一个迭代循环，执行语句; 和for循环一样，会等待await执行完后继续执行</li>
+<li>forEach和map,await不生效；使用break或continue会报错</li>
+<li>for循环、for…in,for…of，支持await，for和for…of中可以使用break和continue；for…in会忽略continue和break<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">async function test() &#123;</span><br><span class="line">  for (let i &#x3D; 0; i &lt; list.length; i++) &#123;</span><br><span class="line">    let x &#x3D; list[i]</span><br><span class="line">    const res &#x3D; await square(x)</span><br><span class="line">    console.log(res)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+for of 语法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">async function test() &#123;</span><br><span class="line">  for (let x of list) &#123;</span><br><span class="line">    const res &#x3D; await square(x)</span><br><span class="line">    console.log(res)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+axios 源码里所用到的，利用 promise 本身的链式调用来实现串行<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let promise &#x3D; Promise.resolve()</span><br><span class="line">function test(i &#x3D; 0) &#123;</span><br><span class="line">  if (i &#x3D;&#x3D;&#x3D; list.length) return</span><br><span class="line">  promise &#x3D; promise.then(() &#x3D;&gt; square(list[i]))</span><br><span class="line">  test(i + 1)</span><br><span class="line">&#125;</span><br><span class="line">test()</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="第-159-题：实现-Promise-retry，成功后-resolve-结果，失败后重试，尝试超过一定次数才真正的-reject"><a href="#第-159-题：实现-Promise-retry，成功后-resolve-结果，失败后重试，尝试超过一定次数才真正的-reject" class="headerlink" title="第 159 题：实现 Promise.retry，成功后 resolve 结果，失败后重试，尝试超过一定次数才真正的 reject"></a>第 159 题：实现 Promise.retry，成功后 resolve 结果，失败后重试，尝试超过一定次数才真正的 reject</h2><p>  实现：</p>
+<ul>
+<li>首先，了解题目需求，理解retry函数有哪些参数，接收一个函数fn，然后还有一个次数参数num</li>
+<li>接着，内部返回一个Promise实例对象，题目要求一定次数内失败循环请求，所以用while来实现循环，用try/catch来抛出异常<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Promise.retry &#x3D; function(fn, num &#x3D; 3) &#123;</span><br><span class="line">  return new Promise(async (resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">    while(num &gt; 0)&#123;</span><br><span class="line">      try &#123;</span><br><span class="line">        var res &#x3D; await fn();</span><br><span class="line">        resolve(res);</span><br><span class="line">        break;</span><br><span class="line">      &#125;catch &#123;</span><br><span class="line">        if (!num) reject(error); &#x2F;&#x2F; !0 &#x3D;&#x3D; true   !-1 &#x3D;&#x3D; false !1 &#x3D;&#x3D; false</span><br><span class="line">      &#125;</span><br><span class="line">      num--</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="第-158-题：如何模拟实现-Array-prototype-splice"><a href="#第-158-题：如何模拟实现-Array-prototype-splice" class="headerlink" title="第 158 题：如何模拟实现 Array.prototype.splice"></a>第 158 题：如何模拟实现 Array.prototype.splice</h2><p>  实现：</p>
+<ul>
+<li>首先，要了解原生splice的定义,splice() 方法向/从数组中添加/删除项目，然后返回被删除的项目。</li>
+<li>接着，了解其语法，arrayObject.splice(index,howmany,item1,…..,itemX)<ul>
+<li>index - 必需。整数，规定添加/删除项目的位置，使用负数可从数组结尾处规定位置。</li>
+<li>howmany - 必需。要删除的项目数量。如果设置为 0，则不会删除项目。</li>
+<li>item1, …, itemX - 可选。向数组添加的新项目。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Array.prototype._splice &#x3D; function (start, deleteCount, ...addList) &#123;</span><br><span class="line">  if (start &lt; 0) &#123;</span><br><span class="line">    if (Math.abs(start) &gt; this.length) &#123; &#x2F;&#x2F; Math.abs() - 将负数转化为正数</span><br><span class="line">      start &#x3D; 0</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      start +&#x3D; this.length &#x2F;&#x2F; 相当于 start &#x3D; this.length - |start|</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  if (typeof deleteCount &#x3D;&#x3D;&#x3D; &#39;undefined&#39;) &#123;</span><br><span class="line">    deleteCount &#x3D; this.length - start</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  const removeList &#x3D;  this.slice(start, start + deleteCount) &#x2F;&#x2F; 返回选择的新数组</span><br><span class="line"></span><br><span class="line">  const right &#x3D; this.slice(start + deleteCount)</span><br><span class="line"></span><br><span class="line">  let addIndex &#x3D; start</span><br><span class="line">  addList.concat(right).forEach(item &#x3D;&gt; &#123;</span><br><span class="line">      this[addIndex] &#x3D; item</span><br><span class="line">      addIndex++</span><br><span class="line">  &#125;)</span><br><span class="line">  this.length &#x3D; addIndex</span><br><span class="line"></span><br><span class="line">  return removeList</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="第-156-题：求最终-left、right-的宽度（变形）"><a href="#第-156-题：求最终-left、right-的宽度（变形）" class="headerlink" title="第 156 题：求最终 left、right 的宽度（变形）"></a>第 156 题：求最终 left、right 的宽度（变形）</h2>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;container&quot;&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;left&quot;&gt;&lt;&#x2F;div&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;right&quot;&gt;&lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">  * &#123;</span><br><span class="line">    padding: 0;</span><br><span class="line">    margin: 0;</span><br><span class="line">  &#125;</span><br><span class="line">  .container &#123;</span><br><span class="line">    width: 600px;</span><br><span class="line">    height: 300px;</span><br><span class="line">    display: flex;</span><br><span class="line">  &#125;</span><br><span class="line">  .left &#123;</span><br><span class="line">    flex: 1 2 300px;</span><br><span class="line">    background: red;</span><br><span class="line">  &#125;</span><br><span class="line">  .right &#123;</span><br><span class="line">    flex: 2 1 200px;</span><br><span class="line">    background: blue;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br></pre></td></tr></table></figure>
+<p>  实现：</p>
+<ul>
+<li>先了解该题目要考察的是什么。该题目考察的flex布局的知识点，考察对css的flex属性的了解</li>
+<li>flex: flex-grow flex-shrink flex-basis|auto|initial|inherit;<ul>
+<li>flex-grow: 一个数字，规定项目将相对于其他灵活的项目进行扩展的量</li>
+<li>flex-shrink: 一个数字，规定项目将相对于其他灵活的项目进行收缩的量</li>
+<li>flex-basis:    项目的长度。合法值：”auto”、”inherit” 或一个后跟 “%”、”px”、”em” 或任何其他长度单位的数字</li>
+<li>auto:    与 1 1 auto 相同。</li>
+<li>none:    与 0 0 auto 相同。</li>
+<li>initial:    设置该属性为它的默认值，即为 0 1 auto。请参阅 initial。</li>
+<li>inherit:    从父元素继承该属性。请参阅 inherit。</li>
+</ul>
+</li>
+<li>在flex-basis设置了具体的长度之后，当flex-basis的总和未撑满容器时，执行的是flex-grow，反之执行flex-shrink</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/06/%E6%B7%B1%E6%8B%B7%E8%B4%9D-%E6%B5%85%E6%8B%B7%E8%B4%9D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/06/%E6%B7%B1%E6%8B%B7%E8%B4%9D-%E6%B5%85%E6%8B%B7%E8%B4%9D/" class="post-title-link" itemprop="url">深拷贝&&浅拷贝</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-06 15:42:08" itemprop="dateCreated datePublished" datetime="2021-04-06T15:42:08+08:00">2021-04-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-22 10:30:35" itemprop="dateModified" datetime="2021-04-22T10:30:35+08:00">2021-04-22</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="深拷贝的原理"><a href="#深拷贝的原理" class="headerlink" title="深拷贝的原理"></a>深拷贝的原理</h2><p>深复制—&gt;实现原理，先新建一个空对象，内存中新开辟一块地址，把被复制对象的所有可枚举的(注意可枚举的对象)属性方法一一复制过来，注意要用递归来复制子对象里面的所有属性和方法，直到子子…..属性为基本数据类型</p>
+<h2 id="浅拷贝的原理"><a href="#浅拷贝的原理" class="headerlink" title="浅拷贝的原理"></a>浅拷贝的原理</h2><p>浅复制—&gt;就是将一个对象的内存地址的”编号”复制给另一个对象</p>
+<h2 id="深拷贝实现方法"><a href="#深拷贝实现方法" class="headerlink" title="深拷贝实现方法"></a>深拷贝实现方法</h2><h3 id="深拷贝-递归去复制所有层级属性"><a href="#深拷贝-递归去复制所有层级属性" class="headerlink" title="深拷贝-递归去复制所有层级属性"></a>深拷贝-递归去复制所有层级属性</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">function deepClone(obj)&#123;</span><br><span class="line">  let objClone &#x3D; Array.isArray(obj)?[]:&#123;&#125;;    </span><br><span class="line">  if(obj &amp;&amp; typeof obj&#x3D;&#x3D;&#x3D;&quot;object&quot;)&#123;</span><br><span class="line">    for(key in obj)&#123;</span><br><span class="line">      if(obj.hasOwnProperty(key))&#123;  &#x2F;&#x2F; 判断对象是否包含特定的自身（非继承）属性，返回一个布尔值</span><br><span class="line">        if(obj[key]&amp;&amp;typeof obj[key] &#x3D;&#x3D;&#x3D;&quot;object&quot;)&#123; &#x2F;&#x2F;判断ojb子元素是否为对象，如果是，递归复制</span><br><span class="line">          objClone[key] &#x3D; deepClone(obj[key]);</span><br><span class="line">        &#125;else&#123; &#x2F;&#x2F;如果不是，简单复制</span><br><span class="line">          objClone[key] &#x3D; obj[key];</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;    </span><br><span class="line">  return objClone;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function deepCopy(s) &#123;</span><br><span class="line">    const d &#x3D; &#123;&#125;</span><br><span class="line">    for (let k in s) &#123;</span><br><span class="line">        if (typeof s[k] &#x3D;&#x3D; &#39;object&#39;) &#123;</span><br><span class="line">            d[k] &#x3D; deepCopy(s[k])</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            d[k] &#x3D; s[k]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return d</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="深拷贝-JSON对象的parse和stringify"><a href="#深拷贝-JSON对象的parse和stringify" class="headerlink" title="深拷贝-JSON对象的parse和stringify"></a>深拷贝-JSON对象的parse和stringify</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JSON.parse(JSON.stringify(obj))</span><br></pre></td></tr></table></figure>
+
+<h3 id="深拷贝-…扩展符"><a href="#深拷贝-…扩展符" class="headerlink" title="深拷贝-…扩展符"></a>深拷贝-…扩展符</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let bb &#x3D; [1,2,&#123;w: &#39;1&#39;&#125;]</span><br><span class="line">let aa &#x3D; [...bb]</span><br><span class="line">aa[0] &#x3D; &#39;2&#39;</span><br><span class="line">&#x2F;&#x2F;bb[0] &#x3D; &#39;3&#39;</span><br><span class="line">console.log(bb) &#x2F;&#x2F; [1,2,&#123;w: &#39;1&#39;&#125;]</span><br><span class="line">console.log(aa) &#x2F;&#x2F; [&#39;&#39;,2,&#123;w: &#39;1&#39;&#125;]</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/06/Object-prototype-toString-call-%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/06/Object-prototype-toString-call-%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">Object.prototype.toString.call()的使用-判断对象类型</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-04-06 14:42:09 / Modified: 15:42:16" itemprop="dateCreated datePublished" datetime="2021-04-06T14:42:09+08:00">2021-04-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="Object-prototype-toString-call-的使用"><a href="#Object-prototype-toString-call-的使用" class="headerlink" title="Object.prototype.toString.call()的使用"></a>Object.prototype.toString.call()的使用</h3><p>在我们的日常开发中，时常会遇到需要做数据的类型做判断的，我们一般会使用typeof 来判断是哪一种类型的数据，但是对于对象的检测就不是那么准确了。用 typeof 是否能准确判断一个对象变量，答案是否定的，null 的结果也是 object，数组的结果也是 object。而Object.prototype.toString.call(obj)能够很好地处理这一类问题。Array 、Function等类型作为Object的实例，都重写了toString方法（Function类型返回内容为函数体的字符串，Array类型返回元素组成的字符串…..）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(Object.prototype.toString.call(obj) &#x3D;&#x3D;&#x3D; &quot;[object Object]&quot;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="obj-toString-的结果和Object-prototype-toString-call-obj-的结果不一样，这是为什么？"><a href="#obj-toString-的结果和Object-prototype-toString-call-obj-的结果不一样，这是为什么？" class="headerlink" title="obj.toString()的结果和Object.prototype.toString.call(obj)的结果不一样，这是为什么？"></a>obj.toString()的结果和Object.prototype.toString.call(obj)的结果不一样，这是为什么？</h3><p>这是因为toString为Object的原型方法，而Array 、Function等类型作为Object的实例，都重写了toString方法。不同的对象类型调用toString方法时，根据原型链的知识，调用的是对应的重写之后的toString方法（Function类型返回内容为函数体的字符串，Array类型返回元素组成的字符串…..），而不会去调用Object上原型toString方法（返回对象的具体类型），所以采用obj.toString()不能得到其对象类型，只能将obj转换为字符串类型；因此，在想要得到对象的具体类型时，应该调用Object上原型toString方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">console.log(Object.prototype.toString.call(&quot;jerry&quot;));&#x2F;&#x2F;[object String]</span><br><span class="line">console.log(Object.prototype.toString.call(12));&#x2F;&#x2F;[object Number]</span><br><span class="line">console.log(Object.prototype.toString.call(true));&#x2F;&#x2F;[object Boolean]</span><br><span class="line">console.log(Object.prototype.toString.call(undefined));&#x2F;&#x2F;[object Undefined]</span><br><span class="line">console.log(Object.prototype.toString.call(null));&#x2F;&#x2F;[object Null]</span><br><span class="line">console.log(Object.prototype.toString.call(&#123;name: &quot;jerry&quot;&#125;));&#x2F;&#x2F;[object Object]</span><br><span class="line">console.log(Object.prototype.toString.call(function()&#123;&#125;));&#x2F;&#x2F;[object Function]</span><br><span class="line">console.log(Object.prototype.toString.call([]));&#x2F;&#x2F;[object Array]</span><br><span class="line">console.log(Object.prototype.toString.call(new Date));&#x2F;&#x2F;[object Date]</span><br><span class="line">console.log(Object.prototype.toString.call(&#x2F;\d&#x2F;));&#x2F;&#x2F;[object RegExp]</span><br><span class="line">function Person()&#123;&#125;;</span><br><span class="line">console.log(Object.prototype.toString.call(new Person));&#x2F;&#x2F;[object Object]</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/02/%E6%95%B0%E7%BB%84%E5%8E%BB%E9%87%8D%E7%9A%84%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/02/%E6%95%B0%E7%BB%84%E5%8E%BB%E9%87%8D%E7%9A%84%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">数组去重的方法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-04-02 15:49:28 / Modified: 16:19:06" itemprop="dateCreated datePublished" datetime="2021-04-02T15:49:28+08:00">2021-04-02</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="数组去重"><a href="#数组去重" class="headerlink" title="数组去重"></a>数组去重</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>  没有前言，不知道说些什么，就这样吧，开始正文。</p>
+<h2 id="一：利用ES6-Set实现"><a href="#一：利用ES6-Set实现" class="headerlink" title="一：利用ES6 Set实现"></a>一：利用ES6 Set实现</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; new Set()的特性是所有元素唯一</span><br><span class="line">var arr &#x3D; [1, 2, 3, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;];</span><br><span class="line">console.log([...new Set(arr)]); &#x2F;&#x2F;  [1, 2, 3, &quot;a&quot;, &quot;b&quot;]</span><br></pre></td></tr></table></figure>
+
+<h2 id="二：利用filter"><a href="#二：利用filter" class="headerlink" title="二：利用filter"></a>二：利用filter</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var arr &#x3D; [1, 2, 3, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;];</span><br><span class="line">let filterArr &#x3D; arr.filter(function(item, index, arr) &#123;</span><br><span class="line">  &#x2F;&#x2F;当前元素，在原始数组中的第一个索引&#x3D;&#x3D;当前索引值，否则返回当前元素</span><br><span class="line">  return arr.indexOf(item, 0) &#x3D;&#x3D;&#x3D; index;</span><br><span class="line">&#125;);</span><br><span class="line">console.log(filterArr)</span><br></pre></td></tr></table></figure>
+
+<h2 id="三：reduce-includes"><a href="#三：reduce-includes" class="headerlink" title="三：reduce + includes"></a>三：reduce + includes</h2><p>reduce() 方法接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终计算为一个值.<br>array.reduce(function(total, currentValue, currentIndex, arr), initialValue)</p>
+<p>Array includes() 方法用来判断一个数组是否包含一个指定的值，如果是返回 true，否则false<br>arr.includes(searchElement, fromIndex)<br>参数    描述<br>searchElement    必须。需要查找的元素值。<br>fromIndex    可选。从该索引处开始查找 searchElement。如果为负值，则按升序从 array.length + fromIndex 的索引开始搜索。默认为 0。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr.reduce((prev,cur) &#x3D;&gt; prev.includes(cur) ? prev : [...prev,cur],[]);</span><br></pre></td></tr></table></figure>
+
+<h2 id="四：利用for嵌套for，然后splice去重（ES5中最常用）"><a href="#四：利用for嵌套for，然后splice去重（ES5中最常用）" class="headerlink" title="四：利用for嵌套for，然后splice去重（ES5中最常用）"></a>四：利用for嵌套for，然后splice去重（ES5中最常用）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function unique(arr)&#123;            </span><br><span class="line">  for(var i &#x3D; 0; i &lt; arr.length; i++)&#123;</span><br><span class="line">    for(var j &#x3D; i + 1; j &lt; arr.length; j++)&#123;</span><br><span class="line">      if(arr[i] &#x3D;&#x3D; arr[j])&#123; &#x2F;&#x2F;第一个等同于第二个，splice方法删除第二个</span><br><span class="line">        arr.splice(j, 1);</span><br><span class="line">        j--;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/02/Virtual-DOM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/02/Virtual-DOM/" class="post-title-link" itemprop="url">虚拟DOM(Virtual DOM)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-04-02 14:03:56 / Modified: 14:34:38" itemprop="dateCreated datePublished" datetime="2021-04-02T14:03:56+08:00">2021-04-02</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="虚拟DOM"><a href="#虚拟DOM" class="headerlink" title="虚拟DOM"></a>虚拟DOM</h1><p>我们都知道我们平时会使用js来操作DOM树，来改变页面的渲染效果，但是真实DOM的渲染比较消耗性能，于是为了解决浏览器的性能问题就有了虚拟DOM，用js来模拟DOM节点实现虚拟DOM</p>
+<h2 id="浏览器渲染引擎工作流程"><a href="#浏览器渲染引擎工作流程" class="headerlink" title="浏览器渲染引擎工作流程"></a>浏览器渲染引擎工作流程</h2><h3 id="创建DOM树"><a href="#创建DOM树" class="headerlink" title="创建DOM树"></a>创建DOM树</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用html分析器，分析html元素，构建一颗DOM树（标记化和树构建）</span><br></pre></td></tr></table></figure>
+<h3 id="创建stylerules"><a href="#创建stylerules" class="headerlink" title="创建stylerules"></a>创建stylerules</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用css分析器，分析css文件和元素上的inline样式，生成页面的样式表</span><br></pre></td></tr></table></figure>
+<h3 id="创建render（renderObject）树"><a href="#创建render（renderObject）树" class="headerlink" title="创建render（renderObject）树"></a>创建render（renderObject）树</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">将DOM树和样式表关联起来，构建一颗Render树，每一个DOM节点都有attach属性，接收样式信息，返回一个render对象，这些render对象最终构建成一个Render树</span><br></pre></td></tr></table></figure>
+<h3 id="布局（Layout）"><a href="#布局（Layout）" class="headerlink" title="布局（Layout）"></a>布局（Layout）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">有了render树之后，浏览器就会开始布局，为每一个DOM节点确定一个在显示屏上的精确的坐标</span><br></pre></td></tr></table></figure>
+<h3 id="浏览器绘制（Painting）"><a href="#浏览器绘制（Painting）" class="headerlink" title="浏览器绘制（Painting）"></a>浏览器绘制（Painting）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">有了render和节点的精确坐标后，浏览器就会调用每个节点的paint方法，把节点绘制出来</span><br></pre></td></tr></table></figure>
+
+<h2 id="真实DOM与虚拟DOM的比较"><a href="#真实DOM与虚拟DOM的比较" class="headerlink" title="真实DOM与虚拟DOM的比较"></a>真实DOM与虚拟DOM的比较</h2><h3 id="真实DOM"><a href="#真实DOM" class="headerlink" title="真实DOM"></a>真实DOM</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">DOM有几次更新就执行几次DOM操作</span><br><span class="line">在传统的开发中，用js操作DOM时，浏览器会从构建DOM树开始，从头到尾执行一次浏览器渲染流程。如果在一次操作中，需要更新10个DOM节点，那么浏览器在接收到第一个更新请求的时候并不知道后面还有9次操作，因此会马上执行浏览器渲染流程，最终会执行10次DOM的更新操作。</span><br><span class="line">频繁的操作可能会导致页面卡顿，给用户带来不好的体验</span><br></pre></td></tr></table></figure>
+<h3 id="虚拟DOM-1"><a href="#虚拟DOM-1" class="headerlink" title="虚拟DOM"></a>虚拟DOM</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">在虚拟DOM中，一次操作需要更新10个节点的话，虚拟DOM不会立即执行DOM更行操作，而是先通过diff算法，将更新的内容保存到本地的一个js对象中，然后最终再将这个js对象一次性关联到DOM树中，再去执行浏览器的渲染流程。</span><br><span class="line">用js模拟DOM节点的好处是，页面更新时，可以先全部反应在js对象（虚拟DOM）上，操作内存中的js对象的速度更快，等页面完成后，再将最终的js对象映射成真实的DOM,交给浏览器绘制</span><br></pre></td></tr></table></figure>
+
+<h2 id="diff算法"><a href="#diff算法" class="headerlink" title="diff算法"></a>diff算法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">4种情况:</span><br><span class="line">节点类型变了REPLACE</span><br><span class="line">节点类型一样，属性或者属性值变了PROPS</span><br><span class="line">文本变了TEXT</span><br><span class="line">移动-增加-删除子节点REORDER</span><br></pre></td></tr></table></figure>
+<p>以上部分内容来源于[<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/af0b398602bc]">https://www.jianshu.com/p/af0b398602bc]</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/01/bind-set/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/01/bind-set/" class="post-title-link" itemprop="url">bind的实现</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-01 14:46:03" itemprop="dateCreated datePublished" datetime="2021-04-01T14:46:03+08:00">2021-04-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-25 09:51:40" itemprop="dateModified" datetime="2021-04-25T09:51:40+08:00">2021-04-25</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="bind的实现"><a href="#bind的实现" class="headerlink" title="bind的实现"></a>bind的实现</h1><h2 id="bind的作用："><a href="#bind的作用：" class="headerlink" title="bind的作用："></a>bind的作用：</h2><p>bind的作用：将函数绑定至某个对象，bind() 方法会创建一个函数，函数体内this对象的值会被绑定到传入bind() 函数的值</p>
+<h3 id="第一种-柯理化函数思想"><a href="#第一种-柯理化函数思想" class="headerlink" title="第一种-柯理化函数思想"></a>第一种-柯理化函数思想</h3><p>我也不知道柯理化函数思想是啥思想，反正就这样实现就对了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; slice() 方法不会改变原始数组，从已有的数组中返回选定的元素</span><br><span class="line">Function.prototype.bind &#x3D; function(context) &#123;</span><br><span class="line">  var args &#x3D; Array.prototype.slice.call(arguments, 1); &#x2F;&#x2F; 将类数组arguments转化成数组，同时从索引为1的位置提取片段</span><br><span class="line">  var _this &#x3D; this;</span><br><span class="line">  return function() &#123;</span><br><span class="line">    var thisArgs &#x3D; [].slice(arguments)</span><br><span class="line">    return _this.apply(context, args.concat(thisArgs))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第二种-es6写法（…扩展符）"><a href="#第二种-es6写法（…扩展符）" class="headerlink" title="第二种-es6写法（…扩展符）"></a>第二种-es6写法（…扩展符）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Function.prototype.bind &#x3D; function(context, ...curArgs) &#123;</span><br><span class="line">  let self &#x3D; this;</span><br><span class="line">  return function(...args) &#123;</span><br><span class="line">    return self.apply(context, [...curArgs, ...args])</span><br><span class="line">  &#125;</span><br><span class="line">&#125; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="第三种-我没看懂"><a href="#第三种-我没看懂" class="headerlink" title="第三种-我没看懂"></a>第三种-我没看懂</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function bind(fn, context)&#123;</span><br><span class="line">  return function ()&#123;</span><br><span class="line">     return fn.apply(context, arguments);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/01/first-blog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/01/first-blog/" class="post-title-link" itemprop="url">first blog</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-01 09:39:32" itemprop="dateCreated datePublished" datetime="2021-04-01T09:39:32+08:00">2021-04-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-02 16:25:20" itemprop="dateModified" datetime="2021-04-02T16:25:20+08:00">2021-04-02</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>欢迎大家来到我的博客，这是搭建的第一个博客，若有不妥之处，请联系我。<br>本博客是使用的hexo来搭建的，具体的使用方法在上一篇《hello-world》中已经注明。<br>如果想看具体的搭建过程的话，我一会整理一个较为完整的文档出来，方便大家一起学习。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
