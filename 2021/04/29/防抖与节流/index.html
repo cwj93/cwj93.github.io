@@ -23,20 +23,20 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="大文件上传以及断点续传大文件上传  思路：大文件上传的基本思路是通过切片上传来实现，使用blod.prototype.slice来切割上传的文件，功能跟数组的slice相似。  1.预设好切片的最大数量，使用slice()来切片，返回源文件的某一段的切片 2.借助http请求的并发性，同时上传多个切片（Promise.all），减少上传时间 3.由于是并发，上传的顺序可能发生变化，需要给每个切片记">
+<meta name="description" content="防抖与节流防抖  在触发事件后，等待一段时间后执行事件，如果在此等待时间内，再次触发事件，重置等待时间，再次等待一段时间后执行事件  1234567891011function debounce(fn, time) &amp;#123;  let timeout;  return function () &amp;#123;    let context &#x3D; this;    let args &amp;#x3">
 <meta property="og:type" content="article">
-<meta property="og:title" content="大文件上传以及断点续传">
-<meta property="og:url" content="http://example.com/2021/04/23/%E5%A4%A7%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%BB%A5%E5%8F%8A%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/index.html">
+<meta property="og:title" content="防抖与节流">
+<meta property="og:url" content="http://example.com/2021/04/29/%E9%98%B2%E6%8A%96%E4%B8%8E%E8%8A%82%E6%B5%81/index.html">
 <meta property="og:site_name" content="尘世幽梦的BLOG">
-<meta property="og:description" content="大文件上传以及断点续传大文件上传  思路：大文件上传的基本思路是通过切片上传来实现，使用blod.prototype.slice来切割上传的文件，功能跟数组的slice相似。  1.预设好切片的最大数量，使用slice()来切片，返回源文件的某一段的切片 2.借助http请求的并发性，同时上传多个切片（Promise.all），减少上传时间 3.由于是并发，上传的顺序可能发生变化，需要给每个切片记">
+<meta property="og:description" content="防抖与节流防抖  在触发事件后，等待一段时间后执行事件，如果在此等待时间内，再次触发事件，重置等待时间，再次等待一段时间后执行事件  1234567891011function debounce(fn, time) &amp;#123;  let timeout;  return function () &amp;#123;    let context &#x3D; this;    let args &amp;#x3">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-04-23T03:08:04.000Z">
-<meta property="article:modified_time" content="2021-04-23T03:22:02.401Z">
+<meta property="article:published_time" content="2021-04-29T08:41:23.000Z">
+<meta property="article:modified_time" content="2021-04-30T01:31:43.962Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2021/04/23/%E5%A4%A7%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%BB%A5%E5%8F%8A%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/">
+<link rel="canonical" href="http://example.com/2021/04/29/%E9%98%B2%E6%8A%96%E4%B8%8E%E8%8A%82%E6%B5%81/">
 
 
 <script class="page-configurations">
@@ -48,7 +48,7 @@
     lang   : 'en'
   };
 </script>
-<title>大文件上传以及断点续传 | 尘世幽梦的BLOG</title>
+<title>防抖与节流 | 尘世幽梦的BLOG</title>
   
 
 
@@ -147,7 +147,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%BB%A5%E5%8F%8A%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0"><span class="nav-number">1.</span> <span class="nav-text">大文件上传以及断点续传</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A7%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="nav-number">1.1.</span> <span class="nav-text">大文件上传</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%B2%E6%8A%96%E4%B8%8E%E8%8A%82%E6%B5%81"><span class="nav-number">1.</span> <span class="nav-text">防抖与节流</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%B2%E6%8A%96"><span class="nav-number">1.1.</span> <span class="nav-text">防抖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8A%82%E6%B5%81-%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%8C%E4%B8%80%E7%A7%8D%E6%98%AF%E7%AB%8B%E5%8D%B3%E6%89%A7%E8%A1%8C%E4%BA%8B%E4%BB%B6%EF%BC%8C%E5%8F%A6%E4%B8%80%E7%A7%8D%E6%98%AF%E5%BB%B6%E8%BF%9F%E6%89%A7%E8%A1%8C"><span class="nav-number">1.2.</span> <span class="nav-text">节流(两种方式，一种是立即执行事件，另一种是延迟执行)</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -200,7 +200,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/23/%E5%A4%A7%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%BB%A5%E5%8F%8A%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/29/%E9%98%B2%E6%8A%96%E4%B8%8E%E8%8A%82%E6%B5%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -213,7 +213,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          大文件上传以及断点续传
+          防抖与节流
         </h1>
 
         <div class="post-meta-container">
@@ -223,10 +223,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-04-23 11:08:04 / Modified: 11:22:02" itemprop="dateCreated datePublished" datetime="2021-04-23T11:08:04+08:00">2021-04-23</time>
+      <time title="Created: 2021-04-29 16:41:23" itemprop="dateCreated datePublished" datetime="2021-04-29T16:41:23+08:00">2021-04-29</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-30 09:31:43" itemprop="dateModified" datetime="2021-04-30T09:31:43+08:00">2021-04-30</time>
+      </span>
 
   
 </div>
@@ -238,13 +244,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="大文件上传以及断点续传"><a href="#大文件上传以及断点续传" class="headerlink" title="大文件上传以及断点续传"></a>大文件上传以及断点续传</h1><h2 id="大文件上传"><a href="#大文件上传" class="headerlink" title="大文件上传"></a>大文件上传</h2><p>  思路：大文件上传的基本思路是通过切片上传来实现，使用blod.prototype.slice来切割上传的文件，功能跟数组的slice相似。</p>
-<ul>
-<li>1.预设好切片的最大数量，使用slice()来切片，返回源文件的某一段的切片</li>
-<li>2.借助http请求的并发性，同时上传多个切片（Promise.all），减少上传时间</li>
-<li>3.由于是并发，上传的顺序可能发生变化，需要给每个切片记录一下顺序（传递hash参数，使用文件名+数组的形式记录每一个切片的顺序），方便后端合并</li>
-<li>4.上传之后还要给后端发送一个合并的请求，此处与切片上传是同步的，是需要文件上传完成之后才发送此请求</li>
-</ul>
+        <h1 id="防抖与节流"><a href="#防抖与节流" class="headerlink" title="防抖与节流"></a>防抖与节流</h1><h2 id="防抖"><a href="#防抖" class="headerlink" title="防抖"></a>防抖</h2><p>  在触发事件后，等待一段时间后执行事件，如果在此等待时间内，再次触发事件，重置等待时间，再次等待一段时间后执行事件<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function debounce(fn, time) &#123;</span><br><span class="line">  let timeout;</span><br><span class="line">  return function () &#123;</span><br><span class="line">    let context &#x3D; this;</span><br><span class="line">    let args &#x3D; arguments;</span><br><span class="line">    if(timeout) clearTimeout(timeout)</span><br><span class="line">    timeout &#x3D; setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">      fn.call(context, args)</span><br><span class="line">    &#125;, time)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="节流-两种方式，一种是立即执行事件，另一种是延迟执行"><a href="#节流-两种方式，一种是立即执行事件，另一种是延迟执行" class="headerlink" title="节流(两种方式，一种是立即执行事件，另一种是延迟执行)"></a>节流(两种方式，一种是立即执行事件，另一种是延迟执行)</h2><p>  在触发事件之后，立马执行事件，然后在一段时间之内再次触发事件，不会执行事件，只有等待一段时间之后触发事件，才会执行事件<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function thorttle(fn, time) &#123;</span><br><span class="line">  let timeout;</span><br><span class="line">  return function () &#123;</span><br><span class="line">    let context &#x3D; this;</span><br><span class="line">    let args &#x3D; arguments;</span><br><span class="line">    if(timeout) return</span><br><span class="line">    fn.call(context, args)</span><br><span class="line">    timeout &#x3D; setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">      clearTimeout(timeout)</span><br><span class="line">      timeout &#x3D; null</span><br><span class="line">    &#125;, time)</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>  在触发事件时，设置定时器在一段时间之后再执行事件，在此段时间内，多次点击是不会执行事件的。<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">const throttle &#x3D; (fn, time) &#x3D;&gt; &#123;</span><br><span class="line">  let flag &#x3D; true;</span><br><span class="line">  return function() &#123;</span><br><span class="line">    if (!flag) return;</span><br><span class="line">    flag &#x3D; false;</span><br><span class="line">    setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">      fn.apply(this, arguments);</span><br><span class="line">      flag &#x3D; true;</span><br><span class="line">    &#125;, time);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
     </div>
 
@@ -258,14 +259,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/04/21/Promise%E7%9A%84%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="prev" title="Promise的知识点">
-                  <i class="fa fa-chevron-left"></i> Promise的知识点
+                <a href="/2021/04/28/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/" rel="prev" title="垃圾回收机制">
+                  <i class="fa fa-chevron-left"></i> 垃圾回收机制
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/04/28/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/" rel="next" title="垃圾回收机制">
-                  垃圾回收机制 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
