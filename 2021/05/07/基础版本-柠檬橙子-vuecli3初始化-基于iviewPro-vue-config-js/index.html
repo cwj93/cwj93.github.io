@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue.config.js 1.初始化项目 1vue create basic-lemon-oranges 2.创建vue.config.js进行项目配置(拷贝iviewPro的vue.config.js) 1234567891011121314151617181920212223242526272829303132333435363">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue.config.js">
+<meta property="og:url" content="http://example.com/2021/05/07/%E5%9F%BA%E7%A1%80%E7%89%88%E6%9C%AC-%E6%9F%A0%E6%AA%AC%E6%A9%99%E5%AD%90-vuecli3%E5%88%9D%E5%A7%8B%E5%8C%96-%E5%9F%BA%E4%BA%8EiviewPro-vue-config-js/index.html">
+<meta property="og:site_name" content="尘世幽梦的BLOG">
+<meta property="og:description" content="基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue.config.js 1.初始化项目 1vue create basic-lemon-oranges 2.创建vue.config.js进行项目配置(拷贝iviewPro的vue.config.js) 1234567891011121314151617181920212223242526272829303132333435363">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-05-07T02:33:49.000Z">
+<meta property="article:modified_time" content="2021-05-07T06:12:40.254Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/05/07/%E5%9F%BA%E7%A1%80%E7%89%88%E6%9C%AC-%E6%9F%A0%E6%AA%AC%E6%A9%99%E5%AD%90-vuecli3%E5%88%9D%E5%A7%8B%E5%8C%96-%E5%9F%BA%E4%BA%8EiviewPro-vue-config-js/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+<title>基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue.config.js | 尘世幽梦的BLOG</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">尘世幽梦的BLOG</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%89%88%E6%9C%AC-%E6%9F%A0%E6%AA%AC%E6%A9%99%E5%AD%90-vuecli3%E5%88%9D%E5%A7%8B%E5%8C%96-%E5%9F%BA%E4%BA%8EiviewPro-vue-config-js"><span class="nav-number">1.</span> <span class="nav-text">基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue.config.js</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/07/%E5%9F%BA%E7%A1%80%E7%89%88%E6%9C%AC-%E6%9F%A0%E6%AA%AC%E6%A9%99%E5%AD%90-vuecli3%E5%88%9D%E5%A7%8B%E5%8C%96-%E5%9F%BA%E4%BA%8EiviewPro-vue-config-js/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue.config.js
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-05-07 10:33:49 / Modified: 14:12:40" itemprop="dateCreated datePublished" datetime="2021-05-07T10:33:49+08:00">2021-05-07</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue-config-js"><a href="#基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue-config-js" class="headerlink" title="基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue.config.js"></a>基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue.config.js</h1><ul>
+<li><p>1.初始化项目</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue create basic-lemon-oranges</span><br></pre></td></tr></table></figure></li>
+<li><p>2.创建vue.config.js进行项目配置(拷贝iviewPro的vue.config.js)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line">const Setting &#x3D; require(&#39;.&#x2F;src&#x2F;setting.env&#39;);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 拼接路径</span><br><span class="line">const resolve &#x3D; dir &#x3D;&gt; require(&#39;path&#39;).join(__dirname, dir);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 增加环境变量</span><br><span class="line">process.env.VUE_APP_VERSION &#x3D; require(&#39;.&#x2F;package.json&#39;).version;</span><br><span class="line">process.env.VUE_APP_BUILD_TIME &#x3D; require(&#39;dayjs&#39;)().format(&#39;YYYY-M-D HH:mm:ss&#39;);</span><br><span class="line"></span><br><span class="line">module.exports &#x3D; &#123;</span><br><span class="line">    publicPath: Setting.publicPath,</span><br><span class="line">    lintOnSave: Setting.lintOnSave,</span><br><span class="line">    outputDir: Setting.outputDir,</span><br><span class="line">    assetsDir: Setting.assetsDir,</span><br><span class="line">    runtimeCompiler: true,</span><br><span class="line">    productionSourceMap: false,</span><br><span class="line">    devServer: &#123;</span><br><span class="line">        publicPath: Setting.publicPath</span><br><span class="line">    &#125;,</span><br><span class="line">    css: &#123;</span><br><span class="line">        loaderOptions: &#123;</span><br><span class="line">            less: &#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    transpileDependencies: [&#39;view-design&#39;],</span><br><span class="line">    &#x2F;&#x2F; 默认设置: https:&#x2F;&#x2F;github.com&#x2F;vuejs&#x2F;vue-cli&#x2F;tree&#x2F;dev&#x2F;packages&#x2F;@vue&#x2F;cli-service&#x2F;lib&#x2F;config&#x2F;base.js</span><br><span class="line">    chainWebpack: config &#x3D;&gt; &#123;</span><br><span class="line">        &#x2F;**</span><br><span class="line">        * 删除懒加载模块的 prefetch preload，降低带宽压力</span><br><span class="line">        * https:&#x2F;&#x2F;cli.vuejs.org&#x2F;zh&#x2F;guide&#x2F;html-and-static-assets.html#prefetch</span><br><span class="line">        * https:&#x2F;&#x2F;cli.vuejs.org&#x2F;zh&#x2F;guide&#x2F;html-and-static-assets.html#preload</span><br><span class="line">        * 而且预渲染时生成的 prefetch 标签是 modern 版本的，低版本浏览器是不需要的</span><br><span class="line">        *&#x2F;</span><br><span class="line">        config.plugins</span><br><span class="line">            .delete(&#39;prefetch&#39;)</span><br><span class="line">            .delete(&#39;preload&#39;);</span><br><span class="line">        &#x2F;&#x2F; 解决 cli3 热更新失效 https:&#x2F;&#x2F;github.com&#x2F;vuejs&#x2F;vue-cli&#x2F;issues&#x2F;1559</span><br><span class="line">        config.resolve</span><br><span class="line">            .symlinks(true);</span><br><span class="line">        config</span><br><span class="line">            &#x2F;&#x2F; 开发环境</span><br><span class="line">            .when(process.env.NODE_ENV &#x3D;&#x3D;&#x3D; &#39;development&#39;,</span><br><span class="line">                  &#x2F;&#x2F; sourcemap不包含列信息</span><br><span class="line">                  config &#x3D;&gt; config.devtool(&#39;cheap-source-map&#39;)</span><br><span class="line">            )</span><br><span class="line">            &#x2F;&#x2F; 非开发环境</span><br><span class="line">            .when(process.env.NODE_ENV !&#x3D;&#x3D; &#39;development&#39;, config &#x3D;&gt; &#123;</span><br><span class="line"></span><br><span class="line">        &#125;);</span><br><span class="line">        &#x2F;&#x2F; 不编译 iView Pro</span><br><span class="line">        config.module</span><br><span class="line">            .rule(&#39;js&#39;)</span><br><span class="line">            .test(&#x2F;\.jsx?$&#x2F;)</span><br><span class="line">            .exclude</span><br><span class="line">            .add(resolve(&#39;src&#x2F;libs&#x2F;iview-pro&#39;))</span><br><span class="line">            .end();</span><br><span class="line">        &#x2F;&#x2F; 使用 iView Loader</span><br><span class="line">        config.module</span><br><span class="line">            .rule(&#39;vue&#39;)</span><br><span class="line">            .test(&#x2F;\.vue$&#x2F;)</span><br><span class="line">            .use(&#39;iview-loader&#39;)</span><br><span class="line">            .loader(&#39;iview-loader&#39;)</span><br><span class="line">            .tap(() &#x3D;&gt; &#123;</span><br><span class="line">                return Setting.iviewLoaderOptions</span><br><span class="line">            &#125;)</span><br><span class="line">            .end();</span><br><span class="line">        &#x2F;&#x2F; markdown</span><br><span class="line">        config.module</span><br><span class="line">            .rule(&#39;md&#39;)</span><br><span class="line">            .test(&#x2F;\.md$&#x2F;)</span><br><span class="line">            .use(&#39;text-loader&#39;)</span><br><span class="line">            .loader(&#39;text-loader&#39;)</span><br><span class="line">            .end();</span><br><span class="line">        &#x2F;&#x2F; i18n</span><br><span class="line">        config.module</span><br><span class="line">            .rule(&#39;i18n&#39;)</span><br><span class="line">            .resourceQuery(&#x2F;blockType&#x3D;i18n&#x2F;)</span><br><span class="line">            .use(&#39;i18n&#39;)</span><br><span class="line">            .loader(&#39;@kazupon&#x2F;vue-i18n-loader&#39;)</span><br><span class="line">            .end();</span><br><span class="line">        &#x2F;&#x2F; image exclude</span><br><span class="line">        const imagesRule &#x3D; config.module.rule(&#39;images&#39;);</span><br><span class="line">        imagesRule</span><br><span class="line">            .test(&#x2F;\.(png|jpe?g|gif|webp|svg)(\?.*)?$&#x2F;)</span><br><span class="line">            .exclude</span><br><span class="line">            .add(resolve(&#39;src&#x2F;assets&#x2F;svg&#39;))</span><br><span class="line">            .end();</span><br><span class="line">        &#x2F;&#x2F; 重新设置 alias</span><br><span class="line">        config.resolve.alias</span><br><span class="line">            .set(&#39;@api&#39;, resolve(&#39;src&#x2F;api&#39;));</span><br><span class="line">        &#x2F;&#x2F; node</span><br><span class="line">        config.node</span><br><span class="line">            .set(&#39;__dirname&#39;, true)</span><br><span class="line">            .set(&#39;__filename&#39;, true);</span><br><span class="line">        &#x2F;&#x2F; 判断是否需要加入模拟数据</span><br><span class="line">        const entry &#x3D; config.entry(&#39;app&#39;);</span><br><span class="line">        if (Setting.isMock) &#123;</span><br><span class="line">            entry</span><br><span class="line">                .add(&#39;@&#x2F;mock&#39;)</span><br><span class="line">                .end()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>3.查看vue.config.js里面引入哪些外部文件，需要安装哪些插件，需要安装哪些依赖</p>
+</li>
+<li><p>4.尝试启动项目，根据报错信息安装对应的依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn serve</span><br></pre></td></tr></table></figure>
+<ul>
+<li>4.1.报错信息<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ERROR  Error loading D:\GitHubProject\项目基础版本\basic-lemon-oranges\vue.config.js:</span><br><span class="line">ERROR  Error: Cannot find module &#39;dayjs&#39;</span><br></pre></td></tr></table></figure>
+根据此错误信息，安装dayjs<br>执行命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install dayjs --save</span><br></pre></td></tr></table></figure></li>
+<li>4.2.再次执行yarn serve<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">These dependencies were not found:</span><br><span class="line"></span><br><span class="line">* @&#x2F;mock in multi (webpack)-dev-server&#x2F;client?http:&#x2F;&#x2F;192.168.11.60:8081&amp;sockPath&#x3D;&#x2F;sockjs-node (webpack)&#x2F;hot&#x2F;dev-server.js .&#x2F;src&#x2F;main.js @&#x2F;mock</span><br><span class="line">* core-js&#x2F;modules&#x2F;es.object.to-string.js in .&#x2F;src&#x2F;router&#x2F;index.js</span><br><span class="line">* core-js&#x2F;modules&#x2F;es.string.iterator.js in .&#x2F;src&#x2F;router&#x2F;index.js</span><br><span class="line">* core-js&#x2F;modules&#x2F;web.dom-collections.iterator.js in .&#x2F;src&#x2F;router&#x2F;index.js</span><br><span class="line"></span><br><span class="line">To install them, you can run: npm install --save @&#x2F;mock core-js&#x2F;modules&#x2F;es.object.to-string.js core-js&#x2F;modules&#x2F;es.string.iterator.js core-js&#x2F;modules&#x2F;web.dom-collections.iterator.js</span><br><span class="line">Failed to resolve loader: iview-loader</span><br><span class="line">You may need to install it.</span><br><span class="line">Error from chokidar (D:\): Error: EBUSY: resource busy or locked, lstat &#39;D:\pagefile.sys&#39;</span><br></pre></td></tr></table></figure>
+从上面的错误信息可以看出，此处是缺少mock模块，此模块是用于模拟数据的，在vue.config.js是添加了此配置的，故此需要安装一下mock模块。<br>执行命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install mockjs</span><br></pre></td></tr></table></figure></li>
+<li>4.3.再次执行yarn serve(处理不了mock的问题，暂时在vue.config.js里面将mock的使用注释)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">These dependencies were not found:</span><br><span class="line"></span><br><span class="line">* core-js&#x2F;modules&#x2F;es.object.to-string.js in .&#x2F;src&#x2F;router&#x2F;index.js</span><br><span class="line">* core-js&#x2F;modules&#x2F;es.string.iterator.js in .&#x2F;src&#x2F;router&#x2F;index.js</span><br><span class="line">* core-js&#x2F;modules&#x2F;web.dom-collections.iterator.js in .&#x2F;src&#x2F;router&#x2F;index.js</span><br></pre></td></tr></table></figure>
+根据上面的错误，应该是创建项目初始化的时候，依赖并未安装完全，在此重新安装依赖即可<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i</span><br></pre></td></tr></table></figure></li>
+<li>4.4.再次执行yarn serve<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Failed to resolve loader: iview-loader</span><br><span class="line">You may need to install it.</span><br><span class="line">Error from chokidar (D:\): Error: EBUSY: resource busy or locked, lstat &#39;D:\pagefile.sys&#39;</span><br></pre></td></tr></table></figure>
+根据错误提示，安装iview-loader<br>执行命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install iview-loader --save-dev</span><br></pre></td></tr></table></figure></li>
+<li>4.5.再次执行yarn serve<br>至此，项目成功启动</li>
+</ul>
+</li>
+<li><p>5.打包部署到服务器</p>
+<ul>
+<li>5.1.需要修改src\setting.env.js中的publicPath的路径，修改为自己当前项目的名称<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 部署应用包时的基本 URL</span><br><span class="line">publicPath: env &#x3D;&#x3D;&#x3D; &#39;development&#39; ? &#39;&#x2F;&#39; : &#39;&#x2F;lemon&#x2F;&#39;,</span><br></pre></td></tr></table></figure></li>
+<li>5.2.修改打包后的名称，即打包输出的目录名称<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 生产环境构建文件的目录名</span><br><span class="line">outputDir: &#39;lemon&#39;,</span><br></pre></td></tr></table></figure></li>
+<li>5.3.执行打包命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure>
+至此打包成功，部署到服务器上，正常显示页面</li>
+</ul>
+</li>
+<li><p>6.参照iview-admin-Pro的router路由以及store仓库的写法</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/06/git%E7%9A%84%E4%BD%BF%E7%94%A8-%E8%BF%9E%E6%8E%A5github-%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81/" rel="prev" title="git的使用-连接github-提交代码">
+                  <i class="fa fa-chevron-left"></i> git的使用-连接github-提交代码
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/10/vue%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/" rel="next" title="vue知识体系">
+                  vue知识体系 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

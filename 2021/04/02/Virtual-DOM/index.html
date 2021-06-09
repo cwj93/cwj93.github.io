@@ -31,7 +31,7 @@
 <meta property="og:description" content="虚拟DOM我们都知道我们平时会使用js来操作DOM树，来改变页面的渲染效果，但是真实DOM的渲染比较消耗性能，于是为了解决浏览器的性能问题就有了虚拟DOM，用js来模拟DOM节点实现虚拟DOM 浏览器渲染引擎工作流程创建DOM树1用html分析器，分析html元素，构建一颗DOM树（标记化和树构建） 创建stylerules1用css分析器，分析css文件和元素上的inline样式，生成页面的样式">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-04-02T06:03:56.000Z">
-<meta property="article:modified_time" content="2021-04-02T06:34:38.692Z">
+<meta property="article:modified_time" content="2021-05-31T08:49:23.742Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
@@ -147,7 +147,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%99%9A%E6%8B%9FDOM"><span class="nav-number">1.</span> <span class="nav-text">虚拟DOM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%BC%95%E6%93%8E%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">浏览器渲染引擎工作流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BADOM%E6%A0%91"><span class="nav-number">1.1.1.</span> <span class="nav-text">创建DOM树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAstylerules"><span class="nav-number">1.1.2.</span> <span class="nav-text">创建stylerules</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BArender%EF%BC%88renderObject%EF%BC%89%E6%A0%91"><span class="nav-number">1.1.3.</span> <span class="nav-text">创建render（renderObject）树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%83%E5%B1%80%EF%BC%88Layout%EF%BC%89"><span class="nav-number">1.1.4.</span> <span class="nav-text">布局（Layout）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BB%98%E5%88%B6%EF%BC%88Painting%EF%BC%89"><span class="nav-number">1.1.5.</span> <span class="nav-text">浏览器绘制（Painting）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%9F%E5%AE%9EDOM%E4%B8%8E%E8%99%9A%E6%8B%9FDOM%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">1.2.</span> <span class="nav-text">真实DOM与虚拟DOM的比较</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9C%9F%E5%AE%9EDOM"><span class="nav-number">1.2.1.</span> <span class="nav-text">真实DOM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9FDOM-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">虚拟DOM</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#diff%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">diff算法</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%99%9A%E6%8B%9FDOM"><span class="nav-number">1.</span> <span class="nav-text">虚拟DOM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%BC%95%E6%93%8E%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">浏览器渲染引擎工作流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BADOM%E6%A0%91"><span class="nav-number">1.1.1.</span> <span class="nav-text">创建DOM树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAstylerules"><span class="nav-number">1.1.2.</span> <span class="nav-text">创建stylerules</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BArender%EF%BC%88renderObject%EF%BC%89%E6%A0%91"><span class="nav-number">1.1.3.</span> <span class="nav-text">创建render（renderObject）树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%83%E5%B1%80%EF%BC%88Layout%EF%BC%89"><span class="nav-number">1.1.4.</span> <span class="nav-text">布局（Layout）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BB%98%E5%88%B6%EF%BC%88Painting%EF%BC%89"><span class="nav-number">1.1.5.</span> <span class="nav-text">浏览器绘制（Painting）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%9F%E5%AE%9EDOM%E4%B8%8E%E8%99%9A%E6%8B%9FDOM%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">1.2.</span> <span class="nav-text">真实DOM与虚拟DOM的比较</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9C%9F%E5%AE%9EDOM"><span class="nav-number">1.2.1.</span> <span class="nav-text">真实DOM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9FDOM-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">虚拟DOM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%9E%90%E7%9C%9F%E5%AE%9EDOM%EF%BC%8C%E7%94%9F%E6%88%90%E8%99%9A%E6%8B%9FDOM%EF%BC%8C%E5%86%8D%E5%88%B0%E7%94%9F%E6%88%90%E7%9C%9F%E5%AE%9EDOM%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="nav-number">1.2.3.</span> <span class="nav-text">解析真实DOM，生成虚拟DOM，再到生成真实DOM的过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#diff%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">diff算法</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -160,7 +160,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">37</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -223,10 +223,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-04-02 14:03:56 / Modified: 14:34:38" itemprop="dateCreated datePublished" datetime="2021-04-02T14:03:56+08:00">2021-04-02</time>
+      <time title="Created: 2021-04-02 14:03:56" itemprop="dateCreated datePublished" datetime="2021-04-02T14:03:56+08:00">2021-04-02</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-05-31 16:49:23" itemprop="dateModified" datetime="2021-05-31T16:49:23+08:00">2021-05-31</time>
+      </span>
 
   
 </div>
@@ -246,8 +252,13 @@
 <h3 id="浏览器绘制（Painting）"><a href="#浏览器绘制（Painting）" class="headerlink" title="浏览器绘制（Painting）"></a>浏览器绘制（Painting）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">有了render和节点的精确坐标后，浏览器就会调用每个节点的paint方法，把节点绘制出来</span><br></pre></td></tr></table></figure>
 
 <h2 id="真实DOM与虚拟DOM的比较"><a href="#真实DOM与虚拟DOM的比较" class="headerlink" title="真实DOM与虚拟DOM的比较"></a>真实DOM与虚拟DOM的比较</h2><h3 id="真实DOM"><a href="#真实DOM" class="headerlink" title="真实DOM"></a>真实DOM</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">DOM有几次更新就执行几次DOM操作</span><br><span class="line">在传统的开发中，用js操作DOM时，浏览器会从构建DOM树开始，从头到尾执行一次浏览器渲染流程。如果在一次操作中，需要更新10个DOM节点，那么浏览器在接收到第一个更新请求的时候并不知道后面还有9次操作，因此会马上执行浏览器渲染流程，最终会执行10次DOM的更新操作。</span><br><span class="line">频繁的操作可能会导致页面卡顿，给用户带来不好的体验</span><br></pre></td></tr></table></figure>
-<h3 id="虚拟DOM-1"><a href="#虚拟DOM-1" class="headerlink" title="虚拟DOM"></a>虚拟DOM</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">在虚拟DOM中，一次操作需要更新10个节点的话，虚拟DOM不会立即执行DOM更行操作，而是先通过diff算法，将更新的内容保存到本地的一个js对象中，然后最终再将这个js对象一次性关联到DOM树中，再去执行浏览器的渲染流程。</span><br><span class="line">用js模拟DOM节点的好处是，页面更新时，可以先全部反应在js对象（虚拟DOM）上，操作内存中的js对象的速度更快，等页面完成后，再将最终的js对象映射成真实的DOM,交给浏览器绘制</span><br></pre></td></tr></table></figure>
-
+<h3 id="虚拟DOM-1"><a href="#虚拟DOM-1" class="headerlink" title="虚拟DOM"></a>虚拟DOM</h3><p>在虚拟DOM中，一次操作需要更新10个节点的话，虚拟DOM不会立即执行DOM更行操作，而是先通过diff算法，将更新的内容保存到本地的一个js对象中，然后最终再将这个js对象一次性关联到DOM树中，再去执行浏览器的渲染流程。</p>
+<p>用js模拟DOM节点的好处是，页面更新时，可以先全部反应在js对象（虚拟DOM）上，操作内存中的js对象的速度更快，等页面完成后，再将最终的js对象映射成真实的DOM,交给浏览器绘制</p>
+<h3 id="解析真实DOM，生成虚拟DOM，再到生成真实DOM的过程"><a href="#解析真实DOM，生成虚拟DOM，再到生成真实DOM的过程" class="headerlink" title="解析真实DOM，生成虚拟DOM，再到生成真实DOM的过程"></a>解析真实DOM，生成虚拟DOM，再到生成真实DOM的过程</h3><ul>
+<li>1.解析DOM节点：使用js对象表示DOM节点，使用的对象的属性来表示节点的类型，属性，子节点。</li>
+<li>2.比较两个虚拟DOM树的差异：diff算法，树同层级比较，将差异存储到一个js对象中。</li>
+<li>3.将新旧虚拟DOM树的差异应用到真正的DOM树上：深层遍历DOM树，根据生成的差异js来生成真实DOM</li>
+</ul>
 <h2 id="diff算法"><a href="#diff算法" class="headerlink" title="diff算法"></a>diff算法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">4种情况:</span><br><span class="line">节点类型变了REPLACE</span><br><span class="line">节点类型一样，属性或者属性值变了PROPS</span><br><span class="line">文本变了TEXT</span><br><span class="line">移动-增加-删除子节点REORDER</span><br></pre></td></tr></table></figure>
 <p>以上部分内容来源于[<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/af0b398602bc]">https://www.jianshu.com/p/af0b398602bc]</a></p>
 
@@ -263,8 +274,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/04/01/bind%E7%9A%84%E5%AE%9E%E7%8E%B0/" rel="prev" title="bind的实现">
-                  <i class="fa fa-chevron-left"></i> bind的实现
+                <a href="/2021/04/01/bind%E3%80%81call%E3%80%81apply%E7%9A%84%E5%AE%9E%E7%8E%B0/" rel="prev" title="bind、call、apply的实现">
+                  <i class="fa fa-chevron-left"></i> bind、call、apply的实现
                 </a>
             </div>
             <div class="post-nav-item">

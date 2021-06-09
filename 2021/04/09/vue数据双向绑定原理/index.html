@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225238960-1133794938.png">
 <meta property="og:image" content="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225458132-1434604303.png">
 <meta property="article:published_time" content="2021-04-09T08:17:16.000Z">
-<meta property="article:modified_time" content="2021-04-20T09:07:07.558Z">
+<meta property="article:modified_time" content="2021-06-08T07:33:07.634Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225032257-1498304708.png">
@@ -151,7 +151,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vue%E6%95%B0%E6%8D%AE%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">vue数据双向绑定原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81"><span class="nav-number">1.1.</span> <span class="nav-text">伪代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Object-defineProperty"><span class="nav-number">1.2.</span> <span class="nav-text">Object.defineProperty( )</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vue%E6%95%B0%E6%8D%AE%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">vue数据双向绑定原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Vue-%E5%A6%82%E4%BD%95%E6%A3%80%E6%B5%8B%E6%95%B0%E7%BB%84%E5%8F%98%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">Vue 如何检测数组变化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vue3%E4%B8%AD%E4%BD%BF%E7%94%A8Proxy%E6%9D%A5%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7%E5%8F%98%E5%8C%96%E7%9A%84%E7%9B%91%E5%90%AC"><span class="nav-number">3.</span> <span class="nav-text">vue3中使用Proxy来实现的对象属性变化的监听</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81"><span class="nav-number">3.1.</span> <span class="nav-text">伪代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Object-defineProperty"><span class="nav-number">3.2.</span> <span class="nav-text">Object.defineProperty( )</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -164,7 +164,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">37</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -235,7 +235,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-20 17:07:07" itemprop="dateModified" datetime="2021-04-20T17:07:07+08:00">2021-04-20</time>
+        <time title="Modified: 2021-06-08 15:33:07" itemprop="dateModified" datetime="2021-06-08T15:33:07+08:00">2021-06-08</time>
       </span>
 
   
@@ -253,8 +253,46 @@
 <li>数据双向绑定即是视图变化更新数据，数据变化更新视图。</li>
 <li>视图变化更新数据，我们可以通过事件监听来实现，比如input标签的’input’事件。</li>
 <li>数据变化如何更新视图 ? vue中是通过Object.defineProperty(obj, ‘keyName’, {})方法来实现，该方法具有get/set方法，var o = obj[‘keyName’]会触发get()方法，返回处理后的值。obj[‘keyName’] = ‘赋值’，会触发set方法赋值。</li>
-<li>那么vue中就是通过Object.defineProperty()方法来劫持data属性的，遍历data对象中的所有属性，对其属性进行劫持，然后在对应的get()方法中，判断是否需要监听该属性，需要就将其添加到订阅器中，，在对应的set()方法中，如果数据发生变化，那就去通过订阅者，订阅者就会执行对应的更新的函数（所有订阅者都会更新）。</li>
+<li>那么vue中就是通过Object.defineProperty()方法来劫持data属性的，遍历data对象中的所有属性，对其属性进行劫持，然后在对应的get()方法中，判断是否需要监听该属性，需要就将其添加到订阅器中，，在对应的set()方法中，如果数据发生变化，那就去通知(notify())订阅者，订阅者就会执行对应的更新(update())的函数（所有订阅者都会更新）。</li>
 <li>当对数据进行更新操作时，比如 obj.key = ‘new val’ 就会触发 setter 的拦截，从而检测新值和旧值是否相等，如果相等什么也不做，如果不相等，则更新值，然后由 dep 通知 watcher 进行更新。所以，异步更新 的入口点就是 setter 中最后调用的 dep.notify() 方法。</li>
+</ul>
+<h1 id="Vue-如何检测数组变化"><a href="#Vue-如何检测数组变化" class="headerlink" title="Vue 如何检测数组变化"></a>Vue 如何检测数组变化</h1><p>在vue中使用Object.defineProperty通过对象的getter/setter来实现对象属性变化的监听，但是存在一个问题，就是当某个属性的值是数组时，vue无法检测到一些数组的变化：</p>
+<ul>
+<li>如使用索引直接设置一项数组的值 : vm.items[indexOfItem] = newValue<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;解决</span><br><span class="line">&#x2F;&#x2F; Vue.set</span><br><span class="line">Vue.set(vm.items, indexOfItem, newValue)</span><br><span class="line">&#x2F;&#x2F; vm.$set，Vue.set的一个别名</span><br><span class="line">vm.$set(vm.items, indexOfItem, newValue)</span><br><span class="line">&#x2F;&#x2F; Array.prototype.splice</span><br><span class="line">vm.items.splice(indexOfItem, 1, newValue)</span><br></pre></td></tr></table></figure></li>
+<li>如修改数组长度: vm.items.length = newLength<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Array.prototype.splice   vue中重写了数组的一些方法</span><br><span class="line">vm.items.splice(newLength)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>解决方案:</p>
+<ul>
+<li>在vue源码中，是对数组的常用方法进行重写，通过包装后的数组方法就能够在调用的时候被监听到。</li>
+<li>通过原型链去拦截数组的操作，从而实现对操作数组这个行为的监听。</li>
+<li>定义一个变量继承Array本身的属性 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 这里是面向切片编程思想（AOP）--不破坏封装的前提下，动态的扩展功能</span><br><span class="line">const arrExtend &#x3D; Object.create(Array.prototype)</span><br><span class="line">let methodsToPatch &#x3D; [</span><br><span class="line">    &quot;push&quot;,</span><br><span class="line">    &quot;pop&quot;,</span><br><span class="line">    &quot;shift&quot;,</span><br><span class="line">    &quot;unshift&quot;,</span><br><span class="line">    &quot;splice&quot;,</span><br><span class="line">    &quot;reverse&quot;,</span><br><span class="line">    &quot;sort&quot;,</span><br><span class="line">];</span><br></pre></td></tr></table></figure></li>
+<li>arrExtend 作为一个拦截对象, 对其中的方法进行重写<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">arrMethods.forEach(method &#x3D;&gt; &#123;</span><br><span class="line">    const oldMethod &#x3D; Array.prototype[method]</span><br><span class="line">    const newMethod &#x3D; function(...args) &#123;</span><br><span class="line">        return oldMethod.apply(this, args) &#x2F;&#x2F; 保留原型  方法的执行结果</span><br><span class="line">        console.log(&#96;$&#123;method&#125;方法被执行了&#96;)</span><br><span class="line">    &#125;</span><br><span class="line">    arrExtend[method] &#x3D; newMethod</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+<li>需要在 defineReactive 函数中添加的代码为<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (Array.isArray(value)) &#123;</span><br><span class="line">    value.__proto__ &#x3D; arrExtend</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="vue3中使用Proxy来实现的对象属性变化的监听"><a href="#vue3中使用Proxy来实现的对象属性变化的监听" class="headerlink" title="vue3中使用Proxy来实现的对象属性变化的监听"></a>vue3中使用Proxy来实现的对象属性变化的监听</h1><ul>
+<li>通过调用 new Proxy() ，你可以创建一个代理用来替代另一个对象(被称为目标)，这个代理对目标对象进行了虚拟，因此该代理与该目标对象表面上可以被当作同一个对象来对待。<br>代理允许你拦截在目标对象上的底层操作，而这原本是 JS 引擎的内部能力。拦截行为使用了一个能够响应特定操作的函数(被称为陷阱)。</li>
+<li>Proxy所带来的，是对底层操作的拦截。前面我们在实现对对象监听时使用了Object.defineProperty，这个其实是 JS 提供给我们的高级操作，也就是通过底层封装之后暴露出来的方法。Proxy的强大之处在于，我们可以直接拦截对代理对象的底层操作。这样我们相当于从一个对象的底层操作开始实现对它的监听</li>
+<li>Object.defineProperty监听的是对象的每一个属性，而Proxy监听的是对象自身</li>
+<li>使用Object.defineProperty需要遍历对象的每一个属性，对于性能会有一定的影响</li>
+<li>Proxy对新增的属性也能监听到，但Object.defineProperty无法监听到</li>
+<li>语法:  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new Proxy(target,handler)</span><br></pre></td></tr></table></figure></li>
+<li>target:目标对象</li>
+<li>handler：是一个对象，声明了代理target的指定行为，支持的拦截操作，一共13种：<ul>
+<li>get(target,propKey,receiver)：拦截对象属性的读取。</li>
+<li>set(target,propKey,value,receiver)：拦截对象属性的设置，返回一个布尔值（修改成功）。</li>
+<li>has(target,propKey)：拦截 propKey in proxy 的操作，返回一个布尔值。</li>
+<li>deleteProterty(target,propKey)：拦截delete proxy[propKey]的操作，返回一个布尔值。</li>
+<li>ownKeys(target)：拦截Object.getOwnPropertyNames(proxy)、Object.getOwnPropertySymbols(proxy)、Object.keys(proxy)、for…in 循环，返回一个数组。该方法返回目标对象所有自身的属性的属性名，而Object.keys()的返回结果仅包括目标对象自身的可遍历属性。</li>
+<li>getOwmPropertyDescript(target,propKey)：拦截Object.getOwnPropertyDescriptor(proxy,propKey)，返回属性的描述对象。</li>
+<li>defineProperty(target,propKey,propDesc)：拦截Object.defineProperty(proxy,propKey,propDesc)、Object.defineProperties(proxy,propDesc),返回一个布尔值。</li>
+<li>preventExtensions(target)：拦截Object.preventExtensions(proxy),返回一个布尔值。</li>
+<li>getPrototypeOf(target)：拦截Object.getPrototypeOf(proxy),返回一个对象。</li>
+<li>isExtensible(target)：拦截Object.isExtensible(proxy),返回一个布尔值。</li>
+<li>setPrototypeOf(target,proto)： 拦截Object.setPrototypeOf(proxy,proto)，返回一个布尔值。如果目标对象是函数，那么还有两种额外操作可以拦截。</li>
+<li>apply(target,object,args)：拦截Proxy实例作为函数调用的操作，比如proxy(…args)、proxy.call(object,…args)、proxy.apply(…)。</li>
+<li>construct(target,args)：拦截Proxy实例作为构造函数调用的操作，比如：new proxy(…args)。</li>
+</ul>
+</li>
 </ul>
 <h2 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">function selfVue(options) &#123;</span><br><span class="line">    var self &#x3D; this;</span><br><span class="line">    this.data &#x3D; options.data;</span><br><span class="line">    this.methods &#x3D; option.methods;</span><br><span class="line">    &#x2F;&#x2F; 在new SelfVue的时候做一个代理处理，让访问selfVue的属性代理为访问selfVue.data的属性</span><br><span class="line">    Object.keys(this.data).forEach(function(key) &#123;</span><br><span class="line">        self.proxyKeys(key);</span><br><span class="line">    &#125;);</span><br><span class="line">    &#x2F;&#x2F; 递归遍历所有属性，Object.defineProperty()监听所有属性</span><br><span class="line">    observe(this.data); </span><br><span class="line">    &#x2F;&#x2F; 1.解析模板指令，并替换模板数据，初始化视图。2将模板指令对应的节点绑定对应的更新函数，初始化相应的订阅器</span><br><span class="line">    &#x2F;&#x2F; 1.el.innerHTML &#x3D; this.data[exp];  &#x2F;&#x2F; 初始化模板数据的值</span><br><span class="line">    &#x2F;&#x2F; 2.new Watcher(this, exp, function (value) &#123;el.innerHTML &#x3D; value;&#125;);</span><br><span class="line">    new Compile(options.el, this);</span><br><span class="line">    &#x2F;&#x2F; 所有事情处理好后执行mounted函数</span><br><span class="line">    options.mounted.call(this); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 

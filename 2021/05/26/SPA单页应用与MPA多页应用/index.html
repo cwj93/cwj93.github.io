@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="SPA单页应用与MPA多页应用SPA单页应用只有一个WEB主页面的应用，公共资源(js、css等)仅需加载一次，所有的内容都包含在主页面，对每一个功能模块组件化。单页应用跳转，就是切换相关组件，仅刷新局部资源 关键词：网站模型 、只加载单个HTML页面 、利用路由实现内容变换 描述：SPA（singgle-page application）,单页应用。是一种网站模型，是加载单个HTML页面，并在用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SPA单页应用与MPA多页应用">
+<meta property="og:url" content="http://example.com/2021/05/26/SPA%E5%8D%95%E9%A1%B5%E5%BA%94%E7%94%A8%E4%B8%8EMPA%E5%A4%9A%E9%A1%B5%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="尘世幽梦的BLOG">
+<meta property="og:description" content="SPA单页应用与MPA多页应用SPA单页应用只有一个WEB主页面的应用，公共资源(js、css等)仅需加载一次，所有的内容都包含在主页面，对每一个功能模块组件化。单页应用跳转，就是切换相关组件，仅刷新局部资源 关键词：网站模型 、只加载单个HTML页面 、利用路由实现内容变换 描述：SPA（singgle-page application）,单页应用。是一种网站模型，是加载单个HTML页面，并在用">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-05-26T03:54:20.000Z">
+<meta property="article:modified_time" content="2021-05-27T07:34:02.706Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/05/26/SPA%E5%8D%95%E9%A1%B5%E5%BA%94%E7%94%A8%E4%B8%8EMPA%E5%A4%9A%E9%A1%B5%E5%BA%94%E7%94%A8/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+<title>SPA单页应用与MPA多页应用 | 尘世幽梦的BLOG</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">尘世幽梦的BLOG</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SPA%E5%8D%95%E9%A1%B5%E5%BA%94%E7%94%A8%E4%B8%8EMPA%E5%A4%9A%E9%A1%B5%E5%BA%94%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">SPA单页应用与MPA多页应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SPA%E5%8D%95%E9%A1%B5%E5%BA%94%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">SPA单页应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MPA%E5%A4%9A%E9%A1%B5%E5%BA%94%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">MPA多页应用</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/26/SPA%E5%8D%95%E9%A1%B5%E5%BA%94%E7%94%A8%E4%B8%8EMPA%E5%A4%9A%E9%A1%B5%E5%BA%94%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SPA单页应用与MPA多页应用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-26 11:54:20" itemprop="dateCreated datePublished" datetime="2021-05-26T11:54:20+08:00">2021-05-26</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-05-27 15:34:02" itemprop="dateModified" datetime="2021-05-27T15:34:02+08:00">2021-05-27</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="SPA单页应用与MPA多页应用"><a href="#SPA单页应用与MPA多页应用" class="headerlink" title="SPA单页应用与MPA多页应用"></a>SPA单页应用与MPA多页应用</h1><h2 id="SPA单页应用"><a href="#SPA单页应用" class="headerlink" title="SPA单页应用"></a>SPA单页应用</h2><p>只有一个WEB主页面的应用，公共资源(js、css等)仅需加载一次，所有的内容都包含在主页面，对每一个功能模块组件化。单页应用跳转，就是切换相关组件，仅刷新局部资源</p>
+<p>关键词：网站模型 、只加载单个HTML页面 、利用路由实现内容变换</p>
+<p>描述：SPA（singgle-page application）,单页应用。是一种网站模型，是加载单个HTML页面，并在用户与应用程序交互时动态更新页面。只会在初始化的时候加载相应的HTML,CSS,JS。不会因为用户的操作而进行页面的重新加载或跳转。利用路由机制实现 HTML 内容的变换，UI 与用户的交互，避免页面的重新加载。</p>
+<ul>
+<li><p>传统页面：</p>
+<p>客户端 ———通过发送url请求——————  server</p>
+<p>客户端 ———服务器端返回html页面———  server</p>
+</li>
+<li><p>SPA页面：</p>
+<p>客户端 ———通过发送ajax请求——————  server</p>
+<p>客户端 ———服务器端返回数据———  server</p>
+</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>有良好的交互体验：提升页面交互体验，不会频繁切换浏览器页面，避免了页面的频繁重新加载</li>
+<li>前后端分离：前后端职责分离，架构清晰，前端进行交互逻辑，后端负责数据处理</li>
+<li>减轻服务器压力：服务器端只需要返回数据即可，不用管展示逻辑与页面合成<br>缺点：</li>
+<li>SEO（搜索引擎优化）难度较高：页面内容动态替换，页面不会刷新，导致很难被搜索引擎抓取（搜索引擎遵循http协议，#不是协议的内容）</li>
+<li>无法使用浏览器的前进后退功能，所有页面需要自己建立堆栈管理。（解决方案：利用URI中的散列+iframe实现）（配置好路由信息，通过记录浏览过的历史路由信息，可以很好的记录或历史查看过的界面）</li>
+<li>初次加载耗时多：为实现单页 Web 应用功能及显示效果，需要在加载页面的时候将 JavaScript、CSS 统一加载，部分页面按需加载</li>
+</ul>
+<h2 id="MPA多页应用"><a href="#MPA多页应用" class="headerlink" title="MPA多页应用"></a>MPA多页应用</h2><p>关键词：</p>
+<p>描述：MAP（Multi-page application），多页面应用。每访问一个页面都需要重新加载HTML,JS,CSS文件，公共文件按需加载</p>
+<p>优点：</p>
+<ul>
+<li>首屏加载快</li>
+<li>SEO（搜索引擎优化）效果好<br>缺点：</li>
+<li>页面切换慢：每一次切换页面都要重新加载html,css,js等资源</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/10/vue%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/" rel="prev" title="vue知识体系">
+                  <i class="fa fa-chevron-left"></i> vue知识体系
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/27/vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%9B%B8%E5%85%B3/" rel="next" title="vue生命周期">
+                  vue生命周期 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

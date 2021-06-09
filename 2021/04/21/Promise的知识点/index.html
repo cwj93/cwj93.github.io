@@ -23,15 +23,15 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="Promise的知识点记录一下Promise的一些知识点 基础概念 Promise是异步编程的一种解决方案，可以将异步操作以同步操作的流程表达出来，避免了层层嵌套的回调函数(回调地狱) Promise有三个状态，分别为pending(等待状态)&#x2F;fulfilled(成功态)&#x2F;rejected(失败态) pending状态可以转化为fulfilled&#x2F;rejected状态 成功时，不可以转为其他状态">
+<meta name="description" content="Promise的知识点记录一下Promise的一些知识点 1基础概念 Promise是异步编程的一种解决方案，可以将异步操作以同步操作的流程表达出来，避免了层层嵌套的回调函数(回调地狱) Promise有三个状态，分别为pending(等待状态)&#x2F;fulfilled(成功态)&#x2F;rejected(失败态) pending状态可以转化为fulfilled&#x2F;rejected状态 成功时，不可以转为其他状">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Promise的知识点">
+<meta property="og:title" content="Promise的知识点&#x2F;任务队列">
 <meta property="og:url" content="http://example.com/2021/04/21/Promise%E7%9A%84%E7%9F%A5%E8%AF%86%E7%82%B9/index.html">
 <meta property="og:site_name" content="尘世幽梦的BLOG">
-<meta property="og:description" content="Promise的知识点记录一下Promise的一些知识点 基础概念 Promise是异步编程的一种解决方案，可以将异步操作以同步操作的流程表达出来，避免了层层嵌套的回调函数(回调地狱) Promise有三个状态，分别为pending(等待状态)&#x2F;fulfilled(成功态)&#x2F;rejected(失败态) pending状态可以转化为fulfilled&#x2F;rejected状态 成功时，不可以转为其他状态">
+<meta property="og:description" content="Promise的知识点记录一下Promise的一些知识点 1基础概念 Promise是异步编程的一种解决方案，可以将异步操作以同步操作的流程表达出来，避免了层层嵌套的回调函数(回调地狱) Promise有三个状态，分别为pending(等待状态)&#x2F;fulfilled(成功态)&#x2F;rejected(失败态) pending状态可以转化为fulfilled&#x2F;rejected状态 成功时，不可以转为其他状">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-04-21T06:16:15.000Z">
-<meta property="article:modified_time" content="2021-04-21T06:56:12.087Z">
+<meta property="article:modified_time" content="2021-05-28T06:21:54.498Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
@@ -48,7 +48,7 @@
     lang   : 'en'
   };
 </script>
-<title>Promise的知识点 | 尘世幽梦的BLOG</title>
+<title>Promise的知识点/任务队列 | 尘世幽梦的BLOG</title>
   
 
 
@@ -147,7 +147,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Promise%E7%9A%84%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">Promise的知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">基础概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">基本用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E7%BB%88%E4%BB%A3%E7%A0%81"><span class="nav-number">1.3.</span> <span class="nav-text">最终代码</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Promise%E7%9A%84%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">Promise的知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">1基础概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1"><span class="nav-number">1.2.</span> <span class="nav-text">任务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97"><span class="nav-number">1.2.1.</span> <span class="nav-text">任务队列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8F%E4%BB%BB%E5%8A%A1%E4%B8%8E%E5%BE%AE%E4%BB%BB%E5%8A%A1"><span class="nav-number">1.2.2.</span> <span class="nav-text">宏任务与微任务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">基本用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E7%BB%88%E4%BB%A3%E7%A0%81"><span class="nav-number">1.4.</span> <span class="nav-text">最终代码</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -160,7 +160,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">37</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -213,7 +213,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Promise的知识点
+          Promise的知识点/任务队列
         </h1>
 
         <div class="post-meta-container">
@@ -223,10 +223,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-04-21 14:16:15 / Modified: 14:56:12" itemprop="dateCreated datePublished" datetime="2021-04-21T14:16:15+08:00">2021-04-21</time>
+      <time title="Created: 2021-04-21 14:16:15" itemprop="dateCreated datePublished" datetime="2021-04-21T14:16:15+08:00">2021-04-21</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-05-28 14:21:54" itemprop="dateModified" datetime="2021-05-28T14:21:54+08:00">2021-05-28</time>
+      </span>
 
   
 </div>
@@ -239,12 +245,33 @@
     
     <div class="post-body" itemprop="articleBody">
         <h1 id="Promise的知识点"><a href="#Promise的知识点" class="headerlink" title="Promise的知识点"></a>Promise的知识点</h1><p>记录一下Promise的一些知识点</p>
-<h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><ul>
+<h2 id="1基础概念"><a href="#1基础概念" class="headerlink" title="1基础概念"></a>1基础概念</h2><ul>
 <li>Promise是异步编程的一种解决方案，可以将异步操作以同步操作的流程表达出来，避免了层层嵌套的回调函数(回调地狱)</li>
 <li>Promise有三个状态，分别为pending(等待状态)/fulfilled(成功态)/rejected(失败态)</li>
 <li>pending状态可以转化为fulfilled/rejected状态</li>
 <li>成功时，不可以转为其他状态，且必须有一个不可改变的值(value)</li>
 <li>失败时，不可转变为其他状态，且必须有一个不可改变的原因(reason)</li>
+</ul>
+<h2 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h2><ul>
+<li>任务分为同步任务和异步任务。其中同步任务一般是直接进去主线程中执行的，异步任务是在通过任务队列（先进先出）来协调进入主线程。异步任务包括ajax请求，setTimeout等。<h3 id="任务队列"><a href="#任务队列" class="headerlink" title="任务队列"></a>任务队列</h3></li>
+<li>任务队列分为宏任务队列和微任务队列。script( 整体代码)作为一个宏任务，遇到同步代码就直接进入主线程执行，遇到异步代码就分发到对应的任务队列，其中setTimeout等会分发到宏任务队列中，Promise.then()则会分发到微任务队列中。待同步代码（当前宏任务）执行完毕之后，就会执行当前的微任务队列，以先进先出的顺序执行，微任务执行完毕，那么此时就是一个事件循环完成。接着就会进入下一事件循环，接着执行宏任务到微任务的过程。</li>
+<li>一个事件循环：宏任务到微任务的执行过程</li>
+<li>process.nextTick与Promise的then方法在同一事件循环中，process.nextTick的优先级高，先执行<h3 id="宏任务与微任务"><a href="#宏任务与微任务" class="headerlink" title="宏任务与微任务"></a>宏任务与微任务</h3><ul>
+<li>宏任务：<ul>
+<li>setTimeout</li>
+<li>setInterval</li>
+<li>js主代码</li>
+<li>setImmediate(Node)</li>
+<li>requestAnimationFrame(浏览器)</li>
+</ul>
+</li>
+<li>微任务：<ul>
+<li>process.nextTick</li>
+<li>Promise的then方法</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><p>  ES6 规定，Promise对象是一个构造函数，用来生成Promise实例。<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const promise &#x3D; new Promise((resolve,reject)&#x3D;&gt;&#123;</span><br><span class="line">  &#x2F;&#x2F;此处执行一些异步操作（调用后台API，定时器等）</span><br><span class="line">  if(&#x2F;*异步操作成功*&#x2F;)&#123;</span><br><span class="line">      resolve(value);</span><br><span class="line">  &#125;else&#123;</span><br><span class="line">      reject(error)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;) </span><br><span class="line">&#x2F;&#x2F;其中两个函数的参数值分别为成功和失败后想要传递的结果</span><br></pre></td></tr></table></figure></p>
 <h2 id="最终代码"><a href="#最终代码" class="headerlink" title="最终代码"></a>最终代码</h2>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;Promise函数</span><br><span class="line">function Promise(executor) &#123;</span><br><span class="line">    let self &#x3D; this; &#x2F;&#x2F;保留this。防止后面方法出现this只想不明的问题</span><br><span class="line">    self.status &#x3D; &#39;pending&#39;; &#x2F;&#x2F;promise的默认状态是pending</span><br><span class="line">    self.success &#x3D; undefined; &#x2F;&#x2F;保存成功回调传递的值</span><br><span class="line">    self.error &#x3D; undefined; &#x2F;&#x2F;保存失败回调传递的值</span><br><span class="line"></span><br><span class="line">    self.onSuccessCallbacks &#x3D; []; &#x2F;&#x2F;存放成功的回调</span><br><span class="line">    self.onErrorCallbacks &#x3D; []; &#x2F;&#x2F;存放失败的回调</span><br><span class="line"></span><br><span class="line">    function resolve(success) &#123;</span><br><span class="line">        if (self.status &#x3D;&#x3D;&#x3D; &#39;pending&#39;) &#123;</span><br><span class="line">            self.status &#x3D; &#39;resolved&#39;; &#x2F;&#x2F;成功函数将其状态修改为resolved</span><br><span class="line">            self.success &#x3D; success; &#x2F;&#x2F;将成功的值保存起来</span><br><span class="line">            self.onSuccessCallbacks.forEach(element &#x3D;&gt; &#123;</span><br><span class="line">                element();</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function reject(error) &#123;</span><br><span class="line">        if (self.status &#x3D;&#x3D;&#x3D; &#39;pending&#39;) &#123;</span><br><span class="line">            self.status &#x3D; &#39;rejected&#39;; &#x2F;&#x2F;失败函数将其函数修改为rejected</span><br><span class="line">            self.error &#x3D; error; &#x2F;&#x2F;将失败的值保存起来</span><br><span class="line">            self.onErrorCallbacks.forEach(element &#x3D;&gt; &#123;</span><br><span class="line">                element();</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    try &#123;</span><br><span class="line">        executor(resolve, reject);</span><br><span class="line">    &#125; catch (err) &#123;</span><br><span class="line">        reject(err);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;then函数</span><br><span class="line">Promise.prototype.then &#x3D; function (onResolved, onRejected) &#123;</span><br><span class="line">    onResolved &#x3D; typeof onResolved &#x3D;&#x3D; &#39;function&#39; ? onResolved : val &#x3D;&gt; val;</span><br><span class="line">    onRejected &#x3D; typeof onRejected &#x3D;&#x3D; &#39;function&#39; ? onRejected : err &#x3D;&gt; &#123;</span><br><span class="line">        throw err;</span><br><span class="line">    &#125;</span><br><span class="line">    let self &#x3D; this;</span><br><span class="line">    let promiseAgain &#x3D; new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">        if (self.status &#x3D;&#x3D;&#x3D; &#39;pending&#39;) &#123;</span><br><span class="line">            self.onSuccessCallbacks.push(() &#x3D;&gt; &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    let x &#x3D; onResolved(self.success); &#x2F;&#x2F;将resolve函数保留的成功值传递作为参数</span><br><span class="line">                    resolvePromise(promiseAgain, x, resolve, reject);</span><br><span class="line">                &#125; catch (e) &#123;</span><br><span class="line">                    reject(e)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">            self.onErrorCallbacks.push(() &#x3D;&gt; &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    let x &#x3D; onRejected(self.error); &#x2F;&#x2F;将reject函数保留的失败值传递作为参数</span><br><span class="line">                    resolvePromise(promiseAgain, x, resolve, reject);</span><br><span class="line">                &#125; catch (e) &#123;</span><br><span class="line">                    reject(e)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">        if (self.status &#x3D;&#x3D;&#x3D; &#39;resolved&#39;) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                let x &#x3D; onResolved(self.success); &#x2F;&#x2F;将resolve函数保留的成功值传递作为参数</span><br><span class="line">                resolvePromise(promiseAgain, x, resolve, reject);</span><br><span class="line">            &#125; catch (e) &#123;</span><br><span class="line">                reject(e)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (self.status &#x3D;&#x3D;&#x3D; &#39;rejected&#39;) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                let x &#x3D; onRejected(self.error); &#x2F;&#x2F;将reject函数保留的失败值传递作为参数</span><br><span class="line">                resolvePromise(promiseAgain, x, resolve, reject);</span><br><span class="line">            &#125; catch (e) &#123;</span><br><span class="line">                reject(e)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    return promiseAgain;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;resolvePromise函数</span><br><span class="line">function resolvePromise(promiseAgain, x, resolve, reject) &#123;</span><br><span class="line">    if (promiseAgain &#x3D;&#x3D;&#x3D; x) &#123;</span><br><span class="line">        return reject(new TypeError(&quot;循环调用&quot;));</span><br><span class="line">    &#125;</span><br><span class="line">    if (x !&#x3D;&#x3D; null &amp;&amp; (typeof x &#x3D;&#x3D;&#x3D; &#39;object&#39; || typeof x &#x3D;&#x3D;&#x3D; &#39;function&#39;)) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            let then &#x3D; x.then;</span><br><span class="line">            if (typeof then &#x3D;&#x3D;&#x3D; &#39;function&#39;) &#123;</span><br><span class="line">                then.call(x, (y) &#x3D;&gt; &#123;</span><br><span class="line">                    resolvePromise(promiseAgain, y, resolve, reject);</span><br><span class="line">                &#125;, (e) &#x3D;&gt; &#123;</span><br><span class="line">                    reject(e);</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                resolve(x);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; catch (error) &#123;</span><br><span class="line">            reject(error);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        resolve(x);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">module.exports &#x3D; Promise;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
