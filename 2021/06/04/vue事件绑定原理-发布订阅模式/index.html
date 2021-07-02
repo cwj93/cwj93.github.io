@@ -23,15 +23,15 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="vue事件绑定原理发布订阅模式  发布-订阅模式其实是一种对象间一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都将得到状态改变的通知   既然一对多 肯定有一个事件调度中心用来调度事件 订阅者可以注册事件（on）到事件中心 发布者可以发布事件（emit）到调度中心 订阅者也可以取消订阅（off）或者只订阅一次（once）   代码实现如下：  123456789101112131">
+<meta name="description" content="vue事件绑定原理发布订阅模式  发布-订阅模式其实是一种对象间一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都将得到状态改变的通知   既然一对多 肯定有一个事件调度中心用来调度事件 订阅者可以注册事件（on）到事件中心 发布者可以发布事件（emit）到调度中心 订阅者也可以取消订阅（off）或者只订阅一次（once）   主要功能：  维护一个变量 listeners，初识状">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vue事件绑定原理-发布订阅模式">
 <meta property="og:url" content="http://example.com/2021/06/04/vue%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86-%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="尘世幽梦的BLOG">
-<meta property="og:description" content="vue事件绑定原理发布订阅模式  发布-订阅模式其实是一种对象间一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都将得到状态改变的通知   既然一对多 肯定有一个事件调度中心用来调度事件 订阅者可以注册事件（on）到事件中心 发布者可以发布事件（emit）到调度中心 订阅者也可以取消订阅（off）或者只订阅一次（once）   代码实现如下：  123456789101112131">
+<meta property="og:description" content="vue事件绑定原理发布订阅模式  发布-订阅模式其实是一种对象间一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都将得到状态改变的通知   既然一对多 肯定有一个事件调度中心用来调度事件 订阅者可以注册事件（on）到事件中心 发布者可以发布事件（emit）到调度中心 订阅者也可以取消订阅（off）或者只订阅一次（once）   主要功能：  维护一个变量 listeners，初识状">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-06-04T02:14:06.000Z">
-<meta property="article:modified_time" content="2021-06-04T02:48:09.196Z">
+<meta property="article:modified_time" content="2021-06-10T01:13:40.895Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
@@ -147,7 +147,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vue%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">vue事件绑定原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">发布订阅模式</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vue%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">vue事件绑定原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">发布订阅模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A7%E5%80%9FVue%E5%86%85%E7%BD%AEEventBus%E5%AE%9E%E7%8E%B0%EF%BC%8C%E5%B0%81%E8%A3%85vue%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF%E6%8F%92%E4%BB%B6"><span class="nav-number">1.2.</span> <span class="nav-text">巧借Vue内置EventBus实现，封装vue事件总线插件</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -160,7 +160,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">43</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -223,10 +223,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-06-04 10:14:06 / Modified: 10:48:09" itemprop="dateCreated datePublished" datetime="2021-06-04T10:14:06+08:00">2021-06-04</time>
+      <time title="Created: 2021-06-04 10:14:06" itemprop="dateCreated datePublished" datetime="2021-06-04T10:14:06+08:00">2021-06-04</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-10 09:13:40" itemprop="dateModified" datetime="2021-06-10T09:13:40+08:00">2021-06-10</time>
+      </span>
 
   
 </div>
@@ -240,8 +246,18 @@
     <div class="post-body" itemprop="articleBody">
         <h1 id="vue事件绑定原理"><a href="#vue事件绑定原理" class="headerlink" title="vue事件绑定原理"></a>vue事件绑定原理</h1><h2 id="发布订阅模式"><a href="#发布订阅模式" class="headerlink" title="发布订阅模式"></a>发布订阅模式</h2><p>  发布-订阅模式其实是一种对象间一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都将得到状态改变的通知</p>
 <p>  既然一对多 肯定有一个事件调度中心用来调度事件 订阅者可以注册事件（on）到事件中心 发布者可以发布事件（emit）到调度中心 订阅者也可以取消订阅（off）或者只订阅一次（once）</p>
+<p>  主要功能：</p>
+<ul>
+<li>维护一个变量 listeners，初识状态为一个空对象字面量，用于存储不同事件和事件对应的处理函数。</li>
+<li>实现$on方法：用于监听事件。</li>
+<li>实现$once方法：用于一次性事件监听。</li>
+<li>实现$emit方法：用于触发对应的事件监听。</li>
+<li>实现$off方法：用于消除对应的事件监听。</li>
+</ul>
 <p>  代码实现如下：<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">class EventEmitter&#123;</span><br><span class="line">  constructor() &#123;</span><br><span class="line">    this.events &#x3D; &#123;&#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  &#x2F;&#x2F; 实现订阅</span><br><span class="line">  on(type, callBack) &#123;</span><br><span class="line">    &#x2F;&#x2F; 判断是否存在事件调度中心对象</span><br><span class="line">    if(!this.events) this.events &#x3D; Object.create(null);</span><br><span class="line">    &#x2F;&#x2F; 判断当前事件是否存在</span><br><span class="line">    if(!this.events[type]) &#123;</span><br><span class="line">      &#x2F;&#x2F; 每一个事件都是一个数组对象，用于存储该事件的回调函数;</span><br><span class="line">      &#x2F;&#x2F; 因为事件可能会被订阅多次，每一次的回调函数都是不同的</span><br><span class="line">      this.events[type] &#x3D; [callBack]; </span><br><span class="line">    &#125;else&#123;</span><br><span class="line">      this.events[type].push(callBack);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  &#x2F;&#x2F; 取消订阅</span><br><span class="line">  off(type, callBack) &#123;</span><br><span class="line">    &#x2F;&#x2F; 判断需要去掉订阅的事件是否存在事件中心对象中，不存在，则直接return，不执行操作</span><br><span class="line">    if(!this.events[type]) return</span><br><span class="line"></span><br><span class="line">    this.events[type] &#x3D; this.events[type].filter(item &#x3D;&gt; &#123;</span><br><span class="line">      return item !&#x3D; callBack</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  &#x2F;&#x2F; 只执行一次订阅事件</span><br><span class="line">  once(type,callBack)&#123;</span><br><span class="line">    &#x2F;&#x2F; 执行on订阅事件，然后在回调函数中，执行off取消订阅操作</span><br><span class="line">    function() fn&#123;</span><br><span class="line">      callBack();</span><br><span class="line">      this.off(type, fn)</span><br><span class="line">    &#125;</span><br><span class="line">    this.on(type, fn)</span><br><span class="line">  &#125;</span><br><span class="line">  &#x2F;&#x2F; 触发事件</span><br><span class="line">  emit(type, ...args) &#123;</span><br><span class="line">    &#x2F;&#x2F; 当事件存在于事件中心中才会去触发后续（on订阅事件中回调）操作</span><br><span class="line">    this.events[type] &amp;&amp; this,.events[type].forEach(fn &#x3D;&gt; &#123;</span><br><span class="line">      &#x2F;&#x2F; fn.call(this, ...args)</span><br><span class="line">      fn.apply(this, args)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>  使用如下<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">const event &#x3D; new EventEmitter();</span><br><span class="line">const handle &#x3D; (...args) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(args)</span><br><span class="line">&#125;</span><br><span class="line">event.on(&#39;click&#39;, handle);</span><br><span class="line">event.emit(&#39;click&#39;, 1,2,3);</span><br><span class="line">event.off(&#39;click&#39;, handle);</span><br><span class="line"></span><br><span class="line">event.once(&#39;dbClick&#39;, () &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;dbClick&#39;);</span><br><span class="line">&#125;)</span><br><span class="line">event.emit(&#39;dbClick&#39;);</span><br><span class="line">event.emit(&#39;dbClick&#39;)</span><br></pre></td></tr></table></figure></p>
+<h2 id="巧借Vue内置EventBus实现，封装vue事件总线插件"><a href="#巧借Vue内置EventBus实现，封装vue事件总线插件" class="headerlink" title="巧借Vue内置EventBus实现，封装vue事件总线插件"></a>巧借Vue内置EventBus实现，封装vue事件总线插件</h2>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">export default function install(Vue) &#123;</span><br><span class="line">  const bus &#x3D; new Vue(&#123;</span><br><span class="line">    methods: &#123;</span><br><span class="line">      on(event, handler) &#123;</span><br><span class="line">        this.$on(event, handler)</span><br><span class="line">        return this</span><br><span class="line">      &#125;,</span><br><span class="line">      once(event, handler) &#123;</span><br><span class="line">        this.$once(event, handler)</span><br><span class="line">        return this</span><br><span class="line">      &#125;,</span><br><span class="line">      emit(event, ...args) &#123;</span><br><span class="line">        this.$emit(event, ...args)</span><br><span class="line">        return this</span><br><span class="line">      &#125;,</span><br><span class="line">      off(event, handler) &#123;</span><br><span class="line">        this.$off(event, handler)</span><br><span class="line">        return this</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  Vue.prototype.$bus &#x3D; bus</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  我们在Vue实例化之前，安装一下这个插件，就可以在组件内的任意位置使用了<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import Vue from &#39;vue&#39;</span><br><span class="line">import EventBus from &#39;.&#x2F;EventBus&#39;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 安装 EventBus 插件</span><br><span class="line">Vue.use(EventBus)</span><br><span class="line"></span><br><span class="line">new Vue(&#123;</span><br><span class="line">  &#x2F;&#x2F;...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
 
     </div>
 

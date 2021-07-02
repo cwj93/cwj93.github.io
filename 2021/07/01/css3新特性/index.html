@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="css 三大特性 继承  父级文本样式会被子级继承 层叠  当样式发生冲突时，权重高的覆盖权重低的 优先级  !important &gt; 行内样式 &gt; id选择器 &gt; 类选择器 &gt; 标签选择器 &gt; *通用选择器 &gt; 继承  BFC 块级格式化上下文 概念： css盒模型的渲染规则 渲染规则：（html标签就是一个BFC元素） 规则1：创建的BFC元素，在垂直方向上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="css3新特性">
+<meta property="og:url" content="http://example.com/2021/07/01/css3%E6%96%B0%E7%89%B9%E6%80%A7/index.html">
+<meta property="og:site_name" content="尘世幽梦的BLOG">
+<meta property="og:description" content="css 三大特性 继承  父级文本样式会被子级继承 层叠  当样式发生冲突时，权重高的覆盖权重低的 优先级  !important &gt; 行内样式 &gt; id选择器 &gt; 类选择器 &gt; 标签选择器 &gt; *通用选择器 &gt; 继承  BFC 块级格式化上下文 概念： css盒模型的渲染规则 渲染规则：（html标签就是一个BFC元素） 规则1：创建的BFC元素，在垂直方向上">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-07-01T02:24:03.000Z">
+<meta property="article:modified_time" content="2021-07-02T02:05:00.195Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/07/01/css3%E6%96%B0%E7%89%B9%E6%80%A7/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+<title>css3新特性 | 尘世幽梦的BLOG</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">尘世幽梦的BLOG</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#css-%E4%B8%89%E5%A4%A7%E7%89%B9%E6%80%A7"><span class="nav-number">1.</span> <span class="nav-text">css 三大特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BFC-%E5%9D%97%E7%BA%A7%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="nav-number">2.</span> <span class="nav-text">BFC 块级格式化上下文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#css3%E6%96%B0%E5%A2%9E%E7%9A%84%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">css3新增的选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#css3%E6%96%B0%E7%89%B9%E6%80%A7"><span class="nav-number">4.</span> <span class="nav-text">css3新特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%BF%87%E6%B8%A1-transition"><span class="nav-number">4.1.</span> <span class="nav-text">1.过渡 transition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%8A%A8%E7%94%BB-animation"><span class="nav-number">4.2.</span> <span class="nav-text">2.动画 animation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%BD%A2%E7%8A%B6%E8%BD%AC%E6%8D%A2-transform"><span class="nav-number">4.3.</span> <span class="nav-text">3.形状转换 transform</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E9%98%B4%E5%BD%B1-box-shadow"><span class="nav-number">4.4.</span> <span class="nav-text">4.阴影 box-shadow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E8%BE%B9%E6%A1%86%E5%9B%BE%E7%89%87"><span class="nav-number">4.5.</span> <span class="nav-text">5.边框图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E8%BE%B9%E6%A1%86%E5%9C%86%E8%A7%92"><span class="nav-number">4.6.</span> <span class="nav-text">6.边框圆角</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E8%83%8C%E6%99%AF"><span class="nav-number">4.7.</span> <span class="nav-text">7.背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E5%8F%8D%E5%B0%84-%E5%80%92%E5%BD%B1"><span class="nav-number">4.8.</span> <span class="nav-text">8.反射&#x2F;倒影</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-flex%E5%B8%83%E5%B1%80"><span class="nav-number">4.9.</span> <span class="nav-text">9.flex布局</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/01/css3%E6%96%B0%E7%89%B9%E6%80%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          css3新特性
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-01 10:24:03" itemprop="dateCreated datePublished" datetime="2021-07-01T10:24:03+08:00">2021-07-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-02 10:05:00" itemprop="dateModified" datetime="2021-07-02T10:05:00+08:00">2021-07-02</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="css-三大特性"><a href="#css-三大特性" class="headerlink" title="css 三大特性"></a>css 三大特性</h2><ul>
+<li>继承  父级文本样式会被子级继承</li>
+<li>层叠  当样式发生冲突时，权重高的覆盖权重低的</li>
+<li>优先级  !important &gt; 行内样式 &gt; id选择器 &gt; 类选择器 &gt; 标签选择器 &gt; *通用选择器 &gt; 继承</li>
+</ul>
+<h2 id="BFC-块级格式化上下文"><a href="#BFC-块级格式化上下文" class="headerlink" title="BFC 块级格式化上下文"></a>BFC 块级格式化上下文</h2><ul>
+<li>概念： css盒模型的渲染规则</li>
+<li>渲染规则：（html标签就是一个BFC元素）<ul>
+<li>规则1：创建的BFC元素，在垂直方向上的margin会发生重叠（塌陷）</li>
+<li>规则2：BFC元素在页面上独立的容器，外面的元素和里面的元素互不影响</li>
+<li>规则3：BFC元素不会和浮动的元素重叠（可以解释两栏自适应）</li>
+<li>规则4：计算BFC元素的高度时，里面浮动的元素的高度也会参与计算（用来解释overflow：hidden可以清楚浮动）</li>
+</ul>
+</li>
+<li>普通元素创建BFC<ul>
+<li>float浮动属性不为none</li>
+<li>overflow: hidden / auto</li>
+<li>position: 不为static 、 relative都可以</li>
+<li>display: table-cell … 表格相关的</li>
+</ul>
+</li>
+</ul>
+<h2 id="css3新增的选择器"><a href="#css3新增的选择器" class="headerlink" title="css3新增的选择器"></a>css3新增的选择器</h2><ul>
+<li>css3属性选择器<ul>
+<li>a[href] - 选择指定属性href的元素</li>
+<li>a[href=www] - 选择指定属性href值为www的元素</li>
+<li>a[href^=’www’] - 选择指定属性href值中以www开头的元素</li>
+<li>a[href$=’www’] - 选择指定属性href值中以www结尾的元素</li>
+<li>a[href*=’www’] - 选择指定属性href值中含有www的元素</li>
+</ul>
+</li>
+<li>css3结构伪类选择器(odd奇数、even偶数)<ul>
+<li>:nth-child(n) - 选择所有在其父元素中的第n个位置的匹配E的子元素</li>
+<li>:nth-last-child(n) - 选择所有在其父元素中倒数第n个位置的匹配E的子元素</li>
+<li>:last-child - 最后一个元素</li>
+<li>:fisrt-child - 第一个元素</li>
+<li>:empty - 选择匹配的元素不包含子元素</li>
+</ul>
+</li>
+</ul>
+<h2 id="css3新特性"><a href="#css3新特性" class="headerlink" title="css3新特性"></a>css3新特性</h2><h3 id="1-过渡-transition"><a href="#1-过渡-transition" class="headerlink" title="1.过渡 transition"></a>1.过渡 transition</h3><ul>
+<li>作用： 给元素添加一个过渡效果，让页面效果不过于生硬</li>
+<li>语法：transition： CSS属性，花费时间，效果曲线(默认ease)，延迟时间(默认0)</li>
+<li>例子：transition：width,.5s,ease,.2s   /  transition：all,.5s</li>
+<li>应用场景：下拉的显示/隐藏的过渡  元素hover时一些过渡的效果，如颜色等</li>
+</ul>
+<h3 id="2-动画-animation"><a href="#2-动画-animation" class="headerlink" title="2.动画 animation"></a>2.动画 animation</h3><ul>
+<li>作用：做一个预设的动画和一些页面交互的动画效果。给元素添加一个动画效果，让页面效果不过于生硬</li>
+<li>语法：animation：动画名称，一个周期花费时间，运动曲线（默认ease），动画延迟（默认0），播放次数（默认1），是否反向播放动画（默认normal），是否暂停动画（默认running）</li>
+<li>例子： animation: logo2-line 2s linear;  //执行一次logo2-line动画，运动时间2秒，运动曲线为 linear</li>
+<li>重要属性：animation-fill-mode 属性规定动画在播放之前或之后，其动画效果是否可见</li>
+<li>用法： animation-fill-mode : none | forwards | backwards | both;</li>
+<li><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">none	不改变默认行为。</span><br><span class="line">forwards	当动画完成后，保持最后一个属性值（在最后一个关键帧中定义）。</span><br><span class="line">backwards	在 animation-delay 所指定的一段时间内，在动画显示之前，应用开始属性值（在第一个关键帧中定义）。</span><br><span class="line">both	向前和向后填充模式都被应用。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="3-形状转换-transform"><a href="#3-形状转换-transform" class="headerlink" title="3.形状转换 transform"></a>3.形状转换 transform</h3><ul>
+<li>作用：适用于2D或3D转换的元素</li>
+<li>相关属性：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">transform-origin：转换元素的位置（围绕那个点进行转换）。默认(x,y,z)：(50%,50%,0)</span><br></pre></td></tr></table></figure></li>
+<li>语法： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1.旋转角度 rotateX  rotateY rotate3d</span><br><span class="line">  transform:rotate(30deg)</span><br><span class="line">2.偏移量(x,y)</span><br><span class="line">  transform:translate(30px,30px);</span><br><span class="line">3.缩放</span><br><span class="line">  transform:scale(.8);</span><br><span class="line">4.倾斜</span><br><span class="line">  transform: skew(10deg,10deg);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="4-阴影-box-shadow"><a href="#4-阴影-box-shadow" class="headerlink" title="4.阴影 box-shadow"></a>4.阴影 box-shadow</h3><ul>
+<li>作用：实现阴影效果</li>
+<li>语法： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">box-shadow: 水平阴影的位置 垂直阴影的位置 模糊距离 阴影的大小 阴影的颜色 阴影开始方向（默认是从里往外，设置inset就是从外往里）;</span><br></pre></td></tr></table></figure></li>
+<li>例子： box-shadow: 10px 10px 5px #888888</li>
+</ul>
+<h3 id="5-边框图片"><a href="#5-边框图片" class="headerlink" title="5.边框图片"></a>5.边框图片</h3><ul>
+<li>作用：设置内容边框图片</li>
+<li>语法：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">border-image: 图片url 图像边界向内偏移 图像边界的宽度(默认为边框的宽度) 用于指定在边框外部绘制偏移的量（默认0） 铺满方式--重复（repeat）、拉伸（stretch）或铺满（round）（默认：拉伸（stretch））;</span><br></pre></td></tr></table></figure></li>
+<li>语法拆分/例子：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.borderImg&#123;</span><br><span class="line">  border: 15px solid transparent;</span><br><span class="line">  padding: 15px;   </span><br><span class="line">  border-image: url(border.png);</span><br><span class="line">  border-image-slice: 30;</span><br><span class="line">  border-image-repeat: round;</span><br><span class="line">  border-image-outset: 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="6-边框圆角"><a href="#6-边框圆角" class="headerlink" title="6.边框圆角"></a>6.边框圆角</h3><ul>
+<li>作用：设置边框圆角</li>
+<li>语法： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">border-radius: n1,n2,n3,n4;</span><br><span class="line">border-radius: n1,n2,n3,n4&#x2F;n1,n2,n3,n4;</span><br><span class="line">&#x2F;*n1-n4四个值的顺序是：左上角，右上角，右下角，左下角。*&#x2F;</span><br></pre></td></tr></table></figure></li>
+<li>例子：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 左上角以及右下角为圆角</span><br><span class="line">border-radius:25px 0 25px 0;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="7-背景"><a href="#7-背景" class="headerlink" title="7.背景"></a>7.背景</h3><ul>
+<li>作用：控制背景的显示</li>
+<li>关键属性：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">1.background-clip</span><br><span class="line">制定背景绘制（显示）区域</span><br><span class="line">background-clip: border-box; &#x2F;&#x2F; 默认情况-从边框开始绘制</span><br><span class="line">background-clip: padding-box; &#x2F;&#x2F; 背景显示包含boder以及内容content</span><br><span class="line">background-clip: content-box; &#x2F;&#x2F; 背景显示只包含内容content</span><br><span class="line"></span><br><span class="line">2.background-origin</span><br><span class="line">指定背景的相对位置</span><br><span class="line">background-origin: border-box; &#x2F;&#x2F; 背景从boder处开始</span><br><span class="line">background-origin: padding-box; &#x2F;&#x2F; 背景从padding处开始</span><br><span class="line">background-origin: content-box; &#x2F;&#x2F; 背景从内容content处开始</span><br><span class="line"></span><br><span class="line">3. background-size</span><br><span class="line">制定背景大小</span><br><span class="line">&#x2F;&#x2F; 图片保持纵横比，并将图片缩放成当前区域的最大大小-不铺满</span><br><span class="line">background-size: contain; </span><br><span class="line">&#x2F;&#x2F; 图片保持纵横比，将图片缩放成完全覆盖当前区域的最小大小-全部覆盖，但是图片展示不全</span><br><span class="line">background-size: cover; </span><br><span class="line"></span><br><span class="line">4. 多张背景图片</span><br><span class="line">background:url(&#39;test.jpg&#39;) no-repeat left,url(logo.png) no-repeat right</span><br></pre></td></tr></table></figure>
+<h3 id="8-反射-倒影"><a href="#8-反射-倒影" class="headerlink" title="8.反射/倒影"></a>8.反射/倒影</h3></li>
+<li>好看：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src&#x3D;&quot;test.jpg&quot; class&#x3D;&quot;reflect-bottom-img&quot;&gt;</span><br><span class="line"></span><br><span class="line">.reflect-bottom-img &#123;</span><br><span class="line">  -webkit-box-reflect: below 0 url(shou.png);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="9-flex布局"><a href="#9-flex布局" class="headerlink" title="9.flex布局"></a>9.flex布局</h3></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/06/15/vue-v-for%E4%B8%ADkey%E7%9A%84%E4%BD%9C%E7%94%A8/" rel="prev" title="vue v-for中key的作用">
+                  <i class="fa fa-chevron-left"></i> vue v-for中key的作用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/02/this%E7%9A%84%E6%8C%87%E5%90%91/" rel="next" title="this的指向">
+                  this的指向 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
