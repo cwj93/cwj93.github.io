@@ -23,19 +23,17 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="vue3新特性记录一下我能记住的vue3.0的新特性  首先是双向数据绑定的实现方式： vue2.0使用的是Object.defineproperty()实现对数据对象的属性(data属性的属性)的监听，无法监听一些数组的变化，需要重写数组的原型方法来监听数组的变化vue3.0使用的是Proxy构造函数来监听对象的，是通过底层的对象来监听的，不存在数组无法监听的情况，而且Proxy具有13种拦截操">
+<meta name="description" content="vue3新特性Vue 3 中一些需要关注的新功能包括：  组合式(composition)API  Teleport-可称为任意门或瞬间移动组件  Teleport 是一种能够将我们的模板渲染至指定DOM节点，不受父级style、v-show等属性影响，但data、prop数据依旧能够共用的技术 teleport标签包含to属性用于指定挂载的目标DOM节点   片段(多根节点组件)  触发组件选项">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vue3新特性">
 <meta property="og:url" content="http://example.com/2021/06/01/vue3%E6%96%B0%E7%89%B9%E6%80%A7/index.html">
 <meta property="og:site_name" content="尘世幽梦的BLOG">
-<meta property="og:description" content="vue3新特性记录一下我能记住的vue3.0的新特性  首先是双向数据绑定的实现方式： vue2.0使用的是Object.defineproperty()实现对数据对象的属性(data属性的属性)的监听，无法监听一些数组的变化，需要重写数组的原型方法来监听数组的变化vue3.0使用的是Proxy构造函数来监听对象的，是通过底层的对象来监听的，不存在数组无法监听的情况，而且Proxy具有13种拦截操">
+<meta property="og:description" content="vue3新特性Vue 3 中一些需要关注的新功能包括：  组合式(composition)API  Teleport-可称为任意门或瞬间移动组件  Teleport 是一种能够将我们的模板渲染至指定DOM节点，不受父级style、v-show等属性影响，但data、prop数据依旧能够共用的技术 teleport标签包含to属性用于指定挂载的目标DOM节点   片段(多根节点组件)  触发组件选项">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/be5fbebfad2b4863a8cf664843b2106e~tplv-k3u1fbpfcp-zoom-1.image">
 <meta property="article:published_time" content="2021-06-01T01:40:27.000Z">
-<meta property="article:modified_time" content="2021-06-02T09:45:27.760Z">
+<meta property="article:modified_time" content="2022-04-25T08:05:09.478Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/be5fbebfad2b4863a8cf664843b2106e~tplv-k3u1fbpfcp-zoom-1.image">
 
 
 <link rel="canonical" href="http://example.com/2021/06/01/vue3%E6%96%B0%E7%89%B9%E6%80%A7/">
@@ -162,7 +160,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -233,7 +231,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-02 17:45:27" itemprop="dateModified" datetime="2021-06-02T17:45:27+08:00">2021-06-02</time>
+        <time title="Modified: 2022-04-25 16:05:09" itemprop="dateModified" datetime="2022-04-25T16:05:09+08:00">2022-04-25</time>
       </span>
 
   
@@ -246,13 +244,80 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="vue3新特性"><a href="#vue3新特性" class="headerlink" title="vue3新特性"></a>vue3新特性</h1><p>记录一下我能记住的vue3.0的新特性</p>
+        <h1 id="vue3新特性"><a href="#vue3新特性" class="headerlink" title="vue3新特性"></a>vue3新特性</h1><p>Vue 3 中一些需要关注的新功能包括：</p>
 <ul>
-<li><p>首先是双向数据绑定的实现方式：</p>
-<p>vue2.0使用的是Object.defineproperty()实现对数据对象的属性(data属性的属性)的监听，无法监听一些数组的变化，需要重写数组的原型方法来监听数组的变化<br>vue3.0使用的是Proxy构造函数来监听对象的，是通过底层的对象来监听的，不存在数组无法监听的情况，而且Proxy具有13种拦截操作</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">this.formModel[controlId] &#x3D; </span><br><span class="line">this.formModel[controlId].replace(&#x2F;^\D*(\d*(?:\.\d&#123;0,3&#125;)?).*$&#x2F;g, &#39;$1&#39;);</span><br></pre></td></tr></table></figure></li>
+<li><p>组合式(composition)API</p>
+</li>
+<li><p>Teleport-可称为任意门或瞬间移动组件</p>
+<ul>
+<li>Teleport 是一种能够将我们的模板渲染至指定DOM节点，不受父级style、v-show等属性影响，但data、prop数据依旧能够共用的技术</li>
+<li>teleport标签包含to属性用于指定挂载的目标DOM节点</li>
 </ul>
-<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/be5fbebfad2b4863a8cf664843b2106e~tplv-k3u1fbpfcp-zoom-1.image" alt="vue3新特性"></p>
+</li>
+<li><p>片段(多根节点组件)</p>
+</li>
+<li><p>触发组件选项</p>
+</li>
+<li><p>来自【@vue/runtime-core】的 【createRender】API，用于创建自定义渲染器</p>
+</li>
+<li><p>单文件组件组合式API语法糖【<code>&lt;script setup&gt;</code>】</p>
+</li>
+<li><p>单文件组件状态驱动的CSS变量【<code>&lt;style&gt;</code>中的<code>v-bind</code>】【<code>&lt;style vars&gt;</code>】</p>
+<ul>
+<li><p>```</p>
+  <script setup>
+    const theme = {
+      color: 'red'
+    }
+  </script>
+
+  <template>
+    <p>hello</p>
+  </template>
+
+  <style scoped>
+    p {
+      color: v-bind('theme.color');
+    }
+  </style>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">    + 实际的值会被编译成 hash 的 CSS 自定义 property，CSS 本身仍然是静态的。自定义 property 会通过内联样式的方式应用到组件的根元素上，并且在源值变更的时候响应式更新</span><br><span class="line">  + SFC(单文件组件) 【&#96;&#96;&#96;&lt;style scoped&gt;&#96;&#96;&#96;】现在可以包含全局规则或只针对插槽内容的规则</span><br><span class="line">  + Suspense 【实验性】</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Vue 在线演示编译结果</span><br><span class="line"> + Vue3: https:&#x2F;&#x2F;vue-next-template-explorer.netlify.app&#x2F;</span><br><span class="line"> + Vue2: https:&#x2F;&#x2F;vue-template-explorer.netlify.app&#x2F;</span><br><span class="line"></span><br><span class="line">记录一下我能记住的vue3.0的新特性</span><br><span class="line">+ 首先是双向数据绑定的实现方式：</span><br><span class="line"></span><br><span class="line">  vue2.0使用的是Object.defineproperty()实现对数据对象的属性(data属性的属性)的监听，无法监听一些数组的变化，需要重写数组的原型方法来监听数组的变化</span><br><span class="line">  vue3.0使用的是Proxy构造函数来监听对象的，是通过底层的对象来监听的，不存在数组无法监听的情况，而且Proxy具有13种拦截操作</span><br></pre></td></tr></table></figure>
+<p>this.formModel[controlId] =<br>this.formModel[controlId].replace(/^\D*(\d*(?:.\d{0,3})?).*$/g, ‘$1’);</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">![vue3新特性](https:&#x2F;&#x2F;p3-juejin.byteimg.com&#x2F;tos-cn-i-k3u1fbpfcp&#x2F;be5fbebfad2b4863a8cf664843b2106e~tplv-k3u1fbpfcp-zoom-1.image)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## vue2 Options API 与vue3 Composition API的区别</span><br><span class="line">为什么要用composition API ?</span><br><span class="line">  + vue2对于复杂逻辑组件，在后期变得无法维护 - 当我们的组件开始变得更大时，逻辑关注点的列表也会增长，对于那些一开始没有编写这些组件的人来说，这会导致组件难以阅读和理解</span><br><span class="line">  + vue2中代码复用的方法，如Mixin,Filters都有缺陷</span><br><span class="line">    - Mixin中存在命名空间冲突的问题 - 在Mixin中定义的变量如果跟当前组件中的data中定义的变量冲突的话，会采用data中的变量。</span><br><span class="line">    - Mixin中存在逻辑不清晰的问题 - 在组件中插入Mixin的话，不能够直接看到Mixin的一个处理逻辑</span><br><span class="line">    - 作用域插槽(scoped slot) - 配置项多、代码分裂、性能差</span><br><span class="line">  + vue2对TS支持不充分（仅部分支持，vue3中从框架底层对TS进行了全面改写，可提高代码质量） </span><br><span class="line">  + Options API会使得代码逻辑割裂</span><br><span class="line">### VUE2 Options API</span><br><span class="line">vue2中使用Options API来开发，会把逻辑拆分为：</span><br><span class="line">  + components</span><br><span class="line">  + props</span><br><span class="line">  + data</span><br><span class="line">  + computed</span><br><span class="line">  + methods</span><br><span class="line">  + 生命周期的方法（创建[&#39;beforeCreate&#39;, &#39;created&#39;]&#x2F;挂载[&#39;beforeMount&#39;, &#39;mounted&#39;]&#x2F;更新[&#39;beforeUpdate&#39;, &#39;update&#39;]&#x2F;销毁[&#39;beforeDestory&#39;, &#39;destoryed&#39;]） </span><br><span class="line">此种方式约定了我们书写代码的一种方式</span><br><span class="line">### vue3 Composition API</span><br><span class="line">vue3 Composition API更加贴近自然语言，使用的函数式编程（通俗理解：[&#39;声明&#39;-&gt;&#39;逻辑定义&#39;-&gt;&#39;进行传参&#39;-&gt;&#39;进行函数的执行&#39;-&gt;&#39;返回执行的数据&#39;]）;</span><br><span class="line">  + 复杂组件的分离 - 代码逻辑成块，方便查找和区分</span><br><span class="line">  + 组件间逻辑共享</span><br><span class="line">  + 能够将同一个逻辑关注点相关代码收集在一起</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># vue3 中的变化</span><br><span class="line"> + 组合式API + 函数式编程</span><br><span class="line">    - setup - 组件选项</span><br><span class="line">        + setup选项在组件创建【之前】执行，一旦props被解析，就将作为组合式API的入口</span><br><span class="line">        + setup中避免使用this，因为它找不到组件实例。</span><br><span class="line">        + setup的调用发生在data property、computed property或methods被解析之前</span><br><span class="line">        + setup函数return返回的内容都暴露给组件的其余部分(计算属性、方法、生命周期钩子等等)以及组件的模板。</span><br><span class="line">        + 可以将功能抽离出来独立成一个单独的模块</span><br><span class="line">        + setup函数接收两个参数</span><br><span class="line">            - props</span><br><span class="line">            - context上下文对象（vue3中在setup里面无法获取到this，只能通过这个context上下文对象获取一些vue2中需要通过this才能访问的属性）</span><br><span class="line">        + setup 函数中访问路由，请调用 useRouter 或 useRoute 函数</span><br><span class="line">    - ref - 响应式变量-【ref 为我们的值创建了一个响应式引用】</span><br><span class="line">        + 通过ref函数使任何的响应式变量在任何地方起作用，返回的是一个将传递的参数包裹，放在一个带有value属性的对象&#123;value: &#39;传递给ref的参数&#39;&#125;返回。如ref(0)  返回为 &#123;value: 0&#125;。【为了保持 JavaScript 中不同数据类型的行为统一，因为在 JavaScript 中，Number 或 String 等基本类型是通过值而非引用传递的】</span><br><span class="line">        + 利用ref函数将某个对象中的属性变成响应式数据，修改响应式数据是不会影响到原始数据</span><br><span class="line">    - toRef &#x2F; toRefs</span><br><span class="line">        + toRef的本质是引用关系，修改响应式数据会影响原始数据</span><br><span class="line">        + toRef一次仅能设置一个数据</span><br><span class="line">        + toRefs用于批量设置多个数据为响应式数据</span><br><span class="line">        + toRefs接收一个对象作为参数，它会遍历对象身上的所有属性，然后挨个调用toRef执行</span><br><span class="line">        + ref和toRef的区别</span><br><span class="line">            - (1). ref本质是拷贝，修改响应式数据不会影响原始数据；toRef的本质是引用关系，修改响应式数据会影响原始数据</span><br><span class="line">            - (2). ref数据发生改变，界面会自动更新；toRef当数据发生改变是，界面不会自动更新</span><br><span class="line">            - (3). toRef传参与ref不同；toRef接收两个参数，第一个参数是哪个对象，第二个参数是对象的哪个属性</span><br><span class="line">    - reactive </span><br><span class="line">        + 它主要是处理你的对象让它经过 Proxy 的加工变为一个响应式的对象，类似于 Vue2.0 版本的 data 属性，需要注意的是加工后的对象跟原对象是不相等的，并且加工后的对象属于深度克隆的对象</span><br><span class="line">        + reactive的弊端是不能解构，解构就会失去响应性</span><br><span class="line">          + 据说解构reactive，是绕过了proxy代理，直接对原始数据进行拷贝，导致proxy代理的get和set无法触发</span><br><span class="line">    - 在 setup 内注册生命周期钩子</span><br><span class="line">        + 组合式 API 上的生命周期钩子与选项式 API 的名称相同，但前缀为 on：即 mounted 看起来会像 onMounted</span><br><span class="line">        + setup 是围绕 beforeCreate 和 created 生命周期钩子运行的,所以在setup中不需要显示定义这两个生命周期。</span><br><span class="line">        + 当生命周期混用时，主版本的钩子函数就会相对优先执行。为了产生不必要的麻烦就不要混用啦。</span><br><span class="line">    - watch - 响应式监听</span><br><span class="line">        + 需要从vue中引入</span><br><span class="line">        + 功能与vue2中的watch选项一样</span><br><span class="line">        + 接收三个参数：</span><br><span class="line">            - 一个想要监听的响应式引用(使用ref函数创建的响应式引用)或getter函数</span><br><span class="line">                + 例子 </span><br></pre></td></tr></table></figure>
+<pre><code>          import &#123;ref&#125; from &#39;vue&#39;;
+
+          export default &#123;
+            props: &#123;
+              title: String
+            &#125;,
+            setup(props, ctx) &#123;
+              const num = ref(0);
+              // 响应式引用
+              watch(num, (newValue, oldValue) =&gt; &#123;
+                console.log(&#39;The new num value is: &#39; + num.value)
+              &#125;)
+              // watch监听器可以监听一个getter函数
+              const state = reactive(&#123; count: 0 &#125;)
+              watch(() =&gt; state.count, (newValue, oldValue) =&gt; &#123;
+                  // 因为watch被观察的对象只能是getter/effect函数、ref、reactive对象或者这些类型是数组
+                  // 所以需要将state.count变成getter函数
+              &#125;)
+            &#125;
+          &#125;
+          <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">        - 一个回调</span><br><span class="line">        - 可选的配置选项</span><br><span class="line">- computed - 计算属性</span><br><span class="line">    + 可以像ref和watch一样在setup中使用，也可以在组件外部创建计算属性</span><br><span class="line">    + 访问计算属性的变量的值需要跟ref一样使用value属性来获取。</span><br><span class="line">    + 例子</span><br></pre></td></tr></table></figure>
+const counter = ref(0)
+const twiceTheCounter = computed(() =&gt; counter.value * 2)
+
+counter.value++
+console.log(counter.value) // 1
+console.log(twiceTheCounter.value) // 2
+```
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>组件间逻辑共享</p>
+</li>
+</ul>
 
     </div>
 
@@ -316,7 +381,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

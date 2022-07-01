@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -194,7 +194,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/07/vue%E4%B8%ADhash%E6%A8%A1%E5%BC%8F%E4%B8%8Ehistory%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/08/html%E3%80%81css%E3%80%81js%E4%B8%89%E5%A4%A7%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -207,7 +207,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/07/vue%E4%B8%ADhash%E6%A8%A1%E5%BC%8F%E4%B8%8Ehistory%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">vue中hash模式与history模式的区别</a>
+          <a href="/2021/07/08/html%E3%80%81css%E3%80%81js%E4%B8%89%E5%A4%A7%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-title-link" itemprop="url">html、css、js三大基础知识</a>
         </h2>
 
         <div class="post-meta-container">
@@ -219,7 +219,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2021-06-07 15:51:18 / Modified: 17:14:12" itemprop="dateCreated datePublished" datetime="2021-06-07T15:51:18+08:00">2021-06-07</time>
+      <time title="Created: 2021-07-08 14:25:39 / Modified: 15:23:16" itemprop="dateCreated datePublished" datetime="2021-07-08T14:25:39+08:00">2021-07-08</time>
     </span>
 
   
@@ -232,28 +232,34 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="vue中hash模式与history模式的区别"><a href="#vue中hash模式与history模式的区别" class="headerlink" title="vue中hash模式与history模式的区别"></a>vue中hash模式与history模式的区别</h1><p>  vue路由的两种模式核心都是-改变视图的同时不向服务发送请求</p>
-<h2 id="hash-模式"><a href="#hash-模式" class="headerlink" title="hash 模式"></a>hash 模式</h2><p>  hash模式的的url中会带有#号，#号虽然出现在url中，但是在发送http请求时，不会被包括在http请求中，对后端没有任何影响。因此改变hash不会重新加载页面。<br>  会使用到的api：</p>
-<ul>
-<li>hash改变会触发hashchange事件</li>
+          <h1 id="html"><a href="#html" class="headerlink" title="html"></a>html</h1><h1 id="css"><a href="#css" class="headerlink" title="css"></a>css</h1><h1 id="js"><a href="#js" class="headerlink" title="js"></a>js</h1><h1 id="相关题目"><a href="#相关题目" class="headerlink" title="相关题目"></a>相关题目</h1><h2 id="html，css，js三者的加载顺序问题"><a href="#html，css，js三者的加载顺序问题" class="headerlink" title="html，css，js三者的加载顺序问题"></a>html，css，js三者的加载顺序问题</h2><p>  DOM文档的加载顺序是由上而下的顺序加载</p>
+<ol>
+<li><span style="color: red;">DOM加载到link标签</span><ul>
+<li>css文件的加载是与DOM的加载并行的。也就是说css加载时，DOM还在继续构建。在DOM构建的过程中，遇到css样式或者img，则会向服务器发送一个请求，待资源返回后，将其添加到dom中相对的位置中。</li>
 </ul>
-<p>  存在的问题：</p>
-<ul>
-<li>hash的传参是基于url的，如果要传递复杂的数据，会有体积的限制</li>
-<li>hash 本来是拿来做页面定位的，如果拿来做路由的话，原来的锚点功能就不能用了<h2 id="history-模式"><a href="#history-模式" class="headerlink" title="history 模式"></a>history 模式</h2>history模式的URL中不带有#号，该模式是使用pushState,replaceState来修改URL的，会触发popstate事件，我们只需要对popstate事件进行监听获取location.pathname,根据对应的参数修改页面的内容即可。</li>
+</li>
+<li><span style="color: red;">DOM加载到script标签</span><ul>
+<li><span style="color: yellow;">js文件不会和DOM并行加载的。需要等待整个js加载完成之后才能继续加载DOM</span>，如果js脚本过大的话，可能会导致浏览器页面显示滞后，出现假死状态，这种效应称之为阻塞效应。</li>
+<li>js文件中一般都是调用ready函数或者onload函数，让DOM文档加载完成之后再执行js代码，这样才不会存在找不到Dom节点的情况。</li>
+<li>js阻塞其他资源的加载的原因是：浏览器为了防止js修改DOM树，需要重新构建DOM树的情况出现</li>
 </ul>
-<p>  会使用到的api：</p>
-<ul>
-<li>pushState,replaceState</li>
+</li>
+<li>解决方案<ul>
+<li>script标签中添加 defer=“ture”，则会让js与DOM并行加载，待页面加载完成后再执行js文件，这样则不存在阻塞</li>
+<li>scirpt标签中添加 async=“ture”，这个属性告诉浏览器该js文件是异步加载执行的。无法保证js文件的加载顺序，但是同样有与DOM并行加载的效果</li>
+<li>同时使用defer和async属性时，defer属性会失效</li>
+<li>将scirpt标签放在body标签之后，这样就不会出现加载的冲突了</li>
 </ul>
-<p>  存在的问题：</p>
-<ul>
-<li>history模式需要后端配合。因为在刷新页面之后，浏览器会发送HTTP请求，如果后端没有匹配该Url的话，就会返回404.</li>
+</li>
+</ol>
+<h4 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h4><p>  css加载时和Dom并行加载的，但是css会阻塞DOM的渲染，DOM的渲染之后等css加载完成之后才能执行。这涉及到浏览器的渲染机制。</p>
+<h4 id="浏览器的渲染机制："><a href="#浏览器的渲染机制：" class="headerlink" title="浏览器的渲染机制："></a>浏览器的渲染机制：</h4><ul>
+<li>解析html文件，生成DOM树</li>
+<li>解析css文件，生成css规则树</li>
+<li>待DOM树与css规则树生成之后，DOM树与css规则树结合生成render规则树</li>
+<li>根据render树中的节点信息去在浏览器中渲染绘制</li>
 </ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>1 hash 模式下，仅 hash 符号之前的内容会被包含在请求中，如 <a target="_blank" rel="noopener" href="http://www.abc.com,因此对于后端来说,即使没有做到对路由的全覆盖,也不会返回/">http://www.abc.com，因此对于后端来说，即使没有做到对路由的全覆盖，也不会返回</a> 404 错误。</p>
-<p>2 history 模式下，前端的 URL 必须和实际向后端发起请求的 URL 一致，如 <a target="_blank" rel="noopener" href="http://www.abc.com/book/id%E3%80%82%E5%A6%82%E6%9E%9C%E5%90%8E%E7%AB%AF%E7%BC%BA%E5%B0%91%E5%AF%B9">http://www.abc.com/book/id。如果后端缺少对</a> /book/id 的路由处理，将返回 404 错误。Vue-Router 官网里如此描述：“不过这种模式要玩好，还需要后台配置支持……所以呢，你要在服务端增加一个覆盖所有情况的候选资源：如果 URL 匹配不到任何静态资源，则应该返回同一个 index.html 页面，这个页面就是你 app 依赖的页面。”</p>
-<p>3 结合自身例子，对于一般的 Vue + Vue-Router + Webpack + XXX 形式的 Web 开发场景，用 history 模式即可，只需在后端（Apache 或 Nginx）进行简单的路由配置，同时搭配前端路由的 404 页面支持。</p>
-<p>作者：一个前端狗的日常分享<br>链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a319036b4204">https://www.jianshu.com/p/a319036b4204</a><br>来源：简书<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<h4 id="组织语言："><a href="#组织语言：" class="headerlink" title="组织语言："></a>组织语言：</h4><p>  关于DOM文档的加载顺序，DOM文档的加载顺序是<span style="color: yellow;">由上而下的顺序加载</span>，在DOM加载到link标签时，由于<span style="color: yellow;">css文件的加载时与DOM加载并行的</span>，所以<span style="color: yellow;">css的不会阻止DOM的解析，但是可能会阻塞DOM的渲染</span>，因为不确定css文件是否会在DOM加载完成之后解析完成。然后在DOM执行到script标签的时候，由于<span style="color: yellow;">js文件和DOM不是并行加载的</span>，<span style="color: yellow;">DOM加载需要等待js文件加载完成之后才能继续加载DOM</span>。所以可能会存在阻塞，所以我们一般会<span style="color: yellow;">把script标签放到body标签之后.然后就是如果我们不是把script放在body后面的话，那么我们也可以通过defer和async属性来达到效果</span>。如果是只设置了defer的，会让js文件和DOM并行加载的，等到DOM加载完成之后才会去执行js文件。如果设置async的话，能够实现js文件和DOM的并行加载，但是无法保证js文件的加载顺序。同时使用defer和async属性时，defer属性会失效</p>
 
       
     </div>
@@ -280,7 +286,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/07/ES6%E4%B8%AD%E7%9A%84%E6%95%B0%E7%BB%84%E4%BB%A5%E5%8F%8A%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/07/%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80%E4%B8%8E%E5%93%8D%E5%BA%94%E5%BC%8F%E5%B8%83%E5%B1%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -293,7 +299,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/07/ES6%E4%B8%AD%E7%9A%84%E6%95%B0%E7%BB%84%E4%BB%A5%E5%8F%8A%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">ES6中的数组以及对象的方法</a>
+          <a href="/2021/07/07/%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80%E4%B8%8E%E5%93%8D%E5%BA%94%E5%BC%8F%E5%B8%83%E5%B1%80/" class="post-title-link" itemprop="url">自适应布局与响应式布局</a>
         </h2>
 
         <div class="post-meta-container">
@@ -305,7 +311,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2021-06-07 14:25:41 / Modified: 15:13:58" itemprop="dateCreated datePublished" datetime="2021-06-07T14:25:41+08:00">2021-06-07</time>
+      <time title="Created: 2021-07-07 17:22:06 / Modified: 17:33:18" itemprop="dateCreated datePublished" datetime="2021-07-07T17:22:06+08:00">2021-07-07</time>
     </span>
 
   
@@ -318,28 +324,24 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="ES6中的数组以及对象的方法"><a href="#ES6中的数组以及对象的方法" class="headerlink" title="ES6中的数组以及对象的方法"></a>ES6中的数组以及对象的方法</h1><h2 id="ES6-对象"><a href="#ES6-对象" class="headerlink" title="ES6 对象"></a>ES6 对象</h2><p>  es6对象中有两个新的方法，分别是Object.assign(),以及Object.is();</p>
-<ul>
-<li><p>Object.assign(target, source_1, ···)</p>
-<ul>
-<li>用于将源对象的所有可枚举属性复制到目标对象中。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let target &#x3D; &#123;a: 1&#125;;</span><br><span class="line">let object2 &#x3D; &#123;b: 2&#125;;</span><br><span class="line">let object3 &#x3D; &#123;c: 3&#125;;</span><br><span class="line">let object4 &#x3D; &#123;c: 3, d: 4&#125;;</span><br><span class="line">Object.assign(target,object2,object3);  </span><br><span class="line">&#x2F;&#x2F; 第一个参数是目标对象，后面的参数是源对象</span><br><span class="line">target;  &#x2F;&#x2F; &#123;a: 1, b: 2, c: 3, d: 4&#125;</span><br></pre></td></tr></table></figure></li>
-<li>null 和 undefined 不能转化为对象，所以会报错<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; TypeError: Cannot convert undefined or null to object</span><br><span class="line">Object.assign(null);       </span><br><span class="line">&#x2F;&#x2F; TypeError: Cannot convert undefined or null to object</span><br><span class="line">Object.assign(undefined);  </span><br></pre></td></tr></table></figure></li>
-<li>assign 的属性拷贝是浅拷贝<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">let sourceObj &#x3D; &#123; a: &#123; b: 1&#125;&#125;;</span><br><span class="line">let targetObj &#x3D; &#123;c: 3&#125;;</span><br><span class="line">Object.assign(targetObj, sourceObj);</span><br><span class="line">targetObj.a.b &#x3D; 2;</span><br><span class="line">sourceObj.a.b;  &#x2F;&#x2F; 2</span><br></pre></td></tr></table></figure></li>
-<li>数组的处理: 会将数组处理成对象，所以先将 [2,3] 转为 {0:2,1:3} ，然后再进行属性复制，所以源对象的 0 号属性覆盖了目标对象的 0。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object.assign([2,3], [5]);  &#x2F;&#x2F; [5,3]</span><br></pre></td></tr></table></figure></li>
+          <h2 id="自适应布局"><a href="#自适应布局" class="headerlink" title="自适应布局"></a>自适应布局</h2><h3 id="移动端"><a href="#移动端" class="headerlink" title="移动端"></a>移动端</h3><p>  <span style="font-size: 20px;color: #ffffff;font-weight: bold;">postcss-px-to-viewport 插件</span>  </p>
+<h4 id="方案选择："><a href="#方案选择：" class="headerlink" title="方案选择："></a>方案选择：</h4><ul>
+<li>只做移动端<ul>
+<li>postcss-px-to-viewport – vw方法 （一把梭，什么都不用考虑。且是最真实的按照屏幕大小的比例来放大缩小。）</li>
 </ul>
 </li>
-<li><p>Object.is(value1, value2)</p>
-<ul>
-<li>用来比较两个值是否严格相等，与（===）基本类似。</li>
-<li>基本用法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  Object.is(&quot;q&quot;,&quot;q&quot;);      &#x2F;&#x2F; true</span><br><span class="line">  Object.is(1,1);          &#x2F;&#x2F; true</span><br><span class="line">  Object.is([1],[1]);      &#x2F;&#x2F; false</span><br><span class="line">  Object.is(&#123;q:1&#125;,&#123;q:1&#125;);  &#x2F;&#x2F; false</span><br><span class="line">  &#96;&#96;&#96;  </span><br><span class="line">+ 与（&#x3D;&#x3D;&#x3D;）的区别</span><br></pre></td></tr></table></figure>
-//一是+0不等于-0<br>Object.is(+0,-0);  //false<br>+0 === -0  //true<br>//二是NaN等于本身<br>Object.is(NaN,NaN); //true<br>NaN === NaN  //false<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## ES6 数组</span><br><span class="line"></span><br><span class="line">  + Array.of()</span><br><span class="line">    + 将参数中所有值作为元素形成数组。</span><br></pre></td></tr></table></figure>
-console.log(Array.of(1, 2, 3, 4)); // [1, 2, 3, 4]<br>// 参数值可为不同类型<br>console.log(Array.of(1, ‘2’, true)); // [1, ‘2’, true]<br>// 参数为空时返回空数组<br>console.log(Array.of()); // []<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">+ Array.from()</span><br><span class="line">  + 将类数组对象或可迭代对象转化为数组。返回新数组（类数组对象必须包含length属性）</span><br></pre></td></tr></table></figure>
-// 参数为数组,返回与原数组一样的数组<br>console.log(Array.from([1, 2])); // [1, 2]<br>// 参数含空位<br>console.log(Array.from([1, , 3])); // [1, undefined, 3]<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">+ flat()</span><br><span class="line">  + 嵌套数组转一维数组</span><br></pre></td></tr></table></figure>
-console.log([1 ,[2, 3]].flat()); // [1, 2, 3]<br>// 指定转换的嵌套层数<br>console.log([1, [2, [3, [4, 5]]]].flat(2)); // [1, 2, 3, [4, 5]]<br>// 不管嵌套多少层<br>console.log([1, [2, [3, [4, 5]]]].flat(Infinity)); // [1, 2, 3, 4, 5]<br>// 自动跳过空位<br>console.log([1, [2, , 3]].flat());<p> // [1, 2, 3]<br>```</li>
+<li>小屏设计图向上兼容自适应大屏幕/大屏设计图向下兼容自适应小屏幕<ul>
+<li>postcss-px-to-viewport – rem（当需要从移动端设计图适配到平板、PC屏幕）最方便</li>
 </ul>
 </li>
 </ul>
-
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><ol>
+<li>我们先把它安装到项目的开发环境中：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i postcss-px-to-viewport -D</span><br></pre></td></tr></table></figure></li>
+<li>在项目根目录下添加.postcssrc.js文件</li>
+<li>添加如下配置：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">module.exports &#x3D; &#123;</span><br><span class="line">  plugins: &#123;</span><br><span class="line">    autoprefixer: &#123;&#125;, &#x2F;&#x2F; 用来给不同的浏览器自动添加相应前缀，如-webkit-，-moz-等等</span><br><span class="line">    &quot;postcss-px-to-viewport&quot;: &#123;</span><br><span class="line">      unitToConvert: &quot;px&quot;, &#x2F;&#x2F; 要转化的单位</span><br><span class="line">      viewportWidth: 750, &#x2F;&#x2F; UI设计稿的宽度</span><br><span class="line">      unitPrecision: 6, &#x2F;&#x2F; 转换后的精度，即小数点位数</span><br><span class="line">      propList: [&quot;*&quot;], &#x2F;&#x2F; 指定转换的css属性的单位，*代表全部css属性的单位都进行转换</span><br><span class="line">      viewportUnit: &quot;vw&quot;, &#x2F;&#x2F; 指定需要转换成的视窗单位，默认vw</span><br><span class="line">      fontViewportUnit: &quot;vw&quot;, &#x2F;&#x2F; 指定字体需要转换成的视窗单位，默认vw</span><br><span class="line">      selectorBlackList: [&quot;wrap&quot;], &#x2F;&#x2F; 指定不转换为视窗单位的类名，</span><br><span class="line">      minPixelValue: 1, &#x2F;&#x2F; 默认值1，小于或等于1px则不进行转换</span><br><span class="line">      mediaQuery: true, &#x2F;&#x2F; 是否在媒体查询的css代码中也进行转换，默认false</span><br><span class="line">      replace: true, &#x2F;&#x2F; 是否转换后直接更换属性值</span><br><span class="line">      exclude: [&#x2F;node_modules&#x2F;], &#x2F;&#x2F; 设置忽略文件，用正则做目录名匹配</span><br><span class="line">      landscape: false &#x2F;&#x2F; 是否处理横屏情况</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li>重新运行项目，使配置文件生效<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class&#x3D;&quot;test-viewport&quot;&gt;测试转换&lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang&#x3D;&quot;less&quot; scoped&gt;</span><br><span class="line">.test-viewport &#123;</span><br><span class="line">  width: 750px;</span><br><span class="line">  height: 100px;</span><br><span class="line">  font-size: 40px;</span><br><span class="line">  text-align: center;</span><br><span class="line">  line-height: 100px;</span><br><span class="line">  background: #13b5b1;</span><br><span class="line">&#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="响应式布局"><a href="#响应式布局" class="headerlink" title="响应式布局"></a>响应式布局</h2>
       
     </div>
 
@@ -365,7 +367,7 @@ console.log([1 ,[2, 3]].flat()); // [1, 2, 3]<br>// 指定转换的嵌套层数<
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/07/vue%E4%B8%ADrouter%E4%B8%8Eroute%E7%9A%84%E5%8C%BA%E5%88%AB/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/07/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -378,7 +380,7 @@ console.log([1 ,[2, 3]].flat()); // [1, 2, 3]<br>// 指定转换的嵌套层数<
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/07/vue%E4%B8%ADrouter%E4%B8%8Eroute%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">vue中router与route的区别</a>
+          <a href="/2021/07/07/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">项目中遇到的问题</a>
         </h2>
 
         <div class="post-meta-container">
@@ -390,7 +392,7 @@ console.log([1 ,[2, 3]].flat()); // [1, 2, 3]<br>// 指定转换的嵌套层数<
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2021-06-07 13:51:09 / Modified: 15:23:04" itemprop="dateCreated datePublished" datetime="2021-06-07T13:51:09+08:00">2021-06-07</time>
+      <time title="Created: 2021-07-07 10:48:07 / Modified: 10:53:06" itemprop="dateCreated datePublished" datetime="2021-07-07T10:48:07+08:00">2021-07-07</time>
     </span>
 
   
@@ -403,10 +405,8 @@ console.log([1 ,[2, 3]].flat()); // [1, 2, 3]<br>// 指定转换的嵌套层数<
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="vue中router与route的区别"><a href="#vue中router与route的区别" class="headerlink" title="vue中router与route的区别"></a>vue中router与route的区别</h1><h2 id="route对象"><a href="#route对象" class="headerlink" title="$route对象"></a>$route对象</h2><p>  表示当前正在跳转的路由对象。</p>
-<p>  $route表示当前的路由信息，包含了当前URL解析得到的信息，包含当前的路径，参数等信息</p>
-<h2 id="router对象"><a href="#router对象" class="headerlink" title="$router对象"></a>$router对象</h2><p>  可以在任何地方使用它</p>
-<p>  $router是全局路由对象，是router构造方法的实例，具有push，replace, go等路由实例方法。作用是路由切换</p>
+          <h3 id="1-使用动态添加路由addRoutes-会遇到的问题"><a href="#1-使用动态添加路由addRoutes-会遇到的问题" class="headerlink" title="1.使用动态添加路由addRoutes()会遇到的问题"></a>1.使用动态添加路由addRoutes()会遇到的问题</h3><p>  在addRoutes()之后<span style="color: #c7254e;">第一次访问被添加的路由</span>会白屏，这是因为刚刚addRoutes()就立刻访问被添加的路由，然而此时addRoutes()没有执行结束，因而找不到刚刚被添加的路由导致白屏。因此需要从新访问一次路由才行</p>
+<p>  解决方案：使用next({ …to, replace: true })来确保addRoutes()时动态添加的路由已经被完全加载上去；next({ …to, replace: true })中的replace: true只是一个设置信息，告诉VUE本次操作后，不能通过浏览器后退按钮，返回前一个路由</p>
 
       
     </div>
@@ -433,7 +433,7 @@ console.log([1 ,[2, 3]].flat()); // [1, 2, 3]<br>// 指定转换的嵌套层数<
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/04/vue%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86-%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/02/this%E7%9A%84%E6%8C%87%E5%90%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -446,7 +446,7 @@ console.log([1 ,[2, 3]].flat()); // [1, 2, 3]<br>// 指定转换的嵌套层数<
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/04/vue%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86-%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">vue事件绑定原理-发布订阅模式</a>
+          <a href="/2021/07/02/this%E7%9A%84%E6%8C%87%E5%90%91/" class="post-title-link" itemprop="url">this的指向</a>
         </h2>
 
         <div class="post-meta-container">
@@ -457,14 +457,14 @@ console.log([1 ,[2, 3]].flat()); // [1, 2, 3]<br>// 指定转换的嵌套层数<
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2021-06-04 10:14:06" itemprop="dateCreated datePublished" datetime="2021-06-04T10:14:06+08:00">2021-06-04</time>
+      <time title="Created: 2021-07-02 10:13:24" itemprop="dateCreated datePublished" datetime="2021-07-02T10:13:24+08:00">2021-07-02</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-10 09:13:40" itemprop="dateModified" datetime="2021-06-10T09:13:40+08:00">2021-06-10</time>
+        <time title="Modified: 2021-12-27 15:47:53" itemprop="dateModified" datetime="2021-12-27T15:47:53+08:00">2021-12-27</time>
       </span>
 
   
@@ -477,20 +477,18 @@ console.log([1 ,[2, 3]].flat()); // [1, 2, 3]<br>// 指定转换的嵌套层数<
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="vue事件绑定原理"><a href="#vue事件绑定原理" class="headerlink" title="vue事件绑定原理"></a>vue事件绑定原理</h1><h2 id="发布订阅模式"><a href="#发布订阅模式" class="headerlink" title="发布订阅模式"></a>发布订阅模式</h2><p>  发布-订阅模式其实是一种对象间一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都将得到状态改变的通知</p>
-<p>  既然一对多 肯定有一个事件调度中心用来调度事件 订阅者可以注册事件（on）到事件中心 发布者可以发布事件（emit）到调度中心 订阅者也可以取消订阅（off）或者只订阅一次（once）</p>
-<p>  主要功能：</p>
+          <h1 id="this的指向"><a href="#this的指向" class="headerlink" title="this的指向"></a>this的指向</h1><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7042888736077512735">掘金文章</a></p>
+<h2 id="this的指向-1"><a href="#this的指向-1" class="headerlink" title="this的指向"></a>this的指向</h2><p>this的指向在函数创建的时候是决定不了的，在调用的时候才能决定，谁调用的就指向谁（this永远指向的是最后调用它的对象）</p>
 <ul>
-<li>维护一个变量 listeners，初识状态为一个空对象字面量，用于存储不同事件和事件对应的处理函数。</li>
-<li>实现$on方法：用于监听事件。</li>
-<li>实现$once方法：用于一次性事件监听。</li>
-<li>实现$emit方法：用于触发对应的事件监听。</li>
-<li>实现$off方法：用于消除对应的事件监听。</li>
+<li>1.全局作用域下，this执行window</li>
+<li>2.函数作用域下，在非严格模式下，this指向window</li>
+<li>3.函数作用域下，在严格模式下，this执行undefined</li>
+<li>4.在对象里面，this指向的是当前对象</li>
+<li>5.箭头函数的this指向在创建时就已确定（箭头函数不能作为构造函数）(指向的是最外层的作用域，所以如果箭头函数没有被其他的函数包裹，那么this指向的是window对象，反之指向调用其外层函数的对象)</li>
+<li>6.new 关键字调用函数，指向是创建的新对象(返回的对象)</li>
+<li>7.在定时器函数中，this指向window</li>
+<li>8.通过call、apply、bind修改this指向，指向绑定的对象</li>
 </ul>
-<p>  代码实现如下：<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">class EventEmitter&#123;</span><br><span class="line">  constructor() &#123;</span><br><span class="line">    this.events &#x3D; &#123;&#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  &#x2F;&#x2F; 实现订阅</span><br><span class="line">  on(type, callBack) &#123;</span><br><span class="line">    &#x2F;&#x2F; 判断是否存在事件调度中心对象</span><br><span class="line">    if(!this.events) this.events &#x3D; Object.create(null);</span><br><span class="line">    &#x2F;&#x2F; 判断当前事件是否存在</span><br><span class="line">    if(!this.events[type]) &#123;</span><br><span class="line">      &#x2F;&#x2F; 每一个事件都是一个数组对象，用于存储该事件的回调函数;</span><br><span class="line">      &#x2F;&#x2F; 因为事件可能会被订阅多次，每一次的回调函数都是不同的</span><br><span class="line">      this.events[type] &#x3D; [callBack]; </span><br><span class="line">    &#125;else&#123;</span><br><span class="line">      this.events[type].push(callBack);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  &#x2F;&#x2F; 取消订阅</span><br><span class="line">  off(type, callBack) &#123;</span><br><span class="line">    &#x2F;&#x2F; 判断需要去掉订阅的事件是否存在事件中心对象中，不存在，则直接return，不执行操作</span><br><span class="line">    if(!this.events[type]) return</span><br><span class="line"></span><br><span class="line">    this.events[type] &#x3D; this.events[type].filter(item &#x3D;&gt; &#123;</span><br><span class="line">      return item !&#x3D; callBack</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  &#x2F;&#x2F; 只执行一次订阅事件</span><br><span class="line">  once(type,callBack)&#123;</span><br><span class="line">    &#x2F;&#x2F; 执行on订阅事件，然后在回调函数中，执行off取消订阅操作</span><br><span class="line">    function() fn&#123;</span><br><span class="line">      callBack();</span><br><span class="line">      this.off(type, fn)</span><br><span class="line">    &#125;</span><br><span class="line">    this.on(type, fn)</span><br><span class="line">  &#125;</span><br><span class="line">  &#x2F;&#x2F; 触发事件</span><br><span class="line">  emit(type, ...args) &#123;</span><br><span class="line">    &#x2F;&#x2F; 当事件存在于事件中心中才会去触发后续（on订阅事件中回调）操作</span><br><span class="line">    this.events[type] &amp;&amp; this,.events[type].forEach(fn &#x3D;&gt; &#123;</span><br><span class="line">      &#x2F;&#x2F; fn.call(this, ...args)</span><br><span class="line">      fn.apply(this, args)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>  使用如下<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">const event &#x3D; new EventEmitter();</span><br><span class="line">const handle &#x3D; (...args) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(args)</span><br><span class="line">&#125;</span><br><span class="line">event.on(&#39;click&#39;, handle);</span><br><span class="line">event.emit(&#39;click&#39;, 1,2,3);</span><br><span class="line">event.off(&#39;click&#39;, handle);</span><br><span class="line"></span><br><span class="line">event.once(&#39;dbClick&#39;, () &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;dbClick&#39;);</span><br><span class="line">&#125;)</span><br><span class="line">event.emit(&#39;dbClick&#39;);</span><br><span class="line">event.emit(&#39;dbClick&#39;)</span><br></pre></td></tr></table></figure></p>
-<h2 id="巧借Vue内置EventBus实现，封装vue事件总线插件"><a href="#巧借Vue内置EventBus实现，封装vue事件总线插件" class="headerlink" title="巧借Vue内置EventBus实现，封装vue事件总线插件"></a>巧借Vue内置EventBus实现，封装vue事件总线插件</h2>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">export default function install(Vue) &#123;</span><br><span class="line">  const bus &#x3D; new Vue(&#123;</span><br><span class="line">    methods: &#123;</span><br><span class="line">      on(event, handler) &#123;</span><br><span class="line">        this.$on(event, handler)</span><br><span class="line">        return this</span><br><span class="line">      &#125;,</span><br><span class="line">      once(event, handler) &#123;</span><br><span class="line">        this.$once(event, handler)</span><br><span class="line">        return this</span><br><span class="line">      &#125;,</span><br><span class="line">      emit(event, ...args) &#123;</span><br><span class="line">        this.$emit(event, ...args)</span><br><span class="line">        return this</span><br><span class="line">      &#125;,</span><br><span class="line">      off(event, handler) &#123;</span><br><span class="line">        this.$off(event, handler)</span><br><span class="line">        return this</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  Vue.prototype.$bus &#x3D; bus</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>  我们在Vue实例化之前，安装一下这个插件，就可以在组件内的任意位置使用了<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import Vue from &#39;vue&#39;</span><br><span class="line">import EventBus from &#39;.&#x2F;EventBus&#39;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 安装 EventBus 插件</span><br><span class="line">Vue.use(EventBus)</span><br><span class="line"></span><br><span class="line">new Vue(&#123;</span><br><span class="line">  &#x2F;&#x2F;...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -517,7 +515,7 @@ console.log([1 ,[2, 3]].flat()); // [1, 2, 3]<br>// 指定转换的嵌套层数<
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/01/vue-router%E9%92%A9%E5%AD%90%E5%87%BD%E6%95%B0/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/01/css3%E6%96%B0%E7%89%B9%E6%80%A7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -530,7 +528,7 @@ console.log([1 ,[2, 3]].flat()); // [1, 2, 3]<br>// 指定转换的嵌套层数<
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/01/vue-router%E9%92%A9%E5%AD%90%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">vue-router钩子函数</a>
+          <a href="/2021/07/01/css3%E6%96%B0%E7%89%B9%E6%80%A7/" class="post-title-link" itemprop="url">css3新特性</a>
         </h2>
 
         <div class="post-meta-container">
@@ -541,14 +539,14 @@ console.log([1 ,[2, 3]].flat()); // [1, 2, 3]<br>// 指定转换的嵌套层数<
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2021-06-01 14:16:34" itemprop="dateCreated datePublished" datetime="2021-06-01T14:16:34+08:00">2021-06-01</time>
+      <time title="Created: 2021-07-01 10:24:03" itemprop="dateCreated datePublished" datetime="2021-07-01T10:24:03+08:00">2021-07-01</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-02 15:05:33" itemprop="dateModified" datetime="2021-06-02T15:05:33+08:00">2021-06-02</time>
+        <time title="Modified: 2021-07-02 10:05:00" itemprop="dateModified" datetime="2021-07-02T10:05:00+08:00">2021-07-02</time>
       </span>
 
   
@@ -561,463 +559,442 @@ console.log([1 ,[2, 3]].flat()); // [1, 2, 3]<br>// 指定转换的嵌套层数<
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="vue-router钩子函数"><a href="#vue-router钩子函数" class="headerlink" title="vue-router钩子函数"></a>vue-router钩子函数</h1><h3 id="路由守卫分类"><a href="#路由守卫分类" class="headerlink" title="路由守卫分类"></a>路由守卫分类</h3><h4 id="全局守卫"><a href="#全局守卫" class="headerlink" title="全局守卫"></a>全局守卫</h4><p>  路由实例上直接操作的钩子函数，特点是所有路由配置的组件都会触发，直白点就是触发路由就会触发这些钩子函数;<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 全局前置守卫-在路由跳转前触发,主要是用于登录验证</span><br><span class="line">beforeEach（to，from， next） </span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 全局解析守卫-导航被确认之前 &lt; 路由跳转前触发 &lt; 所有组件内守卫和异步路由组件被解析之后</span><br><span class="line">beforeResolve（to，from， next） </span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 全局后置钩子-和beforeEach相反-路由跳转完成后触发-不会接受next函数</span><br><span class="line">afterEach（to，from）</span><br></pre></td></tr></table></figure><br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import VueRouter from &#39;vue-router&#39;</span><br><span class="line">const router &#x3D; new VueRouter(&#123;...&#125;);</span><br><span class="line">router.beforeEach((to, from, next)&#x3D;&gt;&#123;...&#125;)</span><br></pre></td></tr></table></figure></p>
-<h4 id="路由独享守卫"><a href="#路由独享守卫" class="headerlink" title="路由独享守卫"></a>路由独享守卫</h4><p>  直接可以在路由配置上设置的钩子函数<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 和beforeEach完全相同-如果两个都设置了，beforeEnter则在beforeEach之后紧随执行</span><br><span class="line">beforeEnter（to，from， next）</span><br></pre></td></tr></table></figure></p>
-<h4 id="组件守卫"><a href="#组件守卫" class="headerlink" title="组件守卫"></a>组件守卫</h4><p>  在组件内执行的钩子函数,类似于组件内的生命周期，相当于为配置路由的组件添加的生命周期钩子函数。<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 在全局守卫的前置守卫和路由守卫之后触发，在全局解析守卫和全局后置守卫之前调用，访问不到组件实例，即this为undefined</span><br><span class="line">beforeRouteEnter（to，from， next）</span><br><span class="line"></span><br><span class="line">beforeRouteUpdate（to，from， next）</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 导航离开该组件的对应路由时调用，可以访问组件实例this。这个离开守卫通常用来禁止用户在还 &#x2F;&#x2F; 未保存修改前突然离开。该导航可以通过next( false )来取消</span><br><span class="line">beforeRouteLeave（to，from， next）</span><br></pre></td></tr></table></figure></p>
-<h3 id="完整的导航解析流程"><a href="#完整的导航解析流程" class="headerlink" title="完整的导航解析流程"></a>完整的导航解析流程</h3><ul>
-<li>1.触发进入其它路由</li>
-<li>2.调用要离开路由的组件守卫beforeRouteLeave</li>
-<li>3.调用全局的前置守卫beforeEach</li>
-<li>4.在重用的组件里调用 beforeRouteUpdate</li>
-<li>5.在路由配置里调用 beforeEnter</li>
-<li>6.解析异步路由组件</li>
-<li>7.在将要进入的路由组件中调用beforeRouteEnter</li>
-<li>8.调用全局的解析守卫beforeResolve</li>
-<li>9.导航被确认</li>
-<li>10.调用全局的后置钩子afterEach。</li>
-<li>11.触发 DOM 更新mounted。</li>
-<li>12执行beforeRouteEnter守卫中传给 next的回调函数。</li>
+          <h2 id="css-三大特性"><a href="#css-三大特性" class="headerlink" title="css 三大特性"></a>css 三大特性</h2><ul>
+<li>继承  父级文本样式会被子级继承</li>
+<li>层叠  当样式发生冲突时，权重高的覆盖权重低的</li>
+<li>优先级  !important &gt; 行内样式 &gt; id选择器 &gt; 类选择器 &gt; 标签选择器 &gt; *通用选择器 &gt; 继承</li>
 </ul>
-<p><img src="https://user-gold-cdn.xitu.io/2019/9/12/16d2385e3732079d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="导航解析流程图"></p>
-<p>作者：dingFY<br>链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903924760051725">https://juejin.cn/post/6844903924760051725</a><br>来源：掘金<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/01/new%E7%9A%84%E5%AE%9E%E7%8E%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/01/new%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">new的实现</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-06-01 10:57:57 / Modified: 11:26:30" itemprop="dateCreated datePublished" datetime="2021-06-01T10:57:57+08:00">2021-06-01</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="new的实现"><a href="#new的实现" class="headerlink" title="new的实现"></a>new的实现</h1><h3 id="new的实现思路"><a href="#new的实现思路" class="headerlink" title="new的实现思路"></a>new的实现思路</h3><ul>
-<li>定义一个myNew函数，第一个为构造函数，其他为解构的参数</li>
-<li>首先是创建一个实例对象  let obj = {}</li>
-<li>接着生成的实例对象 继承 构造函数的原型  obj.<strong>proto</strong> = fn.prototype</li>
-<li>接着改变构造函数的this指向为实例对象  let result = fn.call(obj, …args)</li>
-<li>如果构造函数fn的执行结果（result）返回的是一个对象或者函数，那么就直接返回这个对象或函数（result）</li>
-<li>如果不是上面的条件，则直接返回实例对象obj</li>
+<h2 id="BFC-块级格式化上下文"><a href="#BFC-块级格式化上下文" class="headerlink" title="BFC 块级格式化上下文"></a>BFC 块级格式化上下文</h2><ul>
+<li>概念： css盒模型的渲染规则</li>
+<li>渲染规则：（html标签就是一个BFC元素）<ul>
+<li>规则1：创建的BFC元素，在垂直方向上的margin会发生重叠（塌陷）</li>
+<li>规则2：BFC元素在页面上独立的容器，外面的元素和里面的元素互不影响</li>
+<li>规则3：BFC元素不会和浮动的元素重叠（可以解释两栏自适应）</li>
+<li>规则4：计算BFC元素的高度时，里面浮动的元素的高度也会参与计算（用来解释overflow：hidden可以清楚浮动）</li>
 </ul>
-<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function myNew(fn, ...args)&#123;</span><br><span class="line">  let obj &#x3D; &#123;&#125;;</span><br><span class="line">  obj.__proto__ &#x3D; fn.prototype;</span><br><span class="line">  let result &#x3D; fn.call(obj, ...args)</span><br><span class="line">  if((result &amp;&amp; typeof result &#x3D;&#x3D; &#39;object&#39;) || typeof result &#x3D;&#x3D; &#39;function&#39;) &#123;</span><br><span class="line">    return result</span><br><span class="line">  &#125;</span><br><span class="line">  return obj</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>  上述的myNew函数的使用<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function Person(name) &#123;</span><br><span class="line">    this.name &#x3D; name</span><br><span class="line">    return name;</span><br><span class="line">&#125;</span><br><span class="line">function myNew(fn, ...args)&#123;</span><br><span class="line">  let obj &#x3D; &#123;&#125;;</span><br><span class="line">  obj.__proto__ &#x3D; fn.prototype;</span><br><span class="line">  let result &#x3D; fn.call(obj, ...args)</span><br><span class="line">  if((result &amp;&amp; typeof result &#x3D;&#x3D; &#39;object&#39;) || typeof result &#x3D;&#x3D; &#39;function&#39;) &#123;</span><br><span class="line">    return result</span><br><span class="line">  &#125;</span><br><span class="line">  return obj</span><br><span class="line">&#125;</span><br><span class="line">let pp &#x3D; new Person(&#39;tom&#39;) &#x2F;&#x2F; Person &#123;name: &quot;tom&quot;&#125;   --返回的是构造函数的实例化对象</span><br><span class="line">let aa &#x3D; myNew(Person, &#39;tom&#39;)&#x2F;&#x2F; Person &#123;name: &quot;tom&quot;&#125;   --返回的是构造函数的实例化对象</span><br><span class="line">console.log(aa, pp)</span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/01/vue3%E6%96%B0%E7%89%B9%E6%80%A7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/01/vue3%E6%96%B0%E7%89%B9%E6%80%A7/" class="post-title-link" itemprop="url">vue3新特性</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-06-01 09:40:27" itemprop="dateCreated datePublished" datetime="2021-06-01T09:40:27+08:00">2021-06-01</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-02 17:45:27" itemprop="dateModified" datetime="2021-06-02T17:45:27+08:00">2021-06-02</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="vue3新特性"><a href="#vue3新特性" class="headerlink" title="vue3新特性"></a>vue3新特性</h1><p>记录一下我能记住的vue3.0的新特性</p>
-<ul>
-<li><p>首先是双向数据绑定的实现方式：</p>
-<p>vue2.0使用的是Object.defineproperty()实现对数据对象的属性(data属性的属性)的监听，无法监听一些数组的变化，需要重写数组的原型方法来监听数组的变化<br>vue3.0使用的是Proxy构造函数来监听对象的，是通过底层的对象来监听的，不存在数组无法监听的情况，而且Proxy具有13种拦截操作</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">this.formModel[controlId] &#x3D; </span><br><span class="line">this.formModel[controlId].replace(&#x2F;^\D*(\d*(?:\.\d&#123;0,3&#125;)?).*$&#x2F;g, &#39;$1&#39;);</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/be5fbebfad2b4863a8cf664843b2106e~tplv-k3u1fbpfcp-zoom-1.image" alt="vue3新特性"></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/31/%E9%A1%B9%E7%9B%AE%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E9%A1%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/31/%E9%A1%B9%E7%9B%AE%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E9%A1%B9/" class="post-title-link" itemprop="url">项目性能优化项</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-05-31 15:50:16 / Modified: 16:03:05" itemprop="dateCreated datePublished" datetime="2021-05-31T15:50:16+08:00">2021-05-31</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="项目性能优化项"><a href="#项目性能优化项" class="headerlink" title="项目性能优化项"></a>项目性能优化项</h1><h3 id="代码层面的优化"><a href="#代码层面的优化" class="headerlink" title="代码层面的优化"></a>代码层面的优化</h3><ul>
-<li>v-if 和 v-show 区分使用场景</li>
-<li>computed 和 watch  区分使用场景</li>
-<li>v-for 遍历必须为 item 添加 key，且避免同时使用 v-if</li>
-<li>长列表性能优化</li>
-<li>事件的销毁</li>
-<li>图片资源懒加载</li>
-<li>路由懒加载</li>
-<li>第三方插件的按需引入</li>
-<li>优化无限列表性能</li>
-<li>服务端渲染 SSR or 预渲染</li>
-</ul>
-<h3 id="Webpack-层面的优化"><a href="#Webpack-层面的优化" class="headerlink" title="Webpack 层面的优化"></a>Webpack 层面的优化</h3><ul>
-<li>Webpack 对图片进行压缩</li>
-<li>减少 ES6 转为 ES5 的冗余代码</li>
-<li>提取公共代码</li>
-<li>模板预编译</li>
-<li>提取组件的 CSS</li>
-<li>优化 SourceMap</li>
-<li>构建结果输出分析</li>
-<li>Vue 项目的编译优化</li>
-</ul>
-<h3 id="基础的-Web-技术的优化"><a href="#基础的-Web-技术的优化" class="headerlink" title="基础的 Web 技术的优化"></a>基础的 Web 技术的优化</h3><ul>
-<li>开启 gzip 压缩</li>
-<li>浏览器缓存</li>
-<li>CDN 的使用</li>
-<li>使用 Chrome Performance 查找性能瓶颈</li>
-</ul>
-<p>作者：我是你的超级英雄<br>链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903918753808398">https://juejin.cn/post/6844903918753808398</a><br>来源：掘金<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/27/vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%9B%B8%E5%85%B3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/27/vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%9B%B8%E5%85%B3/" class="post-title-link" itemprop="url">vue生命周期</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-05-27 15:44:50" itemprop="dateCreated datePublished" datetime="2021-05-27T15:44:50+08:00">2021-05-27</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-08 15:42:32" itemprop="dateModified" datetime="2021-06-08T15:42:32+08:00">2021-06-08</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="vue生命周期"><a href="#vue生命周期" class="headerlink" title="vue生命周期"></a>vue生命周期</h1><p>Vue 实例有一个完整的生命周期，也就是从开始创建、初始化数据、编译模版、挂载 Dom -&gt; 渲染、更新 -&gt; 渲染、卸载等一系列过程，我们称这是 Vue 的生命周期。</p>
-<h2 id="Vue-的父组件和子组件生命周期钩子函数执行顺序？"><a href="#Vue-的父组件和子组件生命周期钩子函数执行顺序？" class="headerlink" title="Vue 的父组件和子组件生命周期钩子函数执行顺序？"></a>Vue 的父组件和子组件生命周期钩子函数执行顺序？</h2><p>  简述：即在父组件挂载，更新，销毁之前，是子组件先挂载，更新，销毁，再到父组件的挂载，更新，销毁</p>
-<p>  加载渲染过程:<br>    父 beforeCreate -&gt; 父 created -&gt; 父 beforeMount -&gt; 子 beforeCreate -&gt; 子 created -&gt; 子 beforeMount -&gt; 子 mounted -&gt; 父 mounted</p>
-<p>  子组件更新过程:<br>    父 beforeUpdate -&gt; 子 beforeUpdate -&gt; 子 updated -&gt; 父 updated</p>
-<p>  父组件更新过程:<br>    父 beforeUpdate -&gt; 父 updated</p>
-<p>  销毁过程:<br>    父 beforeDestroy -&gt; 子 beforeDestroy -&gt; 子 destroyed -&gt; 父 destroyed</p>
-<h2 id="父组件监听子组件的生命周期"><a href="#父组件监听子组件的生命周期" class="headerlink" title="父组件监听子组件的生命周期"></a>父组件监听子组件的生命周期</h2><p>有两种方式：</p>
-<ul>
-<li>一种是通过手动$emit触发父组件的事件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Parent.vue</span><br><span class="line">&lt;Child @mounted&#x3D;&quot;doSomething&quot;&#x2F;&gt;</span><br><span class="line">    </span><br><span class="line">&#x2F;&#x2F; Child.vue</span><br><span class="line">mounted() &#123;</span><br><span class="line">  this.$emit(&quot;mounted&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>第二种是通过@hook:mounted的形式监听子组件的生命周期<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;  Parent.vue</span><br><span class="line">&lt;Child @hook:mounted&#x3D;&quot;doSomething&quot; &gt;&lt;&#x2F;Child&gt;</span><br><span class="line"></span><br><span class="line">doSomething() &#123;</span><br><span class="line">  console.log(&#39;父组件监听到 mounted 钩子函数 ...&#39;);</span><br><span class="line">&#125;,</span><br><span class="line">    </span><br><span class="line">&#x2F;&#x2F;  Child.vue</span><br><span class="line">mounted()&#123;</span><br><span class="line">  console.log(&#39;子组件触发 mounted 钩子函数 ...&#39;);</span><br><span class="line">&#125;,    </span><br><span class="line">    </span><br><span class="line">&#x2F;&#x2F; 以上输出顺序为：</span><br><span class="line">&#x2F;&#x2F; 子组件触发 mounted 钩子函数 ...</span><br><span class="line">&#x2F;&#x2F; 父组件监听到 mounted 钩子函数 ...   </span><br></pre></td></tr></table></figure>
-<h2 id="各个生命周期的作用"><a href="#各个生命周期的作用" class="headerlink" title="各个生命周期的作用"></a>各个生命周期的作用</h2></li>
-<li>beforeCreate: 组件实例被创建之初，组件的属性生效之前</li>
-<li>created: 组件实例已经完全创建，属性也绑定，但真实 dom 还没有生成，$el 还不可用</li>
-<li>beforeMount: 在挂载开始之前被调用：相关的 render 函数首次被调用</li>
-<li>mounted: el 被新创建的 vm.$el 替换，并挂载到实例上去之后调用该钩子</li>
-<li>beforeUpdate: 组件数据更新之前调用，发生在虚拟 DOM 打补丁之前</li>
-<li>update: 组件数据更新之后</li>
-<li>activited: keep-alive 专属，组件被激活时调用</li>
-<li>deactivated: keep-alive 专属，组件被销毁时调用</li>
-<li>beforeDestory: 组件销毁前调用 (清除watcher，子组件事件监听器)</li>
-<li>destoryed: 组件销毁后调用</li>
-</ul>
-<h2 id="vue生命周期图解："><a href="#vue生命周期图解：" class="headerlink" title="vue生命周期图解："></a>vue生命周期图解：</h2><p><img src="https://upload-images.jianshu.io/upload_images/13119812-5890a846b6efa045.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1200/format/webp" alt="vue生命周期"></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/26/SPA%E5%8D%95%E9%A1%B5%E5%BA%94%E7%94%A8%E4%B8%8EMPA%E5%A4%9A%E9%A1%B5%E5%BA%94%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/26/SPA%E5%8D%95%E9%A1%B5%E5%BA%94%E7%94%A8%E4%B8%8EMPA%E5%A4%9A%E9%A1%B5%E5%BA%94%E7%94%A8/" class="post-title-link" itemprop="url">SPA单页应用与MPA多页应用</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-05-26 11:54:20" itemprop="dateCreated datePublished" datetime="2021-05-26T11:54:20+08:00">2021-05-26</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-05-27 15:34:02" itemprop="dateModified" datetime="2021-05-27T15:34:02+08:00">2021-05-27</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="SPA单页应用与MPA多页应用"><a href="#SPA单页应用与MPA多页应用" class="headerlink" title="SPA单页应用与MPA多页应用"></a>SPA单页应用与MPA多页应用</h1><h2 id="SPA单页应用"><a href="#SPA单页应用" class="headerlink" title="SPA单页应用"></a>SPA单页应用</h2><p>只有一个WEB主页面的应用，公共资源(js、css等)仅需加载一次，所有的内容都包含在主页面，对每一个功能模块组件化。单页应用跳转，就是切换相关组件，仅刷新局部资源</p>
-<p>关键词：网站模型 、只加载单个HTML页面 、利用路由实现内容变换</p>
-<p>描述：SPA（singgle-page application）,单页应用。是一种网站模型，是加载单个HTML页面，并在用户与应用程序交互时动态更新页面。只会在初始化的时候加载相应的HTML,CSS,JS。不会因为用户的操作而进行页面的重新加载或跳转。利用路由机制实现 HTML 内容的变换，UI 与用户的交互，避免页面的重新加载。</p>
-<ul>
-<li><p>传统页面：</p>
-<p>客户端 ———通过发送url请求——————  server</p>
-<p>客户端 ———服务器端返回html页面———  server</p>
 </li>
-<li><p>SPA页面：</p>
-<p>客户端 ———通过发送ajax请求——————  server</p>
-<p>客户端 ———服务器端返回数据———  server</p>
+<li>普通元素创建BFC<ul>
+<li>float浮动属性不为none</li>
+<li>overflow: hidden / auto</li>
+<li>position: 不为static 、 relative都可以</li>
+<li>display: table-cell … 表格相关的</li>
+</ul>
 </li>
 </ul>
-<p>优点：</p>
-<ul>
-<li>有良好的交互体验：提升页面交互体验，不会频繁切换浏览器页面，避免了页面的频繁重新加载</li>
-<li>前后端分离：前后端职责分离，架构清晰，前端进行交互逻辑，后端负责数据处理</li>
-<li>减轻服务器压力：服务器端只需要返回数据即可，不用管展示逻辑与页面合成<br>缺点：</li>
-<li>SEO（搜索引擎优化）难度较高：页面内容动态替换，页面不会刷新，导致很难被搜索引擎抓取（搜索引擎遵循http协议，#不是协议的内容）</li>
-<li>无法使用浏览器的前进后退功能，所有页面需要自己建立堆栈管理。（解决方案：利用URI中的散列+iframe实现）（配置好路由信息，通过记录浏览过的历史路由信息，可以很好的记录或历史查看过的界面）</li>
-<li>初次加载耗时多：为实现单页 Web 应用功能及显示效果，需要在加载页面的时候将 JavaScript、CSS 统一加载，部分页面按需加载</li>
+<h2 id="css3新增的选择器"><a href="#css3新增的选择器" class="headerlink" title="css3新增的选择器"></a>css3新增的选择器</h2><ul>
+<li>css3属性选择器<ul>
+<li>a[href] - 选择指定属性href的元素</li>
+<li>a[href=www] - 选择指定属性href值为www的元素</li>
+<li>a[href^=’www’] - 选择指定属性href值中以www开头的元素</li>
+<li>a[href$=’www’] - 选择指定属性href值中以www结尾的元素</li>
+<li>a[href*=’www’] - 选择指定属性href值中含有www的元素</li>
 </ul>
-<h2 id="MPA多页应用"><a href="#MPA多页应用" class="headerlink" title="MPA多页应用"></a>MPA多页应用</h2><p>关键词：</p>
-<p>描述：MAP（Multi-page application），多页面应用。每访问一个页面都需要重新加载HTML,JS,CSS文件，公共文件按需加载</p>
-<p>优点：</p>
-<ul>
-<li>首屏加载快</li>
-<li>SEO（搜索引擎优化）效果好<br>缺点：</li>
-<li>页面切换慢：每一次切换页面都要重新加载html,css,js等资源</li>
+</li>
+<li>css3结构伪类选择器(odd奇数、even偶数)<ul>
+<li>:nth-child(n) - 选择所有在其父元素中的第n个位置的匹配E的子元素</li>
+<li>:nth-last-child(n) - 选择所有在其父元素中倒数第n个位置的匹配E的子元素</li>
+<li>:last-child - 最后一个元素</li>
+<li>:fisrt-child - 第一个元素</li>
+<li>:empty - 选择匹配的元素不包含子元素</li>
+</ul>
+</li>
+</ul>
+<h2 id="css3新特性"><a href="#css3新特性" class="headerlink" title="css3新特性"></a>css3新特性</h2><h3 id="1-过渡-transition"><a href="#1-过渡-transition" class="headerlink" title="1.过渡 transition"></a>1.过渡 transition</h3><ul>
+<li>作用： 给元素添加一个过渡效果，让页面效果不过于生硬</li>
+<li>语法：transition： CSS属性，花费时间，效果曲线(默认ease)，延迟时间(默认0)</li>
+<li>例子：transition：width,.5s,ease,.2s   /  transition：all,.5s</li>
+<li>应用场景：下拉的显示/隐藏的过渡  元素hover时一些过渡的效果，如颜色等</li>
+</ul>
+<h3 id="2-动画-animation"><a href="#2-动画-animation" class="headerlink" title="2.动画 animation"></a>2.动画 animation</h3><ul>
+<li>作用：做一个预设的动画和一些页面交互的动画效果。给元素添加一个动画效果，让页面效果不过于生硬</li>
+<li>语法：animation：动画名称，一个周期花费时间，运动曲线（默认ease），动画延迟（默认0），播放次数（默认1），是否反向播放动画（默认normal），是否暂停动画（默认running）</li>
+<li>例子： animation: logo2-line 2s linear;  //执行一次logo2-line动画，运动时间2秒，运动曲线为 linear</li>
+<li>重要属性：animation-fill-mode 属性规定动画在播放之前或之后，其动画效果是否可见</li>
+<li>用法： animation-fill-mode : none | forwards | backwards | both;</li>
+<li><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">none	不改变默认行为。</span><br><span class="line">forwards	当动画完成后，保持最后一个属性值（在最后一个关键帧中定义）。</span><br><span class="line">backwards	在 animation-delay 所指定的一段时间内，在动画显示之前，应用开始属性值（在第一个关键帧中定义）。</span><br><span class="line">both	向前和向后填充模式都被应用。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="3-形状转换-transform"><a href="#3-形状转换-transform" class="headerlink" title="3.形状转换 transform"></a>3.形状转换 transform</h3><ul>
+<li>作用：适用于2D或3D转换的元素</li>
+<li>相关属性：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">transform-origin：转换元素的位置（围绕那个点进行转换）。默认(x,y,z)：(50%,50%,0)</span><br></pre></td></tr></table></figure></li>
+<li>语法： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1.旋转角度 rotateX  rotateY rotate3d</span><br><span class="line">  transform:rotate(30deg)</span><br><span class="line">2.偏移量(x,y)</span><br><span class="line">  transform:translate(30px,30px);</span><br><span class="line">3.缩放</span><br><span class="line">  transform:scale(.8);</span><br><span class="line">4.倾斜</span><br><span class="line">  transform: skew(10deg,10deg);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="4-阴影-box-shadow"><a href="#4-阴影-box-shadow" class="headerlink" title="4.阴影 box-shadow"></a>4.阴影 box-shadow</h3><ul>
+<li>作用：实现阴影效果</li>
+<li>语法： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">box-shadow: 水平阴影的位置 垂直阴影的位置 模糊距离 阴影的大小 阴影的颜色 阴影开始方向（默认是从里往外，设置inset就是从外往里）;</span><br></pre></td></tr></table></figure></li>
+<li>例子： box-shadow: 10px 10px 5px #888888</li>
+</ul>
+<h3 id="5-边框图片"><a href="#5-边框图片" class="headerlink" title="5.边框图片"></a>5.边框图片</h3><ul>
+<li>作用：设置内容边框图片</li>
+<li>语法：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">border-image: 图片url 图像边界向内偏移 图像边界的宽度(默认为边框的宽度) 用于指定在边框外部绘制偏移的量（默认0） 铺满方式--重复（repeat）、拉伸（stretch）或铺满（round）（默认：拉伸（stretch））;</span><br></pre></td></tr></table></figure></li>
+<li>语法拆分/例子：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.borderImg&#123;</span><br><span class="line">  border: 15px solid transparent;</span><br><span class="line">  padding: 15px;   </span><br><span class="line">  border-image: url(border.png);</span><br><span class="line">  border-image-slice: 30;</span><br><span class="line">  border-image-repeat: round;</span><br><span class="line">  border-image-outset: 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="6-边框圆角"><a href="#6-边框圆角" class="headerlink" title="6.边框圆角"></a>6.边框圆角</h3><ul>
+<li>作用：设置边框圆角</li>
+<li>语法： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">border-radius: n1,n2,n3,n4;</span><br><span class="line">border-radius: n1,n2,n3,n4&#x2F;n1,n2,n3,n4;</span><br><span class="line">&#x2F;*n1-n4四个值的顺序是：左上角，右上角，右下角，左下角。*&#x2F;</span><br></pre></td></tr></table></figure></li>
+<li>例子：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 左上角以及右下角为圆角</span><br><span class="line">border-radius:25px 0 25px 0;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="7-背景"><a href="#7-背景" class="headerlink" title="7.背景"></a>7.背景</h3><ul>
+<li>作用：控制背景的显示</li>
+<li>关键属性：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">1.background-clip</span><br><span class="line">制定背景绘制（显示）区域</span><br><span class="line">background-clip: border-box; &#x2F;&#x2F; 默认情况-从边框开始绘制</span><br><span class="line">background-clip: padding-box; &#x2F;&#x2F; 背景显示包含boder以及内容content</span><br><span class="line">background-clip: content-box; &#x2F;&#x2F; 背景显示只包含内容content</span><br><span class="line"></span><br><span class="line">2.background-origin</span><br><span class="line">指定背景的相对位置</span><br><span class="line">background-origin: border-box; &#x2F;&#x2F; 背景从boder处开始</span><br><span class="line">background-origin: padding-box; &#x2F;&#x2F; 背景从padding处开始</span><br><span class="line">background-origin: content-box; &#x2F;&#x2F; 背景从内容content处开始</span><br><span class="line"></span><br><span class="line">3. background-size</span><br><span class="line">制定背景大小</span><br><span class="line">&#x2F;&#x2F; 图片保持纵横比，并将图片缩放成当前区域的最大大小-不铺满</span><br><span class="line">background-size: contain; </span><br><span class="line">&#x2F;&#x2F; 图片保持纵横比，将图片缩放成完全覆盖当前区域的最小大小-全部覆盖，但是图片展示不全</span><br><span class="line">background-size: cover; </span><br><span class="line"></span><br><span class="line">4. 多张背景图片</span><br><span class="line">background:url(&#39;test.jpg&#39;) no-repeat left,url(logo.png) no-repeat right</span><br></pre></td></tr></table></figure>
+<h3 id="8-反射-倒影"><a href="#8-反射-倒影" class="headerlink" title="8.反射/倒影"></a>8.反射/倒影</h3></li>
+<li>好看：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src&#x3D;&quot;test.jpg&quot; class&#x3D;&quot;reflect-bottom-img&quot;&gt;</span><br><span class="line"></span><br><span class="line">.reflect-bottom-img &#123;</span><br><span class="line">  -webkit-box-reflect: below 0 url(shou.png);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="9-flex布局"><a href="#9-flex布局" class="headerlink" title="9.flex布局"></a>9.flex布局</h3></li>
 </ul>
 
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/15/vue-v-for%E4%B8%ADkey%E7%9A%84%E4%BD%9C%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/15/vue-v-for%E4%B8%ADkey%E7%9A%84%E4%BD%9C%E7%94%A8/" class="post-title-link" itemprop="url">vue v-for中key的作用</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-06-15 11:14:00 / Modified: 11:36:13" itemprop="dateCreated datePublished" datetime="2021-06-15T11:14:00+08:00">2021-06-15</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="vue-v-for中key的作用"><a href="#vue-v-for中key的作用" class="headerlink" title="vue v-for中key的作用"></a>vue v-for中key的作用</h2><p>高效地更新虚拟DOM</p>
+<p>v-for中的key是为循环里面的每一个虚拟DOM节点添加一个唯一的标识值，是为了跟踪每一个节点，便于在DOM更新的时候能够高效地更新虚拟DOM。</p>
+<p>vue中v-for更新已渲染过的元素列表时，采用的是【就地复用】的策略。当数据项顺序发生变化时，vue中不是移动DOM元素来匹配数据项的改变，而是简单复用此处的每一个元素，并且确保它在特定索引下显示已渲染过的每一个元素。</p>
+<p>key 的特殊属性主要用在Vue的虚拟DOM算法，在新旧nodes对比时辨识VNodes。如果不使用 key，Vue会使用一种【最大限度减少动态元素】并且【尽可能的尝试修复/再利用相同类型元素】的算法。使用key，它会基于key的变化重新排列元素顺序，并且会移除 key 不存在的元素。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/15/vue-nextTick%E7%9A%84%E4%BD%9C%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/15/vue-nextTick%E7%9A%84%E4%BD%9C%E7%94%A8/" class="post-title-link" itemprop="url">vue-$nextTick的作用</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-06-15 09:37:49 / Modified: 10:25:45" itemprop="dateCreated datePublished" datetime="2021-06-15T09:37:49+08:00">2021-06-15</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="nextTick的作用"><a href="#nextTick的作用" class="headerlink" title="$nextTick的作用"></a>$nextTick的作用</h2><p>$nextTick是在【下次DOM更新循环】结束之后执行的【延迟回调】，在修改数据之后使用$nextTick,则可以在回调中获取更新后的DOM.</p>
+<p>vue中实现响应式并不是数据发生变化之后DOM就立即变化的，而是按照一定的策略（同一事件循环的所有数据变化完成后，再异步进行视图更新）来进行DOM更新的</p>
+<p>【$nextTick的实现】中使用到了【ES6的Promise】及【HTML5的MutationObserver】，当环境不支持时，使用【setTimeout(fn, 0)】替代。上述的三种方法，均为【异步API】。其中MutationObserver类似事件，又有所区别；事件是同步触发，其为异步触发，即DOM发生变化之后，不会立刻触发，等当前所有的DOM操作都结束后触发</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/10/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E7%9F%A5%E8%AF%86%E7%82%B9%E6%A2%B3%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/10/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E7%9F%A5%E8%AF%86%E7%82%B9%E6%A2%B3%E7%90%86/" class="post-title-link" itemprop="url">前端面试知识点梳理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-10 15:28:02" itemprop="dateCreated datePublished" datetime="2021-06-10T15:28:02+08:00">2021-06-10</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-11-18 15:48:20" itemprop="dateModified" datetime="2021-11-18T15:48:20+08:00">2021-11-18</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="前端面试知识点梳理"><a href="#前端面试知识点梳理" class="headerlink" title="前端面试知识点梳理"></a>前端面试知识点梳理</h1><h2 id="微信小程序"><a href="#微信小程序" class="headerlink" title="微信小程序"></a>微信小程序</h2><p>  <a target="_blank" rel="noopener" href="https://juejin.cn/post/6886267464506671118">微信小程序</a></p>
+<h2 id="uniapp"><a href="#uniapp" class="headerlink" title="uniapp"></a>uniapp</h2>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/09/vue-%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/09/vue-%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">vue-图片懒加载的实现原理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-09 15:07:21" itemprop="dateCreated datePublished" datetime="2021-06-09T15:07:21+08:00">2021-06-09</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-10 09:24:59" itemprop="dateModified" datetime="2021-06-10T09:24:59+08:00">2021-06-10</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="vue-图片懒加载的实现原理"><a href="#vue-图片懒加载的实现原理" class="headerlink" title="vue-图片懒加载的实现原理"></a>vue-图片懒加载的实现原理</h1><h3 id="图片懒加载的优点"><a href="#图片懒加载的优点" class="headerlink" title="图片懒加载的优点"></a>图片懒加载的优点</h3><ul>
+<li>提升页面渲染效率，避免大量图片加载造成页面卡顿。</li>
+<li>按需加载，减少无效的图片加载，节约网络资源。</li>
+</ul>
+<h3 id="图片懒加载插件-vue-lazyload"><a href="#图片懒加载插件-vue-lazyload" class="headerlink" title="图片懒加载插件   vue-lazyload"></a>图片懒加载插件   vue-lazyload</h3><h3 id="自定义指令的方式实现图片懒加载"><a href="#自定义指令的方式实现图片懒加载" class="headerlink" title="自定义指令的方式实现图片懒加载"></a>自定义指令的方式实现图片懒加载</h3><p>首先，我们会先定义一个变量(let imgs = [])存储所有的图片数据，然后准备一张占位图，为每一张图片都默认使用的是占位图；接着监听图片滚动事件（scroll）去触发(eventBus.$emit())事件总线中的注册的”isScroll”事件；为了避免滚动过程中加载不必要的图片，所以需要做防抖处理，待滚动停止后的某个时间点再执行图片加载函数（根据图片是否在图片容器可视区内）。然后加载过了的图片需要从imgs中清除，避免二次加载</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/09/vue-%E5%A4%9A%E4%B8%AA%E7%BB%84%E4%BB%B6%E5%85%A8%E5%B1%80%E6%B3%A8%E5%86%8C%EF%BC%8C%E5%8D%B3%E6%A8%A1%E6%8B%9F%E7%AC%AC%E4%B8%89%E6%96%B9UI%E5%BA%93%E7%9A%84%E6%B3%A8%E5%86%8C%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/09/vue-%E5%A4%9A%E4%B8%AA%E7%BB%84%E4%BB%B6%E5%85%A8%E5%B1%80%E6%B3%A8%E5%86%8C%EF%BC%8C%E5%8D%B3%E6%A8%A1%E6%8B%9F%E7%AC%AC%E4%B8%89%E6%96%B9UI%E5%BA%93%E7%9A%84%E6%B3%A8%E5%86%8C%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">vue-多个组件全局注册，即模拟第三方UI库的注册模式</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-09 10:38:19" itemprop="dateCreated datePublished" datetime="2021-06-09T10:38:19+08:00">2021-06-09</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-10-20 16:54:21" itemprop="dateModified" datetime="2021-10-20T16:54:21+08:00">2021-10-20</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="多个组件全局注册，即模拟第三方UI库的注册模式"><a href="#多个组件全局注册，即模拟第三方UI库的注册模式" class="headerlink" title="多个组件全局注册，即模拟第三方UI库的注册模式"></a>多个组件全局注册，即模拟第三方UI库的注册模式</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 建一个收集组件的js文件，如 components_index.js</span><br><span class="line">import ComponentA from &#39;.&#x2F;components&#x2F;compnentA.vue&#39;</span><br><span class="line">import ComponentB from &#39;.&#x2F;components&#x2F;componentB.vue&#39;</span><br><span class="line"></span><br><span class="line">const components &#x3D; [</span><br><span class="line">    ComponentA,</span><br><span class="line">    ComponentB</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; Vue.use 必须保证注册的组件有 install 函数</span><br><span class="line">const install &#x3D; (vue) &#x3D;&gt; &#123;  </span><br><span class="line">    components.map(component &#x3D;&gt; &#123;</span><br><span class="line">　　　　&#x2F;&#x2F; 注意这里的 component.name 是每个组件中export default自定义的 name，这个 name 可以在项目vue组件中直接使用</span><br><span class="line">       Vue.component(component.name, component);  </span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 注：导出，供 Vue.use注册，其实 Veu.use()是调用Vue.js中的install函数，然后将我们暴露的install执行，真正的注册还是 Vue.component()</span><br><span class="line">&#x2F;&#x2F; 第三方库基本以这种方式注册他们的各个组件，直接使用 Vue.use(element)，其内部已经有 instatll &#x3D;&gt; Vue.component()</span><br><span class="line">export default &#123;</span><br><span class="line">    install,   &#x2F;&#x2F; install 必须暴露，供vue去调用，检测并注册组件</span><br><span class="line">    ComponentA, &#x2F;&#x2F; 按需加载</span><br><span class="line">    ComponentB  &#x2F;&#x2F; 按需加载</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 入口文件，如 main.js</span><br><span class="line">import Vue from &#39;vue&#39;</span><br><span class="line">import All_ui_unit from &#39;.&#x2F;components&#x2F;components_index.js&#39;;</span><br><span class="line"></span><br><span class="line">Vue.use(All_ui_unit );</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="多组件注册（优化：动态引入组件，减少import引入）"><a href="#多组件注册（优化：动态引入组件，减少import引入）" class="headerlink" title="多组件注册（优化：动态引入组件，减少import引入）"></a>多组件注册（优化：动态引入组件，减少import引入）</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 动态引入</span><br><span class="line">const requireComponent &#x3D; require.context(&#39;.&#x2F;&#39;, true, &#x2F;\.vue$&#x2F;);</span><br><span class="line"></span><br><span class="line">const install &#x3D; (Vue) &#x3D;&gt; &#123;</span><br><span class="line">    &#x2F;&#x2F; 避免插件重复注册</span><br><span class="line">    if(install.installed) return</span><br><span class="line"></span><br><span class="line">    install.installed &#x3D; true;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; Object.keys()返回一个由一个给定对象的自身可枚举属性组成的数组</span><br><span class="line">    requireComponent.keys().forEach(fileName &#x3D;&gt; &#123;</span><br><span class="line">        const config &#x3D; requireComponent(fileName); &#x2F;&#x2F; 当前组件</span><br><span class="line">        const componentName &#x3D; config.default.name &#x2F;&#x2F; 组件名</span><br><span class="line">        Vue.component(componentName, config.default || config) &#x2F;&#x2F; 注册组件</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line">if(window !&#x3D;&#x3D; &#39;undefinde&#39; &amp;&amp; window.Vue) &#123;</span><br><span class="line">    install(window.Vue)</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 注：导出，供 Vue.use注册，其实 Veu.use()是调用Vue.js中的install函数，然后将我们暴露的install执行，真正的注册还是 Vue.component()</span><br><span class="line">&#x2F;&#x2F; 第三方库基本以这种方式注册他们的各个组件，直接使用 Vue.use(element)，其内部已经有 instatll &#x3D;&gt; Vue.component()</span><br><span class="line">export default &#123;</span><br><span class="line">    install   &#x2F;&#x2F; install 必须暴露，供vue去调用，检测并注册组件</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -1036,7 +1013,7 @@ console.log([1 ,[2, 3]].flat()); // [1, 2, 3]<br>// 指定转换的嵌套层数<
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1070,7 +1047,7 @@ console.log([1 ,[2, 3]].flat()); // [1, 2, 3]<br>// 指定转换的嵌套层数<
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

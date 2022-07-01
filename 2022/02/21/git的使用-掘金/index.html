@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="来源：掘金-一份工作4年前端的Git备忘指南 Git常用命令 git克隆远程分支仓库： git clone -b 分支名称 远程地址git克隆远程仓库项目时如果不指定分支，只会克隆默认分支的内容。 查看git用户名和邮箱 git config user.namegit config user.email复制代码 分支相关 git branch（查看当前分支)git branch -a（查看所有分支">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git的使用-掘金">
+<meta property="og:url" content="http://example.com/2022/02/21/git%E7%9A%84%E4%BD%BF%E7%94%A8-%E6%8E%98%E9%87%91/index.html">
+<meta property="og:site_name" content="尘世幽梦的BLOG">
+<meta property="og:description" content="来源：掘金-一份工作4年前端的Git备忘指南 Git常用命令 git克隆远程分支仓库： git clone -b 分支名称 远程地址git克隆远程仓库项目时如果不指定分支，只会克隆默认分支的内容。 查看git用户名和邮箱 git config user.namegit config user.email复制代码 分支相关 git branch（查看当前分支)git branch -a（查看所有分支">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-21T07:50:05.000Z">
+<meta property="article:modified_time" content="2022-02-21T07:53:40.227Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/02/21/git%E7%9A%84%E4%BD%BF%E7%94%A8-%E6%8E%98%E9%87%91/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+<title>git的使用-掘金 | 尘世幽梦的BLOG</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">尘世幽梦的BLOG</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Conflicts"><span class="nav-number">1.</span> <span class="nav-text">Conflicts:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#src-api-chat-js"><span class="nav-number">2.</span> <span class="nav-text">src&#x2F;api&#x2F;chat.js</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/21/git%E7%9A%84%E4%BD%BF%E7%94%A8-%E6%8E%98%E9%87%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          git的使用-掘金
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-02-21 15:50:05 / Modified: 15:53:40" itemprop="dateCreated datePublished" datetime="2022-02-21T15:50:05+08:00">2022-02-21</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>来源：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6967634683811069982">掘金-一份工作4年前端的Git备忘指南</a></p>
+<p>Git常用命令</p>
+<p>git克隆远程分支仓库：</p>
+<p>git clone -b 分支名称 远程地址<br>git克隆远程仓库项目时如果不指定分支，只会克隆默认分支的内容。</p>
+<p>查看git用户名和邮箱</p>
+<p>git config user.name<br>git config user.email<br>复制代码</p>
+<p>分支相关</p>
+<p>git branch（查看当前分支)<br>git branch -a（查看所有分支）<br>git checkout 分支名（切换到对应分支） 会自动将代码更新为分支代码<br>git branch 分支名（创建一个分支）<br>git branch -d 分支名（删除一个分支）<br>git branch -D 分支名（强制删除一个未合并的分支）<br>git checkout -b 分支名 [基于的分支名或commit值]（切换分支并直接切换过去）<br>复制代码</p>
+<p>查看git历史</p>
+<p>history</p>
+<p>按照关键词搜索git历史</p>
+<p>history | grep push</p>
+<p>查看commit历史</p>
+<p>git log<br>git log –summary<br>复制代码</p>
+<p>设置git账号</p>
+<p>git config –global user.name “foo”<br>git config –global user.email <a href="mailto:&#x66;&#x6f;&#111;&#64;&#103;&#x6d;&#97;&#105;&#x6c;&#x2e;&#99;&#x6f;&#109;">&#x66;&#x6f;&#111;&#64;&#103;&#x6d;&#97;&#105;&#x6c;&#x2e;&#99;&#x6f;&#109;</a>“<br>git config user.name “foo”<br>git config user.email “<a href="mailto:&#102;&#111;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;">&#102;&#111;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;</a>“<br>复制代码</p>
+<p>查看git账号</p>
+<p>git config –global –list<br>git config –local –list<br>复制代码</p>
+<p>仅仅查看某一项的配置</p>
+<p>git config –local user.name</p>
+<p>回滚本次修改</p>
+<p>git reset HEAD foo.js<br>git checkout – foo.js<br>复制代码</p>
+<p>查看本次修改的代码</p>
+<p>git diff<br>git diff HEAD<br>git diff –staged<br>复制代码</p>
+<p>提交后发现丢了几个文件没有提交</p>
+<p>发现丢了修改记录，重新添加<br>git add “*.html”<br>重新提交，最终只有一个提交<br>git commit –amend<br>复制代码</p>
+<p>缓存某种后缀的文件</p>
+<p>git add “*.js”</p>
+<p>清除缓存区中的文件</p>
+<p>git reset octofamily/octodog.txt</p>
+<p>彻底删除某种后缀的文件</p>
+<p>git rm “*.txt”</p>
+<p>合并分支到master</p>
+<p>git merge 分支名</p>
+<p>add .之前取消提交某些文件</p>
+<p>git checkout – <filename></p>
+<p>藏代码到脏目录（适用于其他成员修改了相同分支代码，但又不想提交）</p>
+<p>git stash</p>
+<p>释放脏目录代码</p>
+<p>git stash pop</p>
+<p>释放指定脏目录代码</p>
+<p>git stash pop stash@{0}</p>
+<p>删除远程分支(此分支必须是非默认分支)</p>
+<p>git push origin –delete branchname</p>
+<p>已经commit，强制回退到旧版本</p>
+<p>git log//找到commit hash值<br>git reset –hard hash值<br>复制代码</p>
+<p>查看stash目录</p>
+<p>git stash list</p>
+<p>删除某一个stash</p>
+<p>git stash drop stash@{0}</p>
+<p>设置远程仓库地址</p>
+<p>git remote set-url origin <a href="mailto:&#x67;&#105;&#x74;&#64;&#102;&#x6f;&#111;&#46;&#x62;&#x61;&#x72;&#x2e;&#x63;&#111;&#109;">&#x67;&#105;&#x74;&#64;&#102;&#x6f;&#111;&#46;&#x62;&#x61;&#x72;&#x2e;&#x63;&#111;&#109;</a>:baz/helloworld.git</p>
+<p>本地创建了新分支，但是orgin没有，push代码前</p>
+<p>git push –set-upstream origin preproduction</p>
+<p>指定tag到远程</p>
+<p>git push origin <tag_name></p>
+<p>将全部tag打到远程</p>
+<p>git push –tags</p>
+<p>查看当前tags</p>
+<p>git tag –list</p>
+<p>仅仅删除index不删除working tree上的.idea文件</p>
+<p>git rm –cached -r .idea // –cached仅仅删除index，-r（recursive）递归删除.idea目录下的所有文件</p>
+<p>git主动track文件，控制文件，做好提交准备</p>
+<p>git add &lt;file(s)&gt;/.</p>
+<p>git unstage文件，释放文件，选择性控制</p>
+<p>git reset HEAD &lt;file(s)&gt;/.</p>
+<p>暂存区文件如何覆盖工作目录文件</p>
+<p>git reset HEAD &lt;file(s)&gt;/. &amp;&amp; git checkout – &lt;file(s)&gt;/.</p>
+<p>提交已经被git管理的，modified为红色的所有文件</p>
+<p>git add -u</p>
+<p>重置工作区和暂存区的所有文件为原始状态</p>
+<p>git reset –hard</p>
+<p>比较当前分支与某次提交的区别</p>
+<p>git diff HEAD [commit hash fragment]</p>
+<p>删除一个分支</p>
+<p>git branch -D [branch name]</p>
+<p>同步到remote后，合并多个commit 为1个</p>
+<p>git rebase -i HEAD~2/hash<br>pick &amp;&amp; squash<br>:wq!<br>复制代码</p>
+<p>查看项目的origin代表的地址</p>
+<p>git remote -v</p>
+<p>pick中途误退出</p>
+<p>git rebase –abort</p>
+<p>未同步到remote，重新提交</p>
+<p>reset soft</p>
+<p>gitflow release 发布新版本</p>
+<p>git flow release start v0.5.0<br>npm version minor<br>git flow release finish -n<br>git push<br>git checkout master<br>git push<br>复制代码</p>
+<p>gitflow hotfix 修复一个master上的bug</p>
+<p>git flow hotfix start foo<br>npm version patch // 注意：一定要在修复bug代码之前新增版本号<br>git add .<br>git commit -m “version change message”<br>git flow hotfix finish -n<br>git push<br>git checkout master<br>git push<br>复制代码</p>
+<p>对比2个分支的日志</p>
+<p>git log develop..master<br>复制代码</p>
+<p>合并master代码到feature</p>
+<p>git checkout feature<br>git merge master<br>复制代码<br>git merge master feature<br>复制代码</p>
+<p>git rebase冲突时怎么办</p>
+<p>resolve conficts<br>git add .<br>git rebase –continue<br>复制代码</p>
+<p>squash多个commits成一个怎么敲？</p>
+<p>假设merge feature到master。<br>git checkout master<br>git merge –squash feature<br>git commit -m “这是一次squash commit”<br>git push<br>复制代码</p>
+<p>查看当前分支的父分支</p>
+<p>git reflog show <childBranch><br>32c3956 (HEAD -&gt; currentBranch, origin/fatherBranch, fatherBranch, list) childBranch@{0}: branch: Created from fatherBranch<br>复制代码<br>childBranch 是你新建的分支。<br>fatherBranch 是它的父分支，也就是来源分支。</p>
+<p>撤销远程分支错误提交</p>
+<p>…reset<br>git push –force<br>复制代码<br>其实使用本地分支的提交替代远程分支。</p>
+<p>误删除领先远程的本地分支如何恢复？</p>
+<p>git reflog // 找出最新的commit sha1值，HEAD@{1}比HEAD@{2}新<br>git branch branchName <sha1><br>复制代码<br>通过git reflog找到一个commit，然后再cherry-pick也可以。</p>
+<p>删除由npm version patch/minor/major误添加的tag</p>
+<p>git tag | grep v1.1.38<br>git tag -d v1.1.38<br>git push origin :refs/tags/v1.1.38<br>复制代码</p>
+<p>git fetch与git pull的区别</p>
+<p>git fetch 更新origin/*下的所有分支，在发布git flow feature前很有用，用于更新remote分支。<br>git pull 主要用来更新多人合作的当前分支，多用于更新local分支。<br>// <a target="_blank" rel="noopener" href="https://www.git-tower.com/learn/git/faq/difference-between-git-fetch-git-pull">https://www.git-tower.com/learn/git/faq/difference-between-git-fetch-git-pull</a><br>复制代码</p>
+<p>远程分支删除，本地git fetch不能更新到最新分支</p>
+<p>git fetch –prune</p>
+<p>–prune什么意思？<br>Before fetching, remove any remote-tracking references that no longer exist on the remote.<br>复制代码</p>
+<p>及时查看本地所有分支的状态</p>
+<p>git remote show origin<br>复制代码</p>
+<p>假如远程已不存在这个分支，git fetch –prune也更新不到状态，该怎么办？</p>
+<p>git push origin –delete feature/fix-chat-unread-msg-async<br>复制代码</p>
+<p>删除单个脱离的远程分支</p>
+<p>git remote prune <name><br>复制代码</p>
+<p>取消一次合并（merge）</p>
+<p>git merge –abort</p>
+<p>回退一次commit</p>
+<p>git revert Head/[commit hash]<br>优雅使用Git的一些实践</p>
+<p>windows下gitbash支持中文输入：</p>
+<p>1）鼠标左键点击左上角git的logo<br>2）找到options并且切换到text目录，将Character set设置为UTF-8<br>复制代码</p>
+<p>生成ssh-key</p>
+<p>ssh-keygen -t rsa -C “<a href="mailto:&#x67;&#97;&#111;&#107;&#x61;&#105;&#50;&#x30;&#x31;&#48;&#48;&#x38;&#48;&#49;&#64;&#x71;&#x71;&#46;&#x63;&#x6f;&#x6d;">&#x67;&#97;&#111;&#107;&#x61;&#105;&#50;&#x30;&#x31;&#48;&#48;&#x38;&#48;&#49;&#64;&#x71;&#x71;&#46;&#x63;&#x6f;&#x6d;</a>“</p>
+<p>windows查看ssh-key</p>
+<p>/c/Users/frank/.ssh/id_rsa.pub</p>
+<p>mac/linux查看ssh-key</p>
+<p>cd ~/.ssh<br>ls<br>cat id_rsa.pub</p>
+<p>git flow</p>
+<p>danielkummer.github.io/git-flow-ch…</p>
+<p>误删除stash，该怎么办？</p>
+<p>git fsck –unreachable |<br>grep commit | cut -d\  -f3 |<br>xargs git log –merges –no-walk –grep=WIP<br>复制代码<br>找到对应的commit hash值<br>git stash apply 1f55da93d26cd51f15f9e93351dae6b75e25e36f<br>复制代码</p>
+<p>.idea修改总是会提醒，.gitignore不生效</p>
+<p>.idea/<br>git rm -r –cached .idea<br>复制代码</p>
+<p>Git中的origin是什么？</p>
+<p>origin是一个变量，代表着一个git仓库地址。可以使用git remote -v查看origin代表的地址。</p>
+<p>Git的system，global和local参数分别代表什么？</p>
+<p>–system可以输出很多git的系统设置，其中最有用的是alias，例如git s代表了git status，系统所有登录用户有用。<br>–global输出了git的全局设置，主要包括全局的user.name和user.email，优先级低于单个仓库中设置的user.name和user.email，当前用户所有仓库有用。<br>–local输出了git的项目设置，主要包括remote.origin.url以及gitflow的很多配置，只对某个仓库有用。<br>复制代码</p>
+<p>Git工作区和暂存区的区别？</p>
+<pre><code>   add           commit
+</code></pre>
+<p>工作目录—-&gt;暂存区—-&gt;版本历史<br>复制代码<br>暂存区：git已经获得了对文件的管理权限，暂存区文件有状态：new file，deleted，modified等等。<br>版本历史：git log查看每一次commit记录。<br>意外收获：<br>若是想非常细粒度的控制commit记录，可以使用git add 指定文件，分开多次commit，每一次commit提交一个细粒度功能的变更文件集合，多次走文件目录 暂存区 版本历史这个流程。<br>复制代码</p>
+<p>Git如何重命名文件？</p>
+<p>git mv README.md readme.md<br>复制代码</p>
+<p>Git的working tree和index是什么意思？</p>
+<p>index指的是git索引，可以理解成git有文件的一个复制，仅删除index则仅删除存在于git中的文件。<br>working tree则是指操作系统的工作树，也就是操作系统的磁盘上存储的文件。<br>举两个常用的例子：</p>
+<ol>
+<li>仅删除git index中的文件，.idea等IDE隐藏的工作树文件是不能删除的：**–cached**<br>git rm –cached -r .idea // <strong>–cached仅仅删除index</strong>，-r（recursive）递归删除.idea目录下的所有文件</li>
+<li>删除index和working tree上的文件，恩断义绝</li>
+</ol>
+<p>git rm 删除index上和working tree上的文件，<br>仅仅删除working tree不删除index的情况，不存在。<br>复制代码</p>
+<p>nothing to commit 和 working tree clean?</p>
+<p>暂存区没有可以提交到版本历史的内容。<br>工作区也是干净的。<br>复制代码</p>
+<p>如何一目了然地区分出工作区和暂存区？</p>
+<p>Your branch is ahead of ‘origin/master’ by 1 commit 版本历史<br>Changes to be committed 暂存区<br>Untracked files 工作区</p>
+<p>// 版本历史<br>Your branch is ahead of ‘origin/master’ by 1 commit.<br>  (use “git push” to publish your local commits)<br>// 暂存区<br>Changes to be committed:<br>  (use “git reset HEAD <file>…” to unstage)</p>
+<pre><code>    renamed:    readme.md -&gt; README.md
+    new file:   helloman
+</code></pre>
+<p>// 工作区<br>Untracked files:<br>  (use “git add <file>…” to include in what will be committed)</p>
+<pre><code>    hi
+</code></pre>
+<p>复制代码</p>
+<p>如何更加优雅地查看日志？</p>
+<p>git log –oneline 简洁的commit记录<br>git log -n2 –oneline 最近的2次简洁的commit记录<br>git log –all 所有分支的历史版本信息<br>git log –graph 图形化查看版本演进历史<br>git log –oneline –all -n4 –graph 组合查看日志<br>复制代码</p>
+<p>如何快速定位到git的命令文档？</p>
+<p>git help –web log 浏览器查看git log的用法</p>
+<p>git自带的图形化界面怎么看？</p>
+<p>gitk 无需安装第三方插件，在纯命令行下，无第三方软件情况下可用。</p>
+<p>git 里的作者和提交人不一样吗？</p>
+<p>作者是代码的生成者，是为了版权保护。</p>
+<p>神秘的.git目录</p>
+<p>HEAD 工作分支refs/heads/foo<br>config repo的配置信息<br>refs heads，分支；tags，标签或者里程碑<br>refs/heads/master 存放了什么，最新的一个commit<br>refs/tags/js01 存放了什么，最新的一个tag，包含一个object<br>objects 文件夹，2个字符的和松散的pack文件夹，存放的是tree，tree下有blob文件<br>复制代码<br>可以直接通过vim修改HEAD，config等信息，和命令的作用是相同的。</p>
+<p>如何判断git文件的类型？</p>
+<p>git cat-file -t/-p [hash fragment] // -t 类型，-p 内容<br>只要任何文件的文件内容相同，在git眼里，它就是唯一的一个blob。<br>commit<br>tree // 位于objects目录下<br>blob // 位于objects目录的二级目录下，具体的文件<br>复制代码</p>
+<p>tree, commit, blob的区别？</p>
+<p>commit：一个commit肯定会对应一棵树，包含了根tree，author，committer，parent等等一个commit对象的信息。<br>tree：取出一个commit，存放了一个快照，这个快照，对应了当前项目的所有的文件夹及其文件的快照，是特定时间的整个仓库的一个状态；树里可以有blob，也可以有树，因为树是文件夹；根树是最大的树。<br>blob:  与文件名是否相同无关，只要内容相同，就是唯一的blob。<br>复制代码</p>
+<p>一个commit包含了哪些？</p>
+<p>git cat-file -p [commit hash fragment]<br>复制代码<br>包含tree，parent，author和commiter。<br>tree f06f7f36af17cb9098031c66d22a7910c0fa1bac<br>parent 92a55c8a5b1d38d224232ad84b9b728ae77189cb<br>parent eda632a1f2a3ea049c5f5268f6b2f064b71898ce<br>author FrankKai <a href="mailto:&#103;&#97;&#x6f;&#107;&#97;&#105;&#50;&#x30;&#x31;&#48;&#48;&#56;&#x30;&#x31;&#x40;&#x67;&#x6d;&#97;&#105;&#108;&#46;&#99;&#x6f;&#x6d;">&#103;&#97;&#x6f;&#107;&#97;&#105;&#50;&#x30;&#x31;&#48;&#48;&#56;&#x30;&#x31;&#x40;&#x67;&#x6d;&#97;&#105;&#108;&#46;&#99;&#x6f;&#x6d;</a> 1548139120 +0800<br>committer FrankKai <a href="mailto:&#x67;&#x61;&#111;&#x6b;&#x61;&#105;&#x32;&#48;&#49;&#x30;&#48;&#x38;&#x30;&#x31;&#64;&#x67;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#111;&#109;">&#x67;&#x61;&#111;&#x6b;&#x61;&#105;&#x32;&#48;&#49;&#x30;&#48;&#x38;&#x30;&#x31;&#64;&#x67;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#111;&#109;</a> 1548139120 +0800</p>
+<p>Merge branch ‘feature/chatBreakChange’ into prerelease</p>
+<h1 id="Conflicts"><a href="#Conflicts" class="headerlink" title="Conflicts:"></a>Conflicts:</h1><h1 id="src-api-chat-js"><a href="#src-api-chat-js" class="headerlink" title="src/api/chat.js"></a>src/api/chat.js</h1><p>复制代码</p>
+<p>一个tree包含了哪些？</p>
+<p>git cat-file -p [tree hash fragment]<br>复制代码<br>包含tree，blob。<br>100644 blob 015aaf344153ed7822069b2a98898b7d7a215b0d    .babelrc<br>100644 blob 9d08a1a828a3bd2d60de3952744df29f9add27fa    .editorconfig<br>100644 blob 080140b833db5b758b1eb869a269f4bbb068a19e    .eslintignore<br>100644 blob 8f777c376c0314e480f9bbba273d4902810bcb11    .eslintrc.js<br>100644 blob 895e844218637929546ed2295ae90f991ceb5d38    .gitignore<br>100644 blob db7b635d23657349dbe4c33cc353ef4efd8ca960    .npmrc<br>100644 blob 797e871f4b8c0a3071e8b6ab2cc40b804cd2971c    .postcssrc.js<br>100644 blob d3983c1d6a5525aae58b823448723434ca83ceed    .prettierrc<br>100644 blob 93cc7473ab066204f3329221111a945e2dc83576    BUS.md<br>100644 blob defc3d9914d1af08e6670b96995261bfe1fb61a6    CHANGELOG.md<br>100644 blob bfd46fd4008cbe7103181fc5cd64392a74426e96    MQTT.md<br>100644 blob abdb55935d833dd4f4b79475aa7d63ffcb0cc9cd    README.md<br>040000 tree f1f80f844bb80389826198a15ec0f224a53525f8    build<br>100644 blob 2aefa3130f4ff753b5c3e538db53b9b186f12540    index.html<br>100644 blob 967b8f243420a9a8a07b8f429f0a7ba874a834ad    package-lock.json<br>100644 blob 35d9fa46f569395b25a87daef4820de42d071831    package.json<br>040000 tree f6bdc675a8f9af805867b5a19c263e5bbfe4c26c    src<br>040000 tree 09e231414b91779326447a0c8d5b3421aa2308c2    static<br>040000 tree ad94369cfdd2038a552e44fc0abbd1738113b5e6    test<br>100644 blob 0b96f21c27a3759cecde02fba1e050d86a8e9a54    yarn.lock<br>复制代码</p>
+<p>一个blob包含了哪些？</p>
+<p>git cat-file -p [tree hash fragment]<br>就是一个具体的文件。<br>复制代码</p>
+<p>detached HEAD是什么？</p>
+<p>分离头指针。<br><code>git checkout [commit hash fragment]</code>，切换到分离头指针状态，不与任何branch或tag关联，git会认为这是不重要的，当成垃圾清理掉。<br>缺点：切换分支后，需要用<code>git branch [branch name] [commit hash fragment]</code>新建一个分支，否则会丢失原消息。<br>优点：可以基于某一次commit切出分支，然后新建一个commit，快速会退到想要的版本。<br>复制代码</p>
+<p>HEAD可以指向什么？</p>
+<p>它位于.git/HEAD。<br>可以指向分支或者commit，<strong>但其实分支归根结底还是指向了commit</strong>。<br>git log 查看HEAD指针指向的分支名：<code>(HEAD-&gt;foo, bar, master)</code><br>可以快速diff，<code>git diff HEAD [commit hash fragment]</code>。<br>父亲的父亲diff：<code>git diff HEAD HEAD~2</code>，<code>git diff HEAD HEAD^^</code>。<br>复制代码</p>
+<p>如何修改最新一次commit的message？</p>
+<p>git commit –amend<br>注意：不能在团队的集成分支上，做这样的变更，仅适用于本地。</p>
+<p>如何修改老旧commit的message？</p>
+<p>git rebase -i [父 commit hash fragment]<br>reward<br>添加修改后的commit message<br>注意：不能在团队的集成分支上，做这样的变更，仅适用于本地。<br>复制代码</p>
+<p>git stash pop stash@{n}还能做什么操作？</p>
+<p>当前分支的本地代码未提交的情况下，pull了领先的远程分支代码，此时远程代码会覆盖本地代码。<br>git比较聪明，它不会完全将本地的代码扔掉，即使没有人为的生成一次commit记录，也会自动为我们在stash下生成一次记录，以免造成重大的代码丢失。<br>复制代码</p>
+<p>gitflow模式下，如何规范版本发布？</p>
+<p>版本号升级gitflow对应bug -&gt; patchhotfixfeature-&gt;minorrelease系统重构-&gt;majorrelease<br>但是在scrum的情况下，迭代非常快速，若所有feature都升级minor，会导致minor数字很大，该怎么处理这种情况？<br>只升级minor时，在commit提交信息中，添加以下信息：</p>
+<p>类型提交信息bug patch[bug patch]feature patch[feature patch</p>
+<p>创建一个新的项目并上传到git</p>
+<p>git init<br>git ac<br>git remote add origin remote repository URL<br>复制代码</p>
+<p>git参数–decorate是什么？</p>
+<p>有short，full，auto，no几种值，–decorate=short<br>打印出commit的ref name。<br>short时，ref name 前缀refs/head,refs/tags/和refs/remotes不会打印<br>full时，完整前缀会被打印<br>auto时，如果输出是一个终端，会按照short的方式打印；非终端会显示全部<br>no时，会隐藏HEAD和tag等等refs信息<br>默认值是short</p>
+<p>cherry pick是什么？</p>
+<p>如何理解git cherry pick？</p>
+<p>清空所有本地git 缓存</p>
+<p>git rm -r –cache .<br>复制代码</p>
+<p>error Command “husky-run” not found</p>
+<p>rm -rf .git/hooks/</p>
+<p>一次完整的rebase流程</p>
+<ol>
+<li>git checkout feature</li>
+<li>git rebase master</li>
+<li>resolve conflicts</li>
+<li>git add .</li>
+<li>git rebase –continue<br>复制代码</li>
+</ol>
+<p>git revert和git reset的区别</p>
+<p>git revert 生成一个新的commit的方式回滚到上一个或者指定commit版本的代码，原理是Head继续前进。有存在被回滚掉的commit分支代码合并过来时，代码正常被合并</p>
+<p>git reset 删除某个commit之后的代码，原理是Head向后退。有存在被回滚掉的commit分支代码合并过来时，被reset掉的代码仍然会合并上来<br>复制代码<br>oh-my-zsh 常用命令<br>缩写全写对照表</p>
+<p>缩写全写gstgit statusgaagit add .gcmsg “”git commit -m “”gpgit pushgloggit log –oneline –decorate –graphglgit pullgfgit fetchgfagit fetch –all –prune<br>使用小技巧</p>
+<p>如何修改默认指令的参数，比如，glog的decorate默认是short，我想指定glog的decorate为no，要怎么做？</p>
+<p>glog –decorate=no</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/20/vue3%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8BdefineProps%E5%92%8CdefineEmits/" rel="prev" title="vue3新特性之defineProps和defineEmits">
+                  <i class="fa fa-chevron-left"></i> vue3新特性之defineProps和defineEmits
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/14/React-%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E4%B8%8Eclass%E7%BB%84%E4%BB%B6/" rel="next" title="React-函数组件与class组件">
+                  React-函数组件与class组件 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

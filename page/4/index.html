@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -194,7 +194,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/15/%E4%BF%AE%E6%94%B9node-module%E4%B8%AD%E7%9A%84%E6%9F%90%E4%B8%80%E6%A8%A1%E5%9D%97%EF%BC%8C%E5%A6%82%E4%BD%95%E8%AE%A9%E5%85%B6%E7%94%9F%E6%95%88%EF%BC%9F/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/31/%E9%A1%B9%E7%9B%AE%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E9%A1%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -207,7 +207,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/15/%E4%BF%AE%E6%94%B9node-module%E4%B8%AD%E7%9A%84%E6%9F%90%E4%B8%80%E6%A8%A1%E5%9D%97%EF%BC%8C%E5%A6%82%E4%BD%95%E8%AE%A9%E5%85%B6%E7%94%9F%E6%95%88%EF%BC%9F/" class="post-title-link" itemprop="url">修改node_module中的某一模块，如何让其生效？</a>
+          <a href="/2021/05/31/%E9%A1%B9%E7%9B%AE%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E9%A1%B9/" class="post-title-link" itemprop="url">项目性能优化项</a>
         </h2>
 
         <div class="post-meta-container">
@@ -218,14 +218,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2021-04-15 10:58:55" itemprop="dateCreated datePublished" datetime="2021-04-15T10:58:55+08:00">2021-04-15</time>
+      <time title="Created: 2021-05-31 15:50:16" itemprop="dateCreated datePublished" datetime="2021-05-31T15:50:16+08:00">2021-05-31</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-16 14:07:22" itemprop="dateModified" datetime="2021-04-16T14:07:22+08:00">2021-04-16</time>
+        <time title="Modified: 2021-12-27 15:05:51" itemprop="dateModified" datetime="2021-12-27T15:05:51+08:00">2021-12-27</time>
       </span>
 
   
@@ -238,22 +238,48 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="修改node-module中的某一模块，如何让其生效？"><a href="#修改node-module中的某一模块，如何让其生效？" class="headerlink" title="修改node_module中的某一模块，如何让其生效？"></a>修改node_module中的某一模块，如何让其生效？</h1><p>  目前在项目中遇到一个问题，就是用了第三方的插件，安装依赖之后，想修改其源码，然后希望让其能够在当前项目中生效。然后在网上找到了一个比较靠谱的说法，在此记录一下。</p>
-<p>  比如很多 node_modules 包里面既有源码又有编译后的代码，你看下你 node_modules 模块里面的 package.json文件的 main 配置，入口文件，从这个里面修改。另外不建议你直接修改 node_modules 里面的模块，比如当你执行 npm update 之后，你修改的代码又会被覆盖了，而且团队协作的话这种方式更不可取。</p>
-<p>解决方案：</p>
-<ul>
-<li><p>第一种</p>
-<ul>
-<li>你可以在 github 上 fork 一份代码，修改之后，执行 npm install <a target="_blank" rel="noopener" href="https://github.com/">https://github.com/</a><username>/<repository>/tarball/master 来安装，注意后缀 /tarball/master</li>
-<li>比如安装workflow-bpmn-modeler模块：npm install <a target="_blank" rel="noopener" href="https://github.com/cwj93/workflow-bpmn-modeler/tarball/master">https://github.com/cwj93/workflow-bpmn-modeler/tarball/master</a></li>
+          <h1 id="项目性能优化项"><a href="#项目性能优化项" class="headerlink" title="项目性能优化项"></a>项目性能优化项</h1><h3 id="代码层面的优化"><a href="#代码层面的优化" class="headerlink" title="代码层面的优化"></a>代码层面的优化</h3><ul>
+<li>v-if 和 v-show 区分使用场景</li>
+<li>computed 和 watch  区分使用场景</li>
+<li>v-for 遍历必须为 item 添加 key，且避免同时使用 v-if</li>
+<li>长列表性能优化</li>
+<li>事件的销毁</li>
+<li>图片资源懒加载</li>
+<li>路由懒加载</li>
+<li>第三方插件的按需引入</li>
+<li>优化无限列表性能</li>
+<li>服务端渲染 SSR or 预渲染</li>
 </ul>
-</li>
-<li><p>第二种</p>
-<ul>
-<li>[<a target="_blank" rel="noopener" href="https://www.cnblogs.com/baixiaoxiao/p/12964170.html]">https://www.cnblogs.com/baixiaoxiao/p/12964170.html]</a></li>
+<h3 id="Webpack-层面的优化"><a href="#Webpack-层面的优化" class="headerlink" title="Webpack 层面的优化"></a>Webpack 层面的优化</h3><ul>
+<li>Webpack 对图片进行压缩</li>
+<li>减少 ES6 转为 ES5 的冗余代码</li>
+<li>提取公共代码</li>
+<li>模板预编译</li>
+<li>提取组件的 CSS</li>
+<li>优化 SourceMap</li>
+<li>构建结果输出分析</li>
+<li>Vue 项目的编译优化</li>
 </ul>
-</li>
+<h3 id="基础的-Web-技术的优化"><a href="#基础的-Web-技术的优化" class="headerlink" title="基础的 Web 技术的优化"></a>基础的 Web 技术的优化</h3><ul>
+<li>开启 gzip 压缩</li>
+<li>浏览器缓存</li>
+<li>CDN 的使用</li>
+<li>使用 Chrome Performance 查找性能瓶颈</li>
 </ul>
+<p>作者：我是你的超级英雄<br>链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903918753808398">https://juejin.cn/post/6844903918753808398</a><br>来源：掘金<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<p>我们需要做的优化：(下面做出的优化都是根据分析工具得出后，对应自己的项目进行细化而来)</p>
+<h3 id="代码层面："><a href="#代码层面：" class="headerlink" title="代码层面："></a>代码层面：</h3><ul>
+<li>多图片的页面需要做图片懒加载+预加载+cdn请求以及压缩。后期会推出一篇关于图片优化的文章…</li>
+<li>组件按需加载</li>
+<li>对于迫不得已的dom操作，尽量一次性操作。避免多次操作dom造成页面重绘重排</li>
+<li>公共组件的提取</li>
+<li>ajax的请求尽量能够减少多个，如果ajax请求比较慢，但是又必须得请求。那么可以考虑使用 Web Worker</li>
+</ul>
+<h3 id="打包项目。"><a href="#打包项目。" class="headerlink" title="打包项目。"></a>打包项目。</h3><ul>
+<li>使用webpack插件 例如 tree-sharking进行剔除无关的依赖加载。使用terser进行代码压缩，给执行时间长的loader加 cache-loader，可以使得下次打包就会使用 node_modules/.cache 里的</li>
+<li>静态资源使用缓存或者cdn加载，部分动态文件设置缓存过期时间</li>
+</ul>
+<p>作者：Tzyito<br>链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/7008422231403397134">https://juejin.cn/post/7008422231403397134</a><br>来源：稀土掘金<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
 
       
     </div>
@@ -280,7 +306,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/14/Array-%E5%AF%B9%E8%B1%A1/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/27/vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%9B%B8%E5%85%B3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -293,7 +319,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/14/Array-%E5%AF%B9%E8%B1%A1/" class="post-title-link" itemprop="url">JavaScript Array 对象</a>
+          <a href="/2021/05/27/vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%9B%B8%E5%85%B3/" class="post-title-link" itemprop="url">vue生命周期</a>
         </h2>
 
         <div class="post-meta-container">
@@ -304,14 +330,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2021-04-14 09:52:10" itemprop="dateCreated datePublished" datetime="2021-04-14T09:52:10+08:00">2021-04-14</time>
+      <time title="Created: 2021-05-27 15:44:50" itemprop="dateCreated datePublished" datetime="2021-05-27T15:44:50+08:00">2021-05-27</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-19 11:24:00" itemprop="dateModified" datetime="2021-04-19T11:24:00+08:00">2021-04-19</time>
+        <time title="Modified: 2021-06-08 15:42:32" itemprop="dateModified" datetime="2021-06-08T15:42:32+08:00">2021-06-08</time>
       </span>
 
   
@@ -324,379 +350,29 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="JavaScript-Array-对象"><a href="#JavaScript-Array-对象" class="headerlink" title="JavaScript Array 对象"></a>JavaScript Array 对象</h1><p>整理一下JS的数组对象的方法，方便自己记忆。如果觉得此文章对你有用，可以前往github给作者一个star吗？<a target="_blank" rel="noopener" href="https://github.com/cwj93/cwj93.github.io">github地址</a></p>
+          <h1 id="vue生命周期"><a href="#vue生命周期" class="headerlink" title="vue生命周期"></a>vue生命周期</h1><p>Vue 实例有一个完整的生命周期，也就是从开始创建、初始化数据、编译模版、挂载 Dom -&gt; 渲染、更新 -&gt; 渲染、卸载等一系列过程，我们称这是 Vue 的生命周期。</p>
+<h2 id="Vue-的父组件和子组件生命周期钩子函数执行顺序？"><a href="#Vue-的父组件和子组件生命周期钩子函数执行顺序？" class="headerlink" title="Vue 的父组件和子组件生命周期钩子函数执行顺序？"></a>Vue 的父组件和子组件生命周期钩子函数执行顺序？</h2><p>  简述：即在父组件挂载，更新，销毁之前，是子组件先挂载，更新，销毁，再到父组件的挂载，更新，销毁</p>
+<p>  加载渲染过程:<br>    父 beforeCreate -&gt; 父 created -&gt; 父 beforeMount -&gt; 子 beforeCreate -&gt; 子 created -&gt; 子 beforeMount -&gt; 子 mounted -&gt; 父 mounted</p>
+<p>  子组件更新过程:<br>    父 beforeUpdate -&gt; 子 beforeUpdate -&gt; 子 updated -&gt; 父 updated</p>
+<p>  父组件更新过程:<br>    父 beforeUpdate -&gt; 父 updated</p>
+<p>  销毁过程:<br>    父 beforeDestroy -&gt; 子 beforeDestroy -&gt; 子 destroyed -&gt; 父 destroyed</p>
+<h2 id="父组件监听子组件的生命周期"><a href="#父组件监听子组件的生命周期" class="headerlink" title="父组件监听子组件的生命周期"></a>父组件监听子组件的生命周期</h2><p>有两种方式：</p>
 <ul>
-<li><p>concat()  </p>
-<ul>
-<li>array1.concat(array2,array3,…,arrayX)</li>
-<li>连接两个或更多的数组，并返回结果</li>
-<li>不会改变现有的数组，而仅仅会返回被连接数组的一个副本</li>
-<li><code>[1,2,3].concat([5,6]) // [1, 2, 3, 5, 6]</code></li>
-<li><code>[1,2,3].concat(&#39;k&#39;) // [1, 2, 3, &quot;k&quot;]</code></li>
-<li>字符串也有同样的方法concat(),用于拼接字符串没有改变原有字符串，但是会返回连接两个或多个字符串新字符串</li>
-<li><code>&#39;kkk&#39;.concat(&#39;mm&#39;, &#39;nn&#39;) // &quot;kkkmmnn&quot;</code></li>
+<li>一种是通过手动$emit触发父组件的事件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Parent.vue</span><br><span class="line">&lt;Child @mounted&#x3D;&quot;doSomething&quot;&#x2F;&gt;</span><br><span class="line">    </span><br><span class="line">&#x2F;&#x2F; Child.vue</span><br><span class="line">mounted() &#123;</span><br><span class="line">  this.$emit(&quot;mounted&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>第二种是通过@hook:mounted的形式监听子组件的生命周期<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;  Parent.vue</span><br><span class="line">&lt;Child @hook:mounted&#x3D;&quot;doSomething&quot; &gt;&lt;&#x2F;Child&gt;</span><br><span class="line"></span><br><span class="line">doSomething() &#123;</span><br><span class="line">  console.log(&#39;父组件监听到 mounted 钩子函数 ...&#39;);</span><br><span class="line">&#125;,</span><br><span class="line">    </span><br><span class="line">&#x2F;&#x2F;  Child.vue</span><br><span class="line">mounted()&#123;</span><br><span class="line">  console.log(&#39;子组件触发 mounted 钩子函数 ...&#39;);</span><br><span class="line">&#125;,    </span><br><span class="line">    </span><br><span class="line">&#x2F;&#x2F; 以上输出顺序为：</span><br><span class="line">&#x2F;&#x2F; 子组件触发 mounted 钩子函数 ...</span><br><span class="line">&#x2F;&#x2F; 父组件监听到 mounted 钩子函数 ...   </span><br></pre></td></tr></table></figure>
+<h2 id="各个生命周期的作用"><a href="#各个生命周期的作用" class="headerlink" title="各个生命周期的作用"></a>各个生命周期的作用</h2></li>
+<li>beforeCreate: 组件实例被创建之初，组件的属性生效之前</li>
+<li>created: 组件实例已经完全创建，属性也绑定，但真实 dom 还没有生成，$el 还不可用</li>
+<li>beforeMount: 在挂载开始之前被调用：相关的 render 函数首次被调用</li>
+<li>mounted: el 被新创建的 vm.$el 替换，并挂载到实例上去之后调用该钩子</li>
+<li>beforeUpdate: 组件数据更新之前调用，发生在虚拟 DOM 打补丁之前</li>
+<li>update: 组件数据更新之后</li>
+<li>activited: keep-alive 专属，组件被激活时调用</li>
+<li>deactivated: keep-alive 专属，组件被销毁时调用</li>
+<li>beforeDestory: 组件销毁前调用 (清除watcher，子组件事件监听器)</li>
+<li>destoryed: 组件销毁后调用</li>
 </ul>
-</li>
-<li><p>copyWithin()</p>
-<ul>
-<li>array.copyWithin(target, start, end)<ul>
-<li>参数：<ul>
-<li>target：必需。复制到数组指定索引位置。</li>
-<li>start： 可选。从数组中复制的起始位置</li>
-<li>end: 可选。从数组中复制的终止位置，默认为数组长度。如果为负值，表示倒数</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>用于从数组的指定位置拷贝元素到数组的另一个指定位置中</li>
-<li>从数组的指定位置拷贝元素，拷贝的元素如果超过原数组长度的话，就只拷贝前面部分的元素</li>
-<li><code>[0,1,2,3,4,5].copyWithin(2,1,3) // [0, 1, 1, 2, 4, 5]</code></li>
-<li>从数组中的索引为1的位置开始复制，到索引为3的位置终止，复制的元素有1,2，然后放入到数组索引为2的位置，</li>
-<li><code>[0,1,2,3,4,5].copyWithin(2,1) // [0, 1, 1, 2, 3, 4]</code></li>
-<li><code>[0,1,2,3,4,5].copyWithin(2,0) // [0, 1, 0, 1, 2, 3]</code></li>
-</ul>
-</li>
-<li><p>every()</p>
-<ul>
-<li>array.every(function(currentValue,index,arr), thisValue)<ul>
-<li>参数：<ul>
-<li>fn: 回调函数，检测数组中的所有元素。</li>
-<li>thisValue: 可选。对象作为该执行回调时使用，传递给函数，用作 “this” 的值.如果省略了 thisValue ，”this” 的值为 “undefined”</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>用于检测数组所有元素是否都符合指定条件（通过函数提供）</li>
-<li>如果数组中检测到有一个元素不满足，则整个表达式返回 false ，且剩余的元素不会再进行检测。如果所有元素都满足条件，则返回 true</li>
-<li>不会对空数组进行检测</li>
-<li>不会改变原始数组</li>
-<li><code>[1,2,3].every((item, index, arr) =&gt; item &gt; 2) // false</code></li>
-<li><code>[1,2,3].every((item, index, arr) =&gt; item &gt; 0) // true</code></li>
-</ul>
-</li>
-<li><p>filter()</p>
-<ul>
-<li>array.filter(function(currentValue,index,arr), thisValue)<ul>
-<li>参数：<ul>
-<li>fn: 回调函数，返回满足条件的数组元素</li>
-<li>thisValue: 可选。对象作为该执行回调时使用，传递给函数，用作 “this” 的值.如果省略了 thisValue ，”this” 的值为 “undefined”</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素</li>
-<li>不会对空数组进行检测</li>
-<li>不会改变原始数组</li>
-<li><code>[1,2,3,4].filter((item, index,arr) =&gt; item &gt; 2) // [3, 4]</code></li>
-</ul>
-</li>
-<li><p>find()</p>
-<ul>
-<li>array.find(function(currentValue, index, arr),thisValue)<ul>
-<li>参数：<ul>
-<li>fn: 回调函数：返回数组元素中满足条件的第一个元素</li>
-<li>thisValue: 可选。对象作为该执行回调时使用，传递给函数，用作 “this” 的值.如果省略了 thisValue ，”this” 的值为 “undefined”</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>当数组中的元素在测试条件时返回 true 时, find() 返回符合条件的元素，之后的值不会再调用执行函数</li>
-<li>如果没有符合条件的元素返回 undefined</li>
-<li>对于空数组，函数是不会执行的</li>
-<li>没有改变数组的原始值</li>
-<li><code>[1,2,3,4].find((item, index, arr) =&gt; item &gt; 2) // 3</code></li>
-</ul>
-</li>
-<li><p>findIndex() </p>
-<ul>
-<li>array.findIndex(function(currentValue, index, arr), thisValue)<ul>
-<li>参数： <ul>
-<li>fn: 回调函数。返回数组元素中满足条件的第一个元素的索引</li>
-<li>thisValue: 可选。对象作为该执行回调时使用，传递给函数，用作 “this” 的值.如果省略了 thisValue ，”this” 的值为 “undefined”</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>当数组中的元素在测试条件时返回 true 时, findIndex() 返回符合条件的元素的索引位置，之后的值不会再调用执行函数</li>
-<li>如果没有符合条件的元素返回 -1</li>
-<li>对于空数组，函数是不会执行的</li>
-<li>没有改变数组的原始值</li>
-<li><code>[1,2,3,4].findIndex((item, index, arr) =&gt; item &gt; 2) // 2</code></li>
-</ul>
-</li>
-<li><p>includes()</p>
-<ul>
-<li>arr.includes(searchElement, fromIndex)<ul>
-<li>参数<ul>
-<li>searchElement：必须。查找的元素值（全匹配）</li>
-<li>fromIndex： 可选。从该索引处开始查找 searchElement。如果为负值，则按升序从 array.length + fromIndex 的索引开始搜索。默认为 0。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>用来判断一个数组是否包含一个指定的值，如果是返回 true，否则false</li>
-<li>如果fromIndex 大于等于数组长度 ，则返回 false 。该数组不会被搜索</li>
-<li><code>[1,2,3].includes(1,5) // false</code></li>
-<li>如果 fromIndex 为负值，计算出的索引将作为开始搜索searchElement的位置。如果计算出的索引小于 0，则整个数组都会被搜索</li>
-<li><code>[1,2,3].includes(1,-100) // true</code></li>
-<li><code>[&#39;123&#39;,&#39;234&#39;,&#39;111&#39;].includes(&#39;1&#39;) // false</code></li>
-</ul>
-</li>
-<li><p>indexOf()</p>
-<ul>
-<li>array.indexOf(item,start)<ul>
-<li>参数：<ul>
-<li>item: 必须。查找的元素。（全匹配）</li>
-<li>start: 可选的整数参数。规定在数组中开始检索的位置。它的合法取值是 0 到 stringObject.length - 1。如省略该参数，则将从字符串的首字符开始检索</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>返回数组中某个指定的元素位置(索引)，返回的是item第一次出现的索引，未找到返回-1</li>
-<li>如果你想查找字符串最后出现的位置，请使用 lastIndexOf() 方法</li>
-<li><code>[&#39;111&#39;,&#39;123&#39;,&#39;124&#39;,&#39;234&#39;].indexOf(&#39;1&#39;) // -1</code></li>
-<li><code>[1,2,3,4].indexOf(1) // 0</code></li>
-<li>在String对象中也有indexOf()方法，返回指定字符串值在字符串中首次出现的位置，未匹配返回-1，区分大小写。同样有lastIndexOf() 方法，类似。</li>
-</ul>
-</li>
-<li><p>some()</p>
-<ul>
-<li>array.some(function(currentValue,index,arr),thisValue)<ul>
-<li>参数：<ul>
-<li>fn: 回调函数。数组中的每个元素都会执行这个函数。</li>
-<li>thisValue: 可选。对象作为该执行回调时使用，传递给函数，用作 “this” 的值.如果省略了 thisValue ，”this” 的值为 “undefined”</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>如果有一个元素满足条件，则表达式返回true , 剩余的元素不会再执行检测</li>
-<li>如果没有满足条件的元素，则返回false</li>
-<li>不会对空数组进行检测</li>
-<li>不会改变原始数组</li>
-<li><code>[1,2,3,4].some((item, index, arr) =&gt; item &gt; 1) // true</code></li>
-<li><code>[1,2,3,4].some((item, index, arr) =&gt; item &lt; 1) // false</code></li>
-</ul>
-</li>
-<li><p>fill()</p>
-<ul>
-<li>array.fill(value, start, end)<ul>
-<li>参数： <ul>
-<li>value: 填充的值</li>
-<li>start: 开始填充的位置，索引值</li>
-<li>end: 结束填充的位置，索引值</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>将一个固定值替换数组的元素</li>
-<li><code>[1,2,3].fill(&#39;kk&#39;, 1,2) // [1, &quot;kk&quot;, 3]</code></li>
-</ul>
-</li>
-<li><p>forEach()</p>
-<ul>
-<li>array.forEach(function(currentValue, index, arr), thisValue)<ul>
-<li>参数: <ul>
-<li>fn：回调函数。</li>
-<li>thisValue: 可选。对象作为该执行回调时使用，传递给函数，用作 “this” 的值.如果省略了 thisValue ，”this” 的值为 “undefined”</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>调用数组的每个元素，并将元素传递给回调函数</li>
-<li>没有返回值，本质上等同于 for 循环</li>
-<li>forEach 是改变原数组。</li>
-<li>对于空数组是不会执行回调函数的</li>
-<li>本身是不支持的 continue 与 break 语句的</li>
-<li>使用 return 语句/ some来实现 continue 关键字的效果</li>
-<li>使用every来实现break关键字效果</li>
-</ul>
-</li>
-<li><p>from()</p>
-<ul>
-<li>Array.from(object, mapFunction, thisValue)<ul>
-<li>参数<ul>
-<li>必需，要转换为数组的对象</li>
-<li>可选，数组中每个元素要调用的函数。</li>
-<li>可选，映射函数(mapFunction)中的 this 对象。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>将类数组（具有lenth属性的对象/可迭代的对象）/字符串/数组处理成数组返回</li>
-<li><code>Array.from(&#39;12345&#39;) // [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;]</code></li>
-<li><code>new Set([1,2,3]) // Set(3) &#123;&quot;a&quot;, &quot;b&quot;, &quot;c&quot;&#125;--具有length属性的对象</code></li>
-<li><code>Array.from(new Set([1,2,3])) // [1, 2, 3]</code></li>
-<li><code>Array.from([1,2,3]) // [1,2,3]</code></li>
-</ul>
-</li>
-<li><p>isArray()</p>
-<ul>
-<li>Array.isArray(obj)<ul>
-<li>参数<ul>
-<li>obj: 必填。要判断的对象</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>用于判断一个对象是否为数组。对象是数组返回 true，否则返回 false</li>
-<li><code>Array.isArray(new Set([1,23,3])) // false</code></li>
-<li><code>Array.isArray([1,2,3]) // true</code></li>
-</ul>
-</li>
-<li><p>join()</p>
-<ul>
-<li>array.join(separator)<ul>
-<li>参数：<ul>
-<li>separator： 可选。指定要使用的分隔符。如果省略该参数，则使用逗号作为分隔符</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>用于把数组中的所有元素转换一个字符串</li>
-<li>返回一个字符串，以指定的分隔符分隔</li>
-<li><code>[1,2,3].join(&#39;-&#39;) // 1-2-3</code></li>
-<li><code>[1,2,3].join() // 1,2,3</code></li>
-<li>与此方法相对的是字符串对象的split()方法，返回一个数组，可指定分割的字符，以及返回的数组的长度</li>
-</ul>
-</li>
-<li><p>map()</p>
-<ul>
-<li>array.map(function(currentValue,index,arr), thisValue)<ul>
-<li>参数：<ul>
-<li>fn: 回调函数。数组中的每个元素都会执行这个函数</li>
-<li>thisValue：可选。对象作为该执行回调时使用，传递给函数，用作 “this” 的值。如果省略了 thisValue，或者传入 null、undefined，那么回调函数的 this 为全局对象</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>返回一个新数组，数组中的元素为原始数组元素调用函数处理后的值</li>
-<li>不会对空数组进行检测</li>
-<li>不会改变原始数组</li>
-<li><code>[1,2,3].map((item, index, arr) =&gt; item*2) // [2, 4, 6]</code></li>
-</ul>
-</li>
-<li><p>reduce()</p>
-<ul>
-<li>array.reduce(function(total, currentValue, currentIndex, arr),initialValue)<ul>
-<li>参数：<ul>
-<li>fn: 回调函数，第一个参数为初始值或者计算结束之后的返回值，之后的参数分别为当前值，当前索引，原数组</li>
-<li>initialValue： 初始值</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终计算为一个值</li>
-<li>对于空数组是不会执行回调函数的</li>
-<li>返回累加之后的结果</li>
-<li><code>[1,2,3,4].reduce((total,item,index,arr) =&gt; total.concat(item*2), []) // [2, 4, 6, 8]</code></li>
-<li>可用于数组去重</li>
-<li>可用于多维（二）数组转一维数组</li>
-<li>可用于对象里的属性求和</li>
-<li>reduceRight()-（从右到左）执行顺序与reduce()-（从左到右）相反</li>
-</ul>
-</li>
-<li><p>reduceRight()</p>
-<ul>
-<li>array.reduceRight(function(total, currentValue, currentIndex, arr),initialValue)<ul>
-<li>参数：<ul>
-<li>fn: 回调函数，第一个参数为初始值或者计算结束之后的返回值，之后的参数分别为当前值，当前索引，原数组</li>
-<li>initialValue： 初始值</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>接收一个函数作为累加器，数组中的每个值（从右到左）开始缩减，最终计算为一个值</li>
-<li>对于空数组是不会执行回调函数的</li>
-<li>返回累加之后的结果</li>
-<li><code>[1,2,3,4].reduce((total,item,index,arr) =&gt; total.concat(item*2), []) // [8, 6, 4, 2]</code></li>
-<li>可用于数组去重</li>
-<li>可用于多维（二）数组转一维数组</li>
-<li>可用于对象里的属性求和</li>
-<li>reduceRight()-（从右到左）执行顺序与reduce()-（从左到右）相反</li>
-</ul>
-</li>
-<li><p>reverse()</p>
-<ul>
-<li>array.reverse()</li>
-<li>无参数</li>
-<li>返回颠倒顺序之后的数组</li>
-<li><code>[1,2,3].reverse() // [3,2,1]</code></li>
-</ul>
-</li>
-<li><p>silce()</p>
-<ul>
-<li>array.slice(start, end)<ul>
-<li>参数： <ul>
-<li>start: 可选。规定从数组何处截取，是数组的索引位置。负数表示从尾部开始，即从数组的倒数的第几个元素开始提取，slice(-2) 表示提取原数组中的倒数第二个元素到最后一个元素（包含最后一个元素）</li>
-<li>end: 可选。规定截取到数组的索引所在位置，不包括当前索引对应的元素。负数表示从尾部的第几个元素处结束，不包括当前元素。</li>
-</ul>
-</li>
-<li>从已有的数组中返回选定的元素</li>
-<li>可提取字符串的某个部分，并以新的字符串返回被提取的部分</li>
-<li>不会改变原始数组</li>
-<li>返回一个新的数组，包含从 start 到 end （不包括该元素）的 arrayObject 中的元素</li>
-<li><code>[1,2,3,4,5].slice(1,3) // [2, 3]</code></li>
-<li><code>[1,2,3,4,5].slice(1,-2) // [2, 3]</code></li>
-<li><code>[1,2,3,4,5].slice(-4,-2) // [2, 3]</code></li>
-<li>常用于将一个伪数组转换为真正数组,es6中的Array.form()也可以将伪数组转换为真正的数组</li>
-<li><code>[].silce.call(new Set(1,2,3,4)) // []</code></li>
-<li><code>[].silce.call(&#123;&#39;0&#39;:&#39;a&#39;, &#39;1&#39;: &#39;b&#39;, length: 2&#125;) // [&quot;a&quot;, &quot;b&quot;]</code></li>
-<li>在String对象中也有同名方法slice()，提取部分字符串，以新的字符串返回被提取部分</li>
-<li><code>&#39;woshizifuchuan&#39;.slice(2,5) // &quot;shi&quot;</code></li>
-<li>在String对象中，具有同样作用的方法还有substring(start,end),end为非负整数，不包括 结束 处的字符,不会改变源字符串。类似的还有substr(start,num),不会改变源字符串</li>
-<li><code>&#39;woshizifuchuan&#39;.substring(2,5) // &quot;shi&quot;</code></li>
-<li><code>&#39;woshizifuchuan&#39;.substr(2,3) // &quot;shi&quot;</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>sort()</p>
-<ul>
-<li>array.sort(sortfunction)<ul>
-<li>参数：<ul>
-<li>sortfunction： 可选。规定排序顺序。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>默认排序顺序为按字母升序。</li>
-<li>当数字是按字母顺序排列时”40”将排在”5”前面</li>
-<li>使用数字排序，你必须通过一个函数作为参数来调用。函数指定数字是按照升序还是降序排列。</li>
-<li>会改变原始数组</li>
-<li><code>[&#39;a&#39;, &#39;g&#39;, &#39;c&#39;, &#39;e&#39;].sort() // [&quot;a&quot;, &quot;c&quot;, &quot;e&quot;, &quot;g&quot;]</code></li>
-<li><code>[1,3,4,5,2,7,10].sort() // [1, 10, 2, 3, 4, 5, 7]</code></li>
-<li><code>[1,3,4,5,2,7,10].sort((a,b) =&gt; a-b) // [1, 2, 3, 4, 5, 7, 10]</code></li>
-<li>a-b打印a，b,输出1,3 / 3,4 / 4,5 / 5,2 / 4,2 / 3,2 / 1,2 / 5,7 / 7,10</li>
-<li><code>[1,3,4,5,2,7,10].sort((a,b) =&gt; b-a) // [10, 7, 5, 4, 3, 2, 1]</code></li>
-</ul>
-</li>
-<li><p>splice()</p>
-<ul>
-<li>array.splice(index,howmany,item1,…..,itemX)<ul>
-<li>参数：<ul>
-<li>index：必须。规定从数组的何处添加/删除元素</li>
-<li>howmany： 可选。固定需要删除的元素的个数，可以为0。未规定参数，则默认从index到原数组结尾的所有元素</li>
-<li>item1,…..,itemX：可选。要添加到数组的新元素</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>用于添加或删除数组中的元素</li>
-<li>会改变原始数组</li>
-<li>返回被删除的元素的数组</li>
-<li><code>[1,2,3,4,5].splice(1,2,5,6,7) // [2, 3]  原数组被改变为[1, 5, 6, 7, 4, 5]</code></li>
-</ul>
-</li>
-<li><p>toString()</p>
-<ul>
-<li>array.toString()</li>
-<li>返回一个用逗号分隔元素的字符串</li>
-<li>可把数组转换为字符串，并返回结果</li>
-<li>数组中的元素之间用逗号分隔</li>
-<li><code>[1,2,3,4].toString() // &quot;1,2,3,4&quot;</code></li>
-</ul>
-</li>
-</ul>
+<h2 id="vue生命周期图解："><a href="#vue生命周期图解：" class="headerlink" title="vue生命周期图解："></a>vue生命周期图解：</h2><p><img src="https://upload-images.jianshu.io/upload_images/13119812-5890a846b6efa045.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1200/format/webp" alt="vue生命周期"></p>
 
       
     </div>
@@ -723,7 +399,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/12/%E5%89%8D%E7%AB%AF%E6%9D%83%E9%99%90%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/26/SPA%E5%8D%95%E9%A1%B5%E5%BA%94%E7%94%A8%E4%B8%8EMPA%E5%A4%9A%E9%A1%B5%E5%BA%94%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -736,79 +412,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/12/%E5%89%8D%E7%AB%AF%E6%9D%83%E9%99%90%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88/" class="post-title-link" itemprop="url">前端权限设计方案</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-04-12 09:52:02 / Modified: 14:47:19" itemprop="dateCreated datePublished" datetime="2021-04-12T09:52:02+08:00">2021-04-12</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="前端权限设计方案"><a href="#前端权限设计方案" class="headerlink" title="前端权限设计方案"></a>前端权限设计方案</h1><p>以此记录一下在掘金看到的一篇关于前端权限设计方案的文章，故在此放上掘金的访问地址，以便以后查看。</p>
-<p>链接：[<a target="_blank" rel="noopener" href="https://juejin.cn/post/6949453195987025927]">https://juejin.cn/post/6949453195987025927]</a></p>
-<h3 id="登录权限"><a href="#登录权限" class="headerlink" title="登录权限"></a>登录权限</h3><p>一般在vue中的登录权限控制是通过路由meta属性来控制的。在路由管理页面，每一个路由都有自己对应的meta(元数据)属性，可以用来存放一些路由状态相关的信息。</p>
-<ol>
-<li>首先在路由meta属性中设置登录权限字段<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">export const routes &#x3D; [</span><br><span class="line">  &#123;</span><br><span class="line">    path: &#39;&#x2F;login&#39;, &#x2F;&#x2F;登录页面</span><br><span class="line">    name: &#39;login&#39;,</span><br><span class="line">    component: Login,</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    path:&quot;&#x2F;personCenter&quot;, &#x2F;&#x2F; 个人中心</span><br><span class="line">    name:&quot;personCenter&quot;,</span><br><span class="line">    component: PersonCenter, </span><br><span class="line">    meta:&#123;</span><br><span class="line">      isNeedLogin: true &#x2F;&#x2F;是否需要登录</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure></li>
-<li>接着就可以在main.js（路由挂载页面）通过路由导航守卫来处理登录逻辑<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const router &#x3D; new VueRouter(&#123; ... &#125;)</span><br><span class="line"></span><br><span class="line">router.beforeEach((to, from, next) &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; to: Route: 即将要进入的目标 路由对象</span><br><span class="line">  &#x2F;&#x2F; from: Route: 当前导航正要离开的路由</span><br><span class="line">  &#x2F;&#x2F; next: Function: 一定要调用该方法来 resolve 这个钩子</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="菜单权限"><a href="#菜单权限" class="headerlink" title="菜单权限"></a>菜单权限</h3><p>菜单权限的话，需要配合后端，后端对应角色的权限菜单返回给前端</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/09/vue%E6%95%B0%E6%8D%AE%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/09/vue%E6%95%B0%E6%8D%AE%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">vue数据双向绑定原理</a>
+          <a href="/2021/05/26/SPA%E5%8D%95%E9%A1%B5%E5%BA%94%E7%94%A8%E4%B8%8EMPA%E5%A4%9A%E9%A1%B5%E5%BA%94%E7%94%A8/" class="post-title-link" itemprop="url">SPA单页应用与MPA多页应用</a>
         </h2>
 
         <div class="post-meta-container">
@@ -819,14 +423,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2021-04-09 16:17:16" itemprop="dateCreated datePublished" datetime="2021-04-09T16:17:16+08:00">2021-04-09</time>
+      <time title="Created: 2021-05-26 11:54:20" itemprop="dateCreated datePublished" datetime="2021-05-26T11:54:20+08:00">2021-05-26</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-08 15:33:07" itemprop="dateModified" datetime="2021-06-08T15:33:07+08:00">2021-06-08</time>
+        <time title="Modified: 2021-05-27 15:34:02" itemprop="dateModified" datetime="2021-05-27T15:34:02+08:00">2021-05-27</time>
       </span>
 
   
@@ -839,85 +443,36 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="vue数据双向绑定原理"><a href="#vue数据双向绑定原理" class="headerlink" title="vue数据双向绑定原理"></a>vue数据双向绑定原理</h1><p>vue数据双向绑定主要是依赖于Object.defineProperty( )来做数据劫持。</p>
+          <h1 id="SPA单页应用与MPA多页应用"><a href="#SPA单页应用与MPA多页应用" class="headerlink" title="SPA单页应用与MPA多页应用"></a>SPA单页应用与MPA多页应用</h1><h2 id="SPA单页应用"><a href="#SPA单页应用" class="headerlink" title="SPA单页应用"></a>SPA单页应用</h2><p>只有一个WEB主页面的应用，公共资源(js、css等)仅需加载一次，所有的内容都包含在主页面，对每一个功能模块组件化。单页应用跳转，就是切换相关组件，仅刷新局部资源</p>
+<p>关键词：网站模型 、只加载单个HTML页面 、利用路由实现内容变换</p>
+<p>描述：SPA（singgle-page application）,单页应用。是一种网站模型，是加载单个HTML页面，并在用户与应用程序交互时动态更新页面。只会在初始化的时候加载相应的HTML,CSS,JS。不会因为用户的操作而进行页面的重新加载或跳转。利用路由机制实现 HTML 内容的变换，UI 与用户的交互，避免页面的重新加载。</p>
 <ul>
-<li>数据双向绑定即是视图变化更新数据，数据变化更新视图。</li>
-<li>视图变化更新数据，我们可以通过事件监听来实现，比如input标签的’input’事件。</li>
-<li>数据变化如何更新视图 ? vue中是通过Object.defineProperty(obj, ‘keyName’, {})方法来实现，该方法具有get/set方法，var o = obj[‘keyName’]会触发get()方法，返回处理后的值。obj[‘keyName’] = ‘赋值’，会触发set方法赋值。</li>
-<li>那么vue中就是通过Object.defineProperty()方法来劫持data属性的，遍历data对象中的所有属性，对其属性进行劫持，然后在对应的get()方法中，判断是否需要监听该属性，需要就将其添加到订阅器中，，在对应的set()方法中，如果数据发生变化，那就去通知(notify())订阅者，订阅者就会执行对应的更新(update())的函数（所有订阅者都会更新）。</li>
-<li>当对数据进行更新操作时，比如 obj.key = ‘new val’ 就会触发 setter 的拦截，从而检测新值和旧值是否相等，如果相等什么也不做，如果不相等，则更新值，然后由 dep 通知 watcher 进行更新。所以，异步更新 的入口点就是 setter 中最后调用的 dep.notify() 方法。</li>
+<li><p>传统页面：</p>
+<p>客户端 ———通过发送url请求——————  server</p>
+<p>客户端 ———服务器端返回html页面———  server</p>
+</li>
+<li><p>SPA页面：</p>
+<p>客户端 ———通过发送ajax请求——————  server</p>
+<p>客户端 ———服务器端返回数据———  server</p>
+</li>
 </ul>
-<h1 id="Vue-如何检测数组变化"><a href="#Vue-如何检测数组变化" class="headerlink" title="Vue 如何检测数组变化"></a>Vue 如何检测数组变化</h1><p>在vue中使用Object.defineProperty通过对象的getter/setter来实现对象属性变化的监听，但是存在一个问题，就是当某个属性的值是数组时，vue无法检测到一些数组的变化：</p>
+<p>优点：</p>
 <ul>
-<li>如使用索引直接设置一项数组的值 : vm.items[indexOfItem] = newValue<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;解决</span><br><span class="line">&#x2F;&#x2F; Vue.set</span><br><span class="line">Vue.set(vm.items, indexOfItem, newValue)</span><br><span class="line">&#x2F;&#x2F; vm.$set，Vue.set的一个别名</span><br><span class="line">vm.$set(vm.items, indexOfItem, newValue)</span><br><span class="line">&#x2F;&#x2F; Array.prototype.splice</span><br><span class="line">vm.items.splice(indexOfItem, 1, newValue)</span><br></pre></td></tr></table></figure></li>
-<li>如修改数组长度: vm.items.length = newLength<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Array.prototype.splice   vue中重写了数组的一些方法</span><br><span class="line">vm.items.splice(newLength)</span><br></pre></td></tr></table></figure></li>
+<li>有良好的交互体验：提升页面交互体验，不会频繁切换浏览器页面，避免了页面的频繁重新加载</li>
+<li>前后端分离：前后端职责分离，架构清晰，前端进行交互逻辑，后端负责数据处理</li>
+<li>减轻服务器压力：服务器端只需要返回数据即可，不用管展示逻辑与页面合成<br>缺点：</li>
+<li>SEO（搜索引擎优化）难度较高：页面内容动态替换，页面不会刷新，导致很难被搜索引擎抓取（搜索引擎遵循http协议，#不是协议的内容）</li>
+<li>无法使用浏览器的前进后退功能，所有页面需要自己建立堆栈管理。（解决方案：利用URI中的散列+iframe实现）（配置好路由信息，通过记录浏览过的历史路由信息，可以很好的记录或历史查看过的界面）</li>
+<li>初次加载耗时多：为实现单页 Web 应用功能及显示效果，需要在加载页面的时候将 JavaScript、CSS 统一加载，部分页面按需加载</li>
 </ul>
-<p>解决方案:</p>
+<h2 id="MPA多页应用"><a href="#MPA多页应用" class="headerlink" title="MPA多页应用"></a>MPA多页应用</h2><p>关键词：</p>
+<p>描述：MAP（Multi-page application），多页面应用。每访问一个页面都需要重新加载HTML,JS,CSS文件，公共文件按需加载</p>
+<p>优点：</p>
 <ul>
-<li>在vue源码中，是对数组的常用方法进行重写，通过包装后的数组方法就能够在调用的时候被监听到。</li>
-<li>通过原型链去拦截数组的操作，从而实现对操作数组这个行为的监听。</li>
-<li>定义一个变量继承Array本身的属性 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 这里是面向切片编程思想（AOP）--不破坏封装的前提下，动态的扩展功能</span><br><span class="line">const arrExtend &#x3D; Object.create(Array.prototype)</span><br><span class="line">let methodsToPatch &#x3D; [</span><br><span class="line">    &quot;push&quot;,</span><br><span class="line">    &quot;pop&quot;,</span><br><span class="line">    &quot;shift&quot;,</span><br><span class="line">    &quot;unshift&quot;,</span><br><span class="line">    &quot;splice&quot;,</span><br><span class="line">    &quot;reverse&quot;,</span><br><span class="line">    &quot;sort&quot;,</span><br><span class="line">];</span><br></pre></td></tr></table></figure></li>
-<li>arrExtend 作为一个拦截对象, 对其中的方法进行重写<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">arrMethods.forEach(method &#x3D;&gt; &#123;</span><br><span class="line">    const oldMethod &#x3D; Array.prototype[method]</span><br><span class="line">    const newMethod &#x3D; function(...args) &#123;</span><br><span class="line">        return oldMethod.apply(this, args) &#x2F;&#x2F; 保留原型  方法的执行结果</span><br><span class="line">        console.log(&#96;$&#123;method&#125;方法被执行了&#96;)</span><br><span class="line">    &#125;</span><br><span class="line">    arrExtend[method] &#x3D; newMethod</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
-<li>需要在 defineReactive 函数中添加的代码为<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (Array.isArray(value)) &#123;</span><br><span class="line">    value.__proto__ &#x3D; arrExtend</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>首屏加载快</li>
+<li>SEO（搜索引擎优化）效果好<br>缺点：</li>
+<li>页面切换慢：每一次切换页面都要重新加载html,css,js等资源</li>
 </ul>
-<h1 id="vue3中使用Proxy来实现的对象属性变化的监听"><a href="#vue3中使用Proxy来实现的对象属性变化的监听" class="headerlink" title="vue3中使用Proxy来实现的对象属性变化的监听"></a>vue3中使用Proxy来实现的对象属性变化的监听</h1><ul>
-<li>通过调用 new Proxy() ，你可以创建一个代理用来替代另一个对象(被称为目标)，这个代理对目标对象进行了虚拟，因此该代理与该目标对象表面上可以被当作同一个对象来对待。<br>代理允许你拦截在目标对象上的底层操作，而这原本是 JS 引擎的内部能力。拦截行为使用了一个能够响应特定操作的函数(被称为陷阱)。</li>
-<li>Proxy所带来的，是对底层操作的拦截。前面我们在实现对对象监听时使用了Object.defineProperty，这个其实是 JS 提供给我们的高级操作，也就是通过底层封装之后暴露出来的方法。Proxy的强大之处在于，我们可以直接拦截对代理对象的底层操作。这样我们相当于从一个对象的底层操作开始实现对它的监听</li>
-<li>Object.defineProperty监听的是对象的每一个属性，而Proxy监听的是对象自身</li>
-<li>使用Object.defineProperty需要遍历对象的每一个属性，对于性能会有一定的影响</li>
-<li>Proxy对新增的属性也能监听到，但Object.defineProperty无法监听到</li>
-<li>语法:  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new Proxy(target,handler)</span><br></pre></td></tr></table></figure></li>
-<li>target:目标对象</li>
-<li>handler：是一个对象，声明了代理target的指定行为，支持的拦截操作，一共13种：<ul>
-<li>get(target,propKey,receiver)：拦截对象属性的读取。</li>
-<li>set(target,propKey,value,receiver)：拦截对象属性的设置，返回一个布尔值（修改成功）。</li>
-<li>has(target,propKey)：拦截 propKey in proxy 的操作，返回一个布尔值。</li>
-<li>deleteProterty(target,propKey)：拦截delete proxy[propKey]的操作，返回一个布尔值。</li>
-<li>ownKeys(target)：拦截Object.getOwnPropertyNames(proxy)、Object.getOwnPropertySymbols(proxy)、Object.keys(proxy)、for…in 循环，返回一个数组。该方法返回目标对象所有自身的属性的属性名，而Object.keys()的返回结果仅包括目标对象自身的可遍历属性。</li>
-<li>getOwmPropertyDescript(target,propKey)：拦截Object.getOwnPropertyDescriptor(proxy,propKey)，返回属性的描述对象。</li>
-<li>defineProperty(target,propKey,propDesc)：拦截Object.defineProperty(proxy,propKey,propDesc)、Object.defineProperties(proxy,propDesc),返回一个布尔值。</li>
-<li>preventExtensions(target)：拦截Object.preventExtensions(proxy),返回一个布尔值。</li>
-<li>getPrototypeOf(target)：拦截Object.getPrototypeOf(proxy),返回一个对象。</li>
-<li>isExtensible(target)：拦截Object.isExtensible(proxy),返回一个布尔值。</li>
-<li>setPrototypeOf(target,proto)： 拦截Object.setPrototypeOf(proxy,proto)，返回一个布尔值。如果目标对象是函数，那么还有两种额外操作可以拦截。</li>
-<li>apply(target,object,args)：拦截Proxy实例作为函数调用的操作，比如proxy(…args)、proxy.call(object,…args)、proxy.apply(…)。</li>
-<li>construct(target,args)：拦截Proxy实例作为构造函数调用的操作，比如：new proxy(…args)。</li>
-</ul>
-</li>
-</ul>
-<h2 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">function selfVue(options) &#123;</span><br><span class="line">    var self &#x3D; this;</span><br><span class="line">    this.data &#x3D; options.data;</span><br><span class="line">    this.methods &#x3D; option.methods;</span><br><span class="line">    &#x2F;&#x2F; 在new SelfVue的时候做一个代理处理，让访问selfVue的属性代理为访问selfVue.data的属性</span><br><span class="line">    Object.keys(this.data).forEach(function(key) &#123;</span><br><span class="line">        self.proxyKeys(key);</span><br><span class="line">    &#125;);</span><br><span class="line">    &#x2F;&#x2F; 递归遍历所有属性，Object.defineProperty()监听所有属性</span><br><span class="line">    observe(this.data); </span><br><span class="line">    &#x2F;&#x2F; 1.解析模板指令，并替换模板数据，初始化视图。2将模板指令对应的节点绑定对应的更新函数，初始化相应的订阅器</span><br><span class="line">    &#x2F;&#x2F; 1.el.innerHTML &#x3D; this.data[exp];  &#x2F;&#x2F; 初始化模板数据的值</span><br><span class="line">    &#x2F;&#x2F; 2.new Watcher(this, exp, function (value) &#123;el.innerHTML &#x3D; value;&#125;);</span><br><span class="line">    new Compile(options.el, this);</span><br><span class="line">    &#x2F;&#x2F; 所有事情处理好后执行mounted函数</span><br><span class="line">    options.mounted.call(this); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="Object-defineProperty"><a href="#Object-defineProperty" class="headerlink" title="Object.defineProperty( )"></a>Object.defineProperty( )</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var Book &#x3D; &#123;&#125;</span><br><span class="line">var name &#x3D; &#39;&#39;;</span><br><span class="line">Object.defineProperty(Book, &#39;name&#39;, &#123;</span><br><span class="line">  set: function (value) &#123;</span><br><span class="line">    name &#x3D; value;</span><br><span class="line">    console.log(&#39;你取了一个书名叫做&#39; + value);</span><br><span class="line">  &#125;,</span><br><span class="line">  get: function () &#123;</span><br><span class="line">    return &#39;《&#39; + name + &#39;》&#39;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"> </span><br><span class="line">Book.name &#x3D; &#39;vue权威指南&#39;;  &#x2F;&#x2F; 你取了一个书名叫做vue权威指南</span><br><span class="line">console.log(Book.name);  &#x2F;&#x2F; 《vue权威指南》</span><br></pre></td></tr></table></figure>
-<p>我们通过Object.defineProperty( )设置了对象Book的name属性，对其get和set进行重写操作，顾名思义，get就是在读取name属性这个值触发的函数，set就是在设置name属性这个值触发的函数，所以当执行 Book.name = ‘vue权威指南’ 这个语句时，控制台会打印出 “你取了一个书名叫做vue权威指南”，紧接着，当读取这个属性时，就会输出 “《vue权威指南》”，因为我们在get函数里面对该值做了加工了。如果这个时候我们执行下下面的语句，控制台会输出什么？</p>
-<p>我们先从Vue 构造函数出发，把vue的执行思路过一遍</p>
-<ol>
-<li><p>vue初始化对象</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var vm &#x3D; new Vue(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    obj: &#123;</span><br><span class="line">      a: &#39;1&#39;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  created: function() &#123;</span><br><span class="line">    console.log(this.obj);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p><img src="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225032257-1498304708.png" alt="结果"></p>
-</li>
-<li><p>对比一下Object.defineProperty数据劫持一个对象，看看输出什么</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var Book &#x3D; &#123;&#125;</span><br><span class="line">var name &#x3D; &#39;&#39;;</span><br><span class="line">Object.defineProperty(Book, &#39;name&#39;, &#123;</span><br><span class="line">  set: function (value) &#123;</span><br><span class="line">    name &#x3D; value;</span><br><span class="line">    console.log(&#39;你取了一个书名叫做&#39; + value);</span><br><span class="line">  &#125;,</span><br><span class="line">  get: function () &#123;</span><br><span class="line">    return &#39;《&#39; + name + &#39;》&#39;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"> </span><br><span class="line">Book.name &#x3D; &#39;vue权威指南&#39;;  &#x2F;&#x2F; 你取了一个书名叫做vue权威指南</span><br><span class="line">console.log(Book.name);  &#x2F;&#x2F; 《vue权威指南》</span><br></pre></td></tr></table></figure>
-<p><img src="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225238960-1133794938.png"></p>
-</li>
-<li><p>实现mvvm主要包含两个方面，数据变化更新视图，视图变化更新数据：</p>
-</li>
-</ol>
-<p>实现数据的双向绑定：</p>
-<ol>
-<li><p>实现一个监听器Observer，用来劫持并监听所有属性，如果有变动的，就通知订阅者。</p>
-</li>
-<li><p>实现一个订阅者Watcher，可以收到属性的变化通知并执行相应的函数，从而更新视图。</p>
-</li>
-<li><p>实现一个解析器Compile，可以扫描和解析每个节点的相关指令，并根据初始化模板数据以及初始化相应的订阅器。<br><img src="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225458132-1434604303.png"></p>
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line">function defineReactive(data, key, val) &#123;</span><br><span class="line">    observe(val); &#x2F;&#x2F; 递归遍历所有子属性</span><br><span class="line">    var dep &#x3D; new Dep(); </span><br><span class="line">    Object.defineProperty(data, key, &#123;</span><br><span class="line">        enumerable: true,</span><br><span class="line">        configurable: true,</span><br><span class="line">        get: function() &#123;</span><br><span class="line">            if (Dep.target) &#123;.  &#x2F;&#x2F; 判断是否需要添加订阅者</span><br><span class="line">                dep.addSub(Dep.target); &#x2F;&#x2F; 在这里添加一个订阅者</span><br><span class="line">            &#125;</span><br><span class="line">            return val;</span><br><span class="line">        &#125;,</span><br><span class="line">        set: function(newVal) &#123;</span><br><span class="line">            if (val &#x3D;&#x3D;&#x3D; newVal) &#123;</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line">            val &#x3D; newVal;</span><br><span class="line">            console.log(&#39;属性&#39; + key + &#39;已经被监听了，现在值为：“&#39; + newVal.toString() + &#39;”&#39;);</span><br><span class="line">            dep.notify(); &#x2F;&#x2F; 如果数据变化，通知所有订阅者</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line">Dep.target &#x3D; null;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 订阅器-负责收集订阅者-在属性变化的时候执行对应订阅者的更新函数</span><br><span class="line">function Dep () &#123;</span><br><span class="line">    this.subs &#x3D; [];</span><br><span class="line">&#125;</span><br><span class="line">Dep.prototype &#x3D; &#123;</span><br><span class="line">    addSub: function(sub) &#123;</span><br><span class="line">        this.subs.push(sub);</span><br><span class="line">    &#125;,</span><br><span class="line">    notify: function() &#123;</span><br><span class="line">        this.subs.forEach(function(sub) &#123;</span><br><span class="line">            sub.update();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 监听器-观察者</span><br><span class="line">function observe(data) &#123;</span><br><span class="line">    if (!data || typeof data !&#x3D;&#x3D; &#39;object&#39;) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    Object.keys(data).forEach(function(key) &#123;</span><br><span class="line">        defineReactive(data, key, data[key]);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br><span class="line">&#x2F;&#x2F; 订阅者</span><br><span class="line">function Watcher(vm, exp, cb) &#123;</span><br><span class="line">    this.cb &#x3D; cb;</span><br><span class="line">    this.vm &#x3D; vm;</span><br><span class="line">    this.exp &#x3D; exp;</span><br><span class="line">    this.value &#x3D; this.get();  &#x2F;&#x2F; 将自己添加到订阅器的操作</span><br><span class="line">&#125;</span><br><span class="line">Watcher.prototype &#x3D; &#123;</span><br><span class="line">    update: function() &#123;</span><br><span class="line">        this.run();</span><br><span class="line">    &#125;,</span><br><span class="line">    run: function() &#123;</span><br><span class="line">        var value &#x3D; this.vm.data[this.exp];</span><br><span class="line">        var oldVal &#x3D; this.value;</span><br><span class="line">        if (value !&#x3D;&#x3D; oldVal) &#123;</span><br><span class="line">            this.value &#x3D; value;</span><br><span class="line">            this.cb.call(this.vm, value, oldVal);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    get: function() &#123;</span><br><span class="line">        Dep.target &#x3D; this;  &#x2F;&#x2F; 缓存自己</span><br><span class="line">        var value &#x3D; this.vm.data[this.exp]  &#x2F;&#x2F; 强制执行监听器里的get函数</span><br><span class="line">        Dep.target &#x3D; null;  &#x2F;&#x2F; 释放自己</span><br><span class="line">        return value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 构造函数-将Observer和Watcher关联起来</span><br><span class="line">function SelfVue (data, el, exp) &#123;</span><br><span class="line">    var self &#x3D; this;</span><br><span class="line">    this.data &#x3D; data;</span><br><span class="line"> </span><br><span class="line">    Object.keys(data).forEach(function(key) &#123;</span><br><span class="line">        self.proxyKeys(key);  &#x2F;&#x2F; 绑定代理属性</span><br><span class="line">    &#125;);</span><br><span class="line"> </span><br><span class="line">    observe(data); &#x2F;&#x2F; 监听器-观察者</span><br><span class="line">    el.innerHTML &#x3D; this.data[exp];  &#x2F;&#x2F; 初始化模板数据的值</span><br><span class="line">    &#x2F;&#x2F; 初始化订阅者-将自己添加到订阅器的操作</span><br><span class="line">    new Watcher(this, exp, function (value) &#123;</span><br><span class="line">        el.innerHTML &#x3D; value;</span><br><span class="line">    &#125;);</span><br><span class="line">    return this;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 在new SelfVue的时候做一个代理处理，让访问selfVue的属性代理为访问selfVue.data的属性</span><br><span class="line">SelfVue.prototype &#x3D; &#123;</span><br><span class="line">    proxyKeys: function (key) &#123;</span><br><span class="line">        var self &#x3D; this;</span><br><span class="line">        Object.defineProperty(this, key, &#123;</span><br><span class="line">            enumerable: false,</span><br><span class="line">            configurable: true,</span><br><span class="line">            get: function proxyGetter() &#123;</span><br><span class="line">                return self.data[key];</span><br><span class="line">            &#125;,</span><br><span class="line">            set: function proxySetter(newVal) &#123;</span><br><span class="line">                self.data[key] &#x3D; newVal;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">var library &#x3D; &#123;</span><br><span class="line">    book1: &#123;</span><br><span class="line">        name: &#39;&#39;</span><br><span class="line">    &#125;,</span><br><span class="line">    book2: &#39;&#39;</span><br><span class="line">&#125;;</span><br><span class="line">observe(library);</span><br><span class="line">library.book1.name &#x3D; &#39;vue权威指南&#39;; &#x2F;&#x2F; 属性name已经被监听了，现在值为：“vue权威指南”</span><br><span class="line">library.book2 &#x3D; &#39;没有此书籍&#39;;  &#x2F;&#x2F; 属性book2已经被监听了，现在值为：“没有此书籍”</span><br></pre></td></tr></table></figure>
-<p>简单实现（不带DOM节点解析）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h1 id&#x3D;&quot;name&quot;&gt;&#123;&#123;name&#125;&#125;&lt;&#x2F;h1&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;script src&#x3D;&quot;js&#x2F;observer.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;script src&#x3D;&quot;js&#x2F;watcher.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;script src&#x3D;&quot;js&#x2F;index.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;script type&#x3D;&quot;text&#x2F;javascript&quot;&gt;</span><br><span class="line">    var ele &#x3D; document.querySelector(&#39;#name&#39;);</span><br><span class="line">    var selfVue &#x3D; new SelfVue(&#123;</span><br><span class="line">        name: &#39;hello world&#39;</span><br><span class="line">    &#125;, ele, &#39;name&#39;);</span><br><span class="line"> </span><br><span class="line">    window.setTimeout(function () &#123;</span><br><span class="line">        console.log(&#39;name值改变了&#39;);</span><br><span class="line">        selfVue.data.name &#x3D; &#39;canfoo&#39;;</span><br><span class="line">    &#125;, 2000);</span><br><span class="line"> </span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
-
-<p>Compile解析器的实现</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-<p>此文详解来源于此博客[<a target="_blank" rel="noopener" href="https://www.cnblogs.com/canfoo/p/6891868.html]">https://www.cnblogs.com/canfoo/p/6891868.html]</a></p>
 
       
     </div>
@@ -944,7 +499,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/08/%E9%97%AD%E5%8C%85/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/10/vue%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -957,7 +512,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/08/%E9%97%AD%E5%8C%85/" class="post-title-link" itemprop="url">闭包</a>
+          <a href="/2021/05/10/vue%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/" class="post-title-link" itemprop="url">vue知识体系</a>
         </h2>
 
         <div class="post-meta-container">
@@ -968,14 +523,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2021-04-08 14:50:14" itemprop="dateCreated datePublished" datetime="2021-04-08T14:50:14+08:00">2021-04-08</time>
+      <time title="Created: 2021-05-10 09:49:13" itemprop="dateCreated datePublished" datetime="2021-05-10T09:49:13+08:00">2021-05-10</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-11 15:10:46" itemprop="dateModified" datetime="2021-06-11T15:10:46+08:00">2021-06-11</time>
+        <time title="Modified: 2021-05-31 15:26:48" itemprop="dateModified" datetime="2021-05-31T15:26:48+08:00">2021-05-31</time>
       </span>
 
   
@@ -988,47 +543,147 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h1><p>最近几天刷题都刷到与闭包有关的题目，发现对于闭包一知半解的，感觉很难受，于是打算深入了解一下闭包。</p>
-<h3 id="一、概念"><a href="#一、概念" class="headerlink" title="一、概念"></a>一、概念</h3><p>闭包就是能够读取其他函数内部变量的函数。在js中可以理解为”函数中的函数”</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">functon fn1() &#123;</span><br><span class="line">  var mm &#x3D; &#39;妹妹&#39;</span><br><span class="line">  function fn2() &#123;</span><br><span class="line">    alert(mm); &#x2F;&#x2F; 妹妹</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <h1 id="vue知识体系"><a href="#vue知识体系" class="headerlink" title="vue知识体系"></a>vue知识体系</h1><h2 id="1-基础原理"><a href="#1-基础原理" class="headerlink" title="1. 基础原理"></a>1. 基础原理</h2><h3 id="1-1-Vnode"><a href="#1-1-Vnode" class="headerlink" title="1.1 Vnode"></a>1.1 Vnode</h3><p>  Vnode也称虚拟node节点,是对真实元素节点的抽象。“虚拟 DOM”是我们对由 Vue 组件树建立起来的整个 VNode 树的称呼<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vue中，使用h()函数来创建Vnode,h()函数的本质是createElement(),所以createElement()函数也是创建的Vnode。</span><br><span class="line">render: h &#x3D;&gt; h(App)</span><br></pre></td></tr></table></figure><br>  createElment函数接受三个参数，分别是：</p>
+<ul>
+<li><p>参数一：标签名、组件的选项对象、函数等等（必选）；</p>
+</li>
+<li><p>参数二：设置这个对象的样式、属性、传的组件+的参数、绑定事件等（可选）；</p>
+</li>
+<li><p>参数三：该节点下的其他节点，即子级虚拟节点，可以是字符串形式或数组形式，也需要使用createElement构建。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; @returns &#123;VNode&#125;</span><br><span class="line">createElement(</span><br><span class="line">  &#x2F;&#x2F; &#123;String | Object | Function&#125;</span><br><span class="line">  &#x2F;&#x2F; 一个 HTML 标签名、组件选项对象，或者</span><br><span class="line">  &#x2F;&#x2F; resolve 了上述任何一种的一个 async 函数。必填项。</span><br><span class="line">  &#39;div&#39;,</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; &#123;Object&#125;</span><br><span class="line">  &#x2F;&#x2F; 一个与模板中 attribute 对应的数据对象。可选。</span><br><span class="line">  &#123;</span><br><span class="line">    &#x2F;&#x2F; (详情见下一节)</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; &#123;String | Array&#125;</span><br><span class="line">  &#x2F;&#x2F; 子级虚拟节点 (VNodes)，由 &#96;createElement()&#96; 构建而成，</span><br><span class="line">  &#x2F;&#x2F; 也可以使用字符串来生成“文本虚拟节点”。可选。</span><br><span class="line">  [</span><br><span class="line">    &#39;先写一些文字&#39;,</span><br><span class="line">    createElement(&#39;h1&#39;, &#39;一则头条&#39;),</span><br><span class="line">    createElement(MyComponent, &#123;</span><br><span class="line">      props: &#123;</span><br><span class="line">        someProp: &#39;foobar&#39;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  ]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>Vnode如何检测变化并更新视图呢？</p>
+<p>vue是通过数据绑定来修改视图的，当某个数据发生变化时，会触发Object.defineProperty监听属性的set方法，set方法会调用Dep收集器中的通知方法notify,去通知订阅者watcher，然后订阅者warcher通过get方法调用update方法更新视图。</p>
+<p>更新视图diff算法：不直接对真实DOM操作。将真实DOM抽象成js对象虚拟DOM,然后操作js对象比较新旧对象的差异，经过diff算法得出一些需要修改的最小单位，再将这些小单位的视图进行更新</p>
+<p>diff算法是通过同层的树节点进行比较而非对树进行逐层搜索遍历的方式</p>
+</li>
+</ul>
+<h3 id="1-2-nextTick"><a href="#1-2-nextTick" class="headerlink" title="1.2 nextTick"></a>1.2 nextTick</h3><p>  任务：<br>    分为同步任务和异步任务</p>
+<p>  事件循环：<br>    就是从script整体代码（宏任务）开始，遇到同步代码就进入主线程中执行，遇到异步代码则分发任务，setTimeout等会进入下一事件循环宏任务队列中，Promise.then()则会进入当前的事件循环的微任务队列，当前事件循环宏任务执行完毕，接着执行当前事件循环的微任务队列，然后微任务队列执行完毕之后，进入下一事件循环执行宏任务队列。</p>
+<p>  事件循环的执行顺序为：</p>
+<pre><code>宏任务 -&gt; 微任务队列 -&gt; 下一事件循环的宏任务队列(setTimeout) -&gt; 下一事件循环的微任务队列
+</code></pre>
+<p>  nextTick的目的是将回调函数的调用延迟到下一次DOM更新数据之后。在vue中，修改数据之后并不会立即更新DOM,因为DOM的更新是异步的，无法通过同步代码获取，需要使用nextTick，在下一次事件循环中获取（Vue中Dom的更新是异步的）</p>
+<h3 id="1-3-MVVM"><a href="#1-3-MVVM" class="headerlink" title="1.3 MVVM"></a>1.3 MVVM</h3><p>  MVC：</p>
+<ul>
+<li>Model + View + Controller</li>
+<li>Model: 数据层(模型)，负责数据的处理和获取的数据接口层(是应用程序中用于处理应用程序数据逻辑的部分。通常模型对象负责在数据库中存取数据)</li>
+<li>View: 视图层，是应用程序中处理数据显示的部分,通常视图是依据模型数据创建的</li>
+<li>Controller: 控制器层(应用程序中处理用户交互的部分)，通常控制器负责从视图读取数据，控制用户输入，并向模型发送数据</li>
+<li>MVC 的思想：一句话描述就是 Controller 负责将 Model 的数据用 View 显示出来，换句话说就是在 Controller 里面把 Model 的数据赋值给 View。</li>
+</ul>
+<p>  MVVM:</p>
+<ul>
+<li>Model + View + ViewModel</li>
+<li>Model: 数据层(模型)，负责数据的处理和获取的数据接口层（Model 是指数据模型，泛指后端进行的各种业务逻辑处理和数据操控，对于前端来说就是后端提供的 api 接口）</li>
+<li>View: 视图层，负责给用户提供操作界面</li>
+<li>ViewModel: 数据视图层(实现了数据的双向绑定，实现的方式是：DOM 事件监听)，负责处理View层的业务逻辑，做好绑定属性的监听，当ViewModel数据发生变化，View层就会得到更新。</li>
+<li>优点：<ul>
+<li>实现了 View 和 Model 的自动同步</li>
+<li>分离View层与Model，降低代码耦合，提高视图或者逻辑的重用性</li>
+<li>自动更新DOM:利用双向数据绑定，数据更新后视图更新，减少手动操作DOM次数</li>
+<li>只需要关注数据的变化，无需关注DOM操作</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>可能比较难调试。vue数据绑定的声明是指令式写在vue模板中的，无法debugger调试</li>
+<li>严格的 MVVM 要求 View 不能和 Model 直接通信，而 Vue 提供了$refs 这个属性，让 Model 可以直接操作 View，违反了这一规定，所以说 Vue 没有完全遵循 MVVM</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-4-双向数据绑定原理"><a href="#1-4-双向数据绑定原理" class="headerlink" title="1.4 双向数据绑定原理"></a>1.4 双向数据绑定原理</h3><h3 id="1-5-Vue相关API"><a href="#1-5-Vue相关API" class="headerlink" title="1.5 Vue相关API"></a>1.5 Vue相关API</h3><h2 id="2-vuex-状态管理"><a href="#2-vuex-状态管理" class="headerlink" title="2. vuex 状态管理"></a>2. vuex 状态管理</h2><h3 id="2-1-模块化状态管理"><a href="#2-1-模块化状态管理" class="headerlink" title="2.1 模块化状态管理"></a>2.1 模块化状态管理</h3><h3 id="2-2-持久化管理"><a href="#2-2-持久化管理" class="headerlink" title="2.2 持久化管理"></a>2.2 持久化管理</h3><h3 id="2-3-Vuex五种属性"><a href="#2-3-Vuex五种属性" class="headerlink" title="2.3 Vuex五种属性"></a>2.3 Vuex五种属性</h3><h2 id="3-vue-router"><a href="#3-vue-router" class="headerlink" title="3. vue-router"></a>3. vue-router</h2><h2 id="4-组件开发"><a href="#4-组件开发" class="headerlink" title="4. 组件开发"></a>4. 组件开发</h2><h3 id="4-1-组件间通信与传值"><a href="#4-1-组件间通信与传值" class="headerlink" title="4.1 组件间通信与传值"></a>4.1 组件间通信与传值</h3><h3 id="4-2-Slot-插槽"><a href="#4-2-Slot-插槽" class="headerlink" title="4.2 Slot 插槽"></a>4.2 Slot 插槽</h3><h3 id="4-3-Mixin-混入"><a href="#4-3-Mixin-混入" class="headerlink" title="4.3 Mixin 混入"></a>4.3 Mixin 混入</h3><h3 id="4-4-高阶组件"><a href="#4-4-高阶组件" class="headerlink" title="4.4 高阶组件"></a>4.4 高阶组件</h3><h2 id="5-axios"><a href="#5-axios" class="headerlink" title="5. axios"></a>5. axios</h2><h2 id="6-vue-cli"><a href="#6-vue-cli" class="headerlink" title="6. vue-cli"></a>6. vue-cli</h2><h3 id="6-1-vue-cli-部署配置"><a href="#6-1-vue-cli-部署配置" class="headerlink" title="6.1 vue-cli 部署配置"></a>6.1 vue-cli 部署配置</h3><h3 id="6-2-配置最佳打包"><a href="#6-2-配置最佳打包" class="headerlink" title="6.2 配置最佳打包"></a>6.2 配置最佳打包</h3><h3 id="6-3-本地开发devServer"><a href="#6-3-本地开发devServer" class="headerlink" title="6.3 本地开发devServer"></a>6.3 本地开发devServer</h3>
+      
+    </div>
 
-<h3 id="二、闭包的作用"><a href="#二、闭包的作用" class="headerlink" title="二、闭包的作用"></a>二、闭包的作用</h3><ul>
-<li>可以读取内部函数的变量</li>
-<li>变量私有化</li>
-<li>可以将变量始终保存在内存中</li>
-</ul>
-<h3 id="三、使用闭包的注意事项"><a href="#三、使用闭包的注意事项" class="headerlink" title="三、使用闭包的注意事项"></a>三、使用闭包的注意事项</h3><ul>
-<li>滥用闭包的话，可能会导致内存泄露。因为闭包会使得函数内部的变量都保存到内存中，是内存的消耗过大，会造成网页性能问题。</li>
-<li>闭包会在父函数外部，改变父函数内部变量的值</li>
-</ul>
-<h3 id="四、一道非常经典的闭包题目"><a href="#四、一道非常经典的闭包题目" class="headerlink" title="四、一道非常经典的闭包题目"></a>四、一道非常经典的闭包题目</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function fun(n,o)&#123;</span><br><span class="line">    console.log(o);</span><br><span class="line">    return &#123;</span><br><span class="line">        fun:function(m)&#123;</span><br><span class="line">            return fun(m,n);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> var a &#x3D; fun(0);   a.fun(1);   a.fun(2);  a.fun(3);</span><br><span class="line"> var b &#x3D; fun(0).fun(1).fun(2).fun(3);</span><br><span class="line"> var c &#x3D; fun(0).fun(1);  c.fun(2);  c.fun(3);</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function add(a,b)&#123;</span><br><span class="line">  if(b &#x3D;&#x3D; undefined)&#123;</span><br><span class="line">    return function(x) &#123;</span><br><span class="line">      return a + x</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return a + b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>解答：</p>
-<ul>
-<li><p>首先，我们仔细看看定义的fun函数，里面第一层返回了一个对象{fun: function(){}}，对象里面定义了一个fun函数，然后返回了fun(m,n)方法</p>
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/07/%E5%9F%BA%E7%A1%80%E7%89%88%E6%9C%AC-%E6%9F%A0%E6%AA%AC%E6%A9%99%E5%AD%90-vuecli3%E5%88%9D%E5%A7%8B%E5%8C%96-%E5%9F%BA%E4%BA%8EiviewPro-vue-config-js/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/05/07/%E5%9F%BA%E7%A1%80%E7%89%88%E6%9C%AC-%E6%9F%A0%E6%AA%AC%E6%A9%99%E5%AD%90-vuecli3%E5%88%9D%E5%A7%8B%E5%8C%96-%E5%9F%BA%E4%BA%8EiviewPro-vue-config-js/" class="post-title-link" itemprop="url">基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue.config.js</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-05-07 10:33:49 / Modified: 14:12:40" itemprop="dateCreated datePublished" datetime="2021-05-07T10:33:49+08:00">2021-05-07</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue-config-js"><a href="#基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue-config-js" class="headerlink" title="基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue.config.js"></a>基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue.config.js</h1><ul>
+<li><p>1.初始化项目</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue create basic-lemon-oranges</span><br></pre></td></tr></table></figure></li>
+<li><p>2.创建vue.config.js进行项目配置(拷贝iviewPro的vue.config.js)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line">const Setting &#x3D; require(&#39;.&#x2F;src&#x2F;setting.env&#39;);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 拼接路径</span><br><span class="line">const resolve &#x3D; dir &#x3D;&gt; require(&#39;path&#39;).join(__dirname, dir);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 增加环境变量</span><br><span class="line">process.env.VUE_APP_VERSION &#x3D; require(&#39;.&#x2F;package.json&#39;).version;</span><br><span class="line">process.env.VUE_APP_BUILD_TIME &#x3D; require(&#39;dayjs&#39;)().format(&#39;YYYY-M-D HH:mm:ss&#39;);</span><br><span class="line"></span><br><span class="line">module.exports &#x3D; &#123;</span><br><span class="line">    publicPath: Setting.publicPath,</span><br><span class="line">    lintOnSave: Setting.lintOnSave,</span><br><span class="line">    outputDir: Setting.outputDir,</span><br><span class="line">    assetsDir: Setting.assetsDir,</span><br><span class="line">    runtimeCompiler: true,</span><br><span class="line">    productionSourceMap: false,</span><br><span class="line">    devServer: &#123;</span><br><span class="line">        publicPath: Setting.publicPath</span><br><span class="line">    &#125;,</span><br><span class="line">    css: &#123;</span><br><span class="line">        loaderOptions: &#123;</span><br><span class="line">            less: &#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    transpileDependencies: [&#39;view-design&#39;],</span><br><span class="line">    &#x2F;&#x2F; 默认设置: https:&#x2F;&#x2F;github.com&#x2F;vuejs&#x2F;vue-cli&#x2F;tree&#x2F;dev&#x2F;packages&#x2F;@vue&#x2F;cli-service&#x2F;lib&#x2F;config&#x2F;base.js</span><br><span class="line">    chainWebpack: config &#x3D;&gt; &#123;</span><br><span class="line">        &#x2F;**</span><br><span class="line">        * 删除懒加载模块的 prefetch preload，降低带宽压力</span><br><span class="line">        * https:&#x2F;&#x2F;cli.vuejs.org&#x2F;zh&#x2F;guide&#x2F;html-and-static-assets.html#prefetch</span><br><span class="line">        * https:&#x2F;&#x2F;cli.vuejs.org&#x2F;zh&#x2F;guide&#x2F;html-and-static-assets.html#preload</span><br><span class="line">        * 而且预渲染时生成的 prefetch 标签是 modern 版本的，低版本浏览器是不需要的</span><br><span class="line">        *&#x2F;</span><br><span class="line">        config.plugins</span><br><span class="line">            .delete(&#39;prefetch&#39;)</span><br><span class="line">            .delete(&#39;preload&#39;);</span><br><span class="line">        &#x2F;&#x2F; 解决 cli3 热更新失效 https:&#x2F;&#x2F;github.com&#x2F;vuejs&#x2F;vue-cli&#x2F;issues&#x2F;1559</span><br><span class="line">        config.resolve</span><br><span class="line">            .symlinks(true);</span><br><span class="line">        config</span><br><span class="line">            &#x2F;&#x2F; 开发环境</span><br><span class="line">            .when(process.env.NODE_ENV &#x3D;&#x3D;&#x3D; &#39;development&#39;,</span><br><span class="line">                  &#x2F;&#x2F; sourcemap不包含列信息</span><br><span class="line">                  config &#x3D;&gt; config.devtool(&#39;cheap-source-map&#39;)</span><br><span class="line">            )</span><br><span class="line">            &#x2F;&#x2F; 非开发环境</span><br><span class="line">            .when(process.env.NODE_ENV !&#x3D;&#x3D; &#39;development&#39;, config &#x3D;&gt; &#123;</span><br><span class="line"></span><br><span class="line">        &#125;);</span><br><span class="line">        &#x2F;&#x2F; 不编译 iView Pro</span><br><span class="line">        config.module</span><br><span class="line">            .rule(&#39;js&#39;)</span><br><span class="line">            .test(&#x2F;\.jsx?$&#x2F;)</span><br><span class="line">            .exclude</span><br><span class="line">            .add(resolve(&#39;src&#x2F;libs&#x2F;iview-pro&#39;))</span><br><span class="line">            .end();</span><br><span class="line">        &#x2F;&#x2F; 使用 iView Loader</span><br><span class="line">        config.module</span><br><span class="line">            .rule(&#39;vue&#39;)</span><br><span class="line">            .test(&#x2F;\.vue$&#x2F;)</span><br><span class="line">            .use(&#39;iview-loader&#39;)</span><br><span class="line">            .loader(&#39;iview-loader&#39;)</span><br><span class="line">            .tap(() &#x3D;&gt; &#123;</span><br><span class="line">                return Setting.iviewLoaderOptions</span><br><span class="line">            &#125;)</span><br><span class="line">            .end();</span><br><span class="line">        &#x2F;&#x2F; markdown</span><br><span class="line">        config.module</span><br><span class="line">            .rule(&#39;md&#39;)</span><br><span class="line">            .test(&#x2F;\.md$&#x2F;)</span><br><span class="line">            .use(&#39;text-loader&#39;)</span><br><span class="line">            .loader(&#39;text-loader&#39;)</span><br><span class="line">            .end();</span><br><span class="line">        &#x2F;&#x2F; i18n</span><br><span class="line">        config.module</span><br><span class="line">            .rule(&#39;i18n&#39;)</span><br><span class="line">            .resourceQuery(&#x2F;blockType&#x3D;i18n&#x2F;)</span><br><span class="line">            .use(&#39;i18n&#39;)</span><br><span class="line">            .loader(&#39;@kazupon&#x2F;vue-i18n-loader&#39;)</span><br><span class="line">            .end();</span><br><span class="line">        &#x2F;&#x2F; image exclude</span><br><span class="line">        const imagesRule &#x3D; config.module.rule(&#39;images&#39;);</span><br><span class="line">        imagesRule</span><br><span class="line">            .test(&#x2F;\.(png|jpe?g|gif|webp|svg)(\?.*)?$&#x2F;)</span><br><span class="line">            .exclude</span><br><span class="line">            .add(resolve(&#39;src&#x2F;assets&#x2F;svg&#39;))</span><br><span class="line">            .end();</span><br><span class="line">        &#x2F;&#x2F; 重新设置 alias</span><br><span class="line">        config.resolve.alias</span><br><span class="line">            .set(&#39;@api&#39;, resolve(&#39;src&#x2F;api&#39;));</span><br><span class="line">        &#x2F;&#x2F; node</span><br><span class="line">        config.node</span><br><span class="line">            .set(&#39;__dirname&#39;, true)</span><br><span class="line">            .set(&#39;__filename&#39;, true);</span><br><span class="line">        &#x2F;&#x2F; 判断是否需要加入模拟数据</span><br><span class="line">        const entry &#x3D; config.entry(&#39;app&#39;);</span><br><span class="line">        if (Setting.isMock) &#123;</span><br><span class="line">            entry</span><br><span class="line">                .add(&#39;@&#x2F;mock&#39;)</span><br><span class="line">                .end()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>3.查看vue.config.js里面引入哪些外部文件，需要安装哪些插件，需要安装哪些依赖</p>
 </li>
-<li><p>一、var a = fun(0);   a.fun(1);   a.fun(2);  a.fun(3);输出什么</p>
+<li><p>4.尝试启动项目，根据报错信息安装对应的依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn serve</span><br></pre></td></tr></table></figure>
 <ul>
-<li>首先，a = fun(0);此时我们根据上面定义的函数可以得知，a其实等于一个对象{fun: function(){}}。所以此时会输出undefined</li>
-<li>接着，a.fun(1);由于此时a是一个对象，里面定义了fun函数，所以此时调用的对象内部的fun方法，此方法返回了fun(m,n)函数，那么此时就相当于是调用的fun(1, 0),故输出0</li>
-<li>紧接着的都跟第二步一样，都是输出0</li>
+<li>4.1.报错信息<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ERROR  Error loading D:\GitHubProject\项目基础版本\basic-lemon-oranges\vue.config.js:</span><br><span class="line">ERROR  Error: Cannot find module &#39;dayjs&#39;</span><br></pre></td></tr></table></figure>
+根据此错误信息，安装dayjs<br>执行命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install dayjs --save</span><br></pre></td></tr></table></figure></li>
+<li>4.2.再次执行yarn serve<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">These dependencies were not found:</span><br><span class="line"></span><br><span class="line">* @&#x2F;mock in multi (webpack)-dev-server&#x2F;client?http:&#x2F;&#x2F;192.168.11.60:8081&amp;sockPath&#x3D;&#x2F;sockjs-node (webpack)&#x2F;hot&#x2F;dev-server.js .&#x2F;src&#x2F;main.js @&#x2F;mock</span><br><span class="line">* core-js&#x2F;modules&#x2F;es.object.to-string.js in .&#x2F;src&#x2F;router&#x2F;index.js</span><br><span class="line">* core-js&#x2F;modules&#x2F;es.string.iterator.js in .&#x2F;src&#x2F;router&#x2F;index.js</span><br><span class="line">* core-js&#x2F;modules&#x2F;web.dom-collections.iterator.js in .&#x2F;src&#x2F;router&#x2F;index.js</span><br><span class="line"></span><br><span class="line">To install them, you can run: npm install --save @&#x2F;mock core-js&#x2F;modules&#x2F;es.object.to-string.js core-js&#x2F;modules&#x2F;es.string.iterator.js core-js&#x2F;modules&#x2F;web.dom-collections.iterator.js</span><br><span class="line">Failed to resolve loader: iview-loader</span><br><span class="line">You may need to install it.</span><br><span class="line">Error from chokidar (D:\): Error: EBUSY: resource busy or locked, lstat &#39;D:\pagefile.sys&#39;</span><br></pre></td></tr></table></figure>
+从上面的错误信息可以看出，此处是缺少mock模块，此模块是用于模拟数据的，在vue.config.js是添加了此配置的，故此需要安装一下mock模块。<br>执行命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install mockjs</span><br></pre></td></tr></table></figure></li>
+<li>4.3.再次执行yarn serve(处理不了mock的问题，暂时在vue.config.js里面将mock的使用注释)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">These dependencies were not found:</span><br><span class="line"></span><br><span class="line">* core-js&#x2F;modules&#x2F;es.object.to-string.js in .&#x2F;src&#x2F;router&#x2F;index.js</span><br><span class="line">* core-js&#x2F;modules&#x2F;es.string.iterator.js in .&#x2F;src&#x2F;router&#x2F;index.js</span><br><span class="line">* core-js&#x2F;modules&#x2F;web.dom-collections.iterator.js in .&#x2F;src&#x2F;router&#x2F;index.js</span><br></pre></td></tr></table></figure>
+根据上面的错误，应该是创建项目初始化的时候，依赖并未安装完全，在此重新安装依赖即可<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i</span><br></pre></td></tr></table></figure></li>
+<li>4.4.再次执行yarn serve<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Failed to resolve loader: iview-loader</span><br><span class="line">You may need to install it.</span><br><span class="line">Error from chokidar (D:\): Error: EBUSY: resource busy or locked, lstat &#39;D:\pagefile.sys&#39;</span><br></pre></td></tr></table></figure>
+根据错误提示，安装iview-loader<br>执行命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install iview-loader --save-dev</span><br></pre></td></tr></table></figure></li>
+<li>4.5.再次执行yarn serve<br>至此，项目成功启动</li>
 </ul>
 </li>
-<li><p>二、var b = fun(0).fun(1).fun(2).fun(3);</p>
+<li><p>5.打包部署到服务器</p>
 <ul>
-<li>首先，在调用fun(0)时，得到一个对象{}，里面包含fun函数，此时fun(0)输出undefined</li>
-<li>接着，在上面的基础上调用fun(1),此时的fun函数是返回的对象的fun匿名函数，此匿名函数返回fun(m,n)函数，那么此时相当于是直接调用了fun(1,0),返回一个对象{fun: function(m){return fun(m, 1)}}，此时输出 0</li>
-<li>再接着，调用fun(2),此时调用的fun(2)返回的对象里的fun匿名函数，那么此时也就是调用的外部的fun(n,o)函数，即fun(2,1),返回的是一个对象{fun: function(m){return fun(m, 2)}},此时输出 1</li>
-<li>最后一个fun(3),调用的就是上一个的对象里的fun函数，那么此时执行的就是fun(3,2),故此时输出 2</li>
+<li>5.1.需要修改src\setting.env.js中的publicPath的路径，修改为自己当前项目的名称<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 部署应用包时的基本 URL</span><br><span class="line">publicPath: env &#x3D;&#x3D;&#x3D; &#39;development&#39; ? &#39;&#x2F;&#39; : &#39;&#x2F;lemon&#x2F;&#39;,</span><br></pre></td></tr></table></figure></li>
+<li>5.2.修改打包后的名称，即打包输出的目录名称<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 生产环境构建文件的目录名</span><br><span class="line">outputDir: &#39;lemon&#39;,</span><br></pre></td></tr></table></figure></li>
+<li>5.3.执行打包命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure>
+至此打包成功，部署到服务器上，正常显示页面</li>
 </ul>
 </li>
-<li><p>三、var c = fun(0).fun(1);  c.fun(2);  c.fun(3);</p>
-<ul>
-<li>首先，fun(0)相当于是fun(0, undefined)，返回一个对象{fun: function(m){return fun(m, 0)}},故直接输出0.</li>
-<li>接着fun(0).fun(1)就相当于是对象里的fun函数，即执行的是fun(1, 0)，返回一个对象{fun: function(m){return fun(m, 1)}},故输出 0</li>
-<li>再接着c.fun(2)就是执行的对象里的fun函数，即fun(2,1),故输出1</li>
-<li>最后c.fun(3)与c.fun(2)一样，输出 1</li>
-</ul>
+<li><p>6.参照iview-admin-Pro的router路由以及store仓库的写法</p>
 </li>
 </ul>
 
@@ -1057,7 +712,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/07/%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/06/git%E7%9A%84%E4%BD%BF%E7%94%A8-%E8%BF%9E%E6%8E%A5github-%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1070,7 +725,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/07/%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/" class="post-title-link" itemprop="url">面试题汇总</a>
+          <a href="/2021/05/06/git%E7%9A%84%E4%BD%BF%E7%94%A8-%E8%BF%9E%E6%8E%A5github-%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81/" class="post-title-link" itemprop="url">git的使用-连接github-提交代码</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1081,14 +736,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2021-04-07 10:30:03" itemprop="dateCreated datePublished" datetime="2021-04-07T10:30:03+08:00">2021-04-07</time>
+      <time title="Created: 2021-05-06 16:33:59" itemprop="dateCreated datePublished" datetime="2021-05-06T16:33:59+08:00">2021-05-06</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-25 08:54:27" itemprop="dateModified" datetime="2021-04-25T08:54:27+08:00">2021-04-25</time>
+        <time title="Modified: 2021-06-03 16:47:27" itemprop="dateModified" datetime="2021-06-03T16:47:27+08:00">2021-06-03</time>
       </span>
 
   
@@ -1101,82 +756,34 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="面试题汇总"><a href="#面试题汇总" class="headerlink" title="面试题汇总"></a>面试题汇总</h1><p>今日偶然在掘金中看到了一篇关于面试题的文章，里面的题目非常经典，能够考察到的知识点非常丰富，有利于我们查漏补缺。我在此做个记录，便于自己日后方便查找。此处放一个文章作者的github地址[<a target="_blank" rel="noopener" href="https://github.com/Advanced-Frontend/Daily-Interview-Question]%E3%80%82%E9%82%A3%E4%B9%88%E5%B0%B1%E8%AE%A9%E6%88%91%E4%BB%AC%E4%B8%80%E8%B5%B7%E6%9D%A5%E6%84%89%E5%BF%AB%E5%9C%B0%E5%81%9A%E9%A2%98%E5%90%A7%E3%80%82%E3%80%82%E3%80%82">https://github.com/Advanced-Frontend/Daily-Interview-Question]。那么就让我们一起来愉快地做题吧。。。</a></p>
-<h2 id="第-162-题：实现对象的-Map-函数类似-Array-prototype-map"><a href="#第-162-题：实现对象的-Map-函数类似-Array-prototype-map" class="headerlink" title="第 162 题：实现对象的 Map 函数类似 Array.prototype.map"></a>第 162 题：实现对象的 Map 函数类似 Array.prototype.map</h2><p>  实现思路：<br>    + 首先，要求实现对象Map，那么就需要先搞清楚Array.prototype.map的内部实现逻辑<br>      + array.map(function(currentValue,index,arr), thisValue)<br>      + Array.prototype.map是返回一个新的数组<br>      + Array.prototype.map有两个参数，第一个参数是回调函数有三个参数value, index, arr，第二个参数是对象作为该执行回调时使用，传递给函数，用作 “this” 的值。如果省略了 thisValue，或者传入 null、undefined，那么回调函数的 this 为全局对象</p>
-<p>  Array.prototype.map的实现：<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; callbackFn--回调函数，thisArg--this指向，默认不传为全局对象</span><br><span class="line">Array.prototype.map &#x3D; function (callbackFn, thisArg) &#123;</span><br><span class="line">  let arr &#x3D; [];</span><br><span class="line">  const _me &#x3D; this;</span><br><span class="line">  const _context &#x3D; thisArg ? thisArg : _me; &#x2F;&#x2F; 定义上下文对象</span><br><span class="line">  let curArr &#x3D; Object(_me); &#x2F;&#x2F; 获取调用map方法的数组</span><br><span class="line">  if(typeof callbackFn !&#x3D; &#39;function&#39;) &#123;</span><br><span class="line">    throw new TypeError(&#96;$&#123;callbackFn&#125; is no function&#96;);</span><br><span class="line">  &#125;</span><br><span class="line">  curArr.forEach((item, index) &#x3D;&gt; &#123;</span><br><span class="line">    arr.push(callbackFn.call(_context, item, index, curArr)) &#x2F;&#x2F; 将回调结果放入数组中</span><br><span class="line">  &#125;)</span><br><span class="line">  return arr; &#x2F;&#x2F; 返回map后的数组</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>  对象的 Map 函数的实现<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">function Map(callback, thisValue) &#123;</span><br><span class="line">  let _this &#x3D; this;</span><br><span class="line">  let _obj &#x3D; &#123;&#125;;</span><br><span class="line">  let curObj &#x3D; Object(this); &#x2F;&#x2F; 获取调用Map方法的对象</span><br><span class="line">  &#x2F;&#x2F;如果callback不是函数,则抛出TypeError异常.  </span><br><span class="line">  &#x2F;&#x2F;Object.prototype.toString.call(callback) !&#x3D; &quot;[object Function]&quot;</span><br><span class="line">  if(typeof callback !&#x3D; &#39;function&#39;) &#123;</span><br><span class="line">    throw new TypeError(callback + &quot; is not a function&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  if(thisValue) &#123;</span><br><span class="line">    _this &#x3D; thisValue</span><br><span class="line">  &#125;</span><br><span class="line">  for(let key in curObj)&#123;</span><br><span class="line">    &#x2F;&#x2F; 判断当前属性是否属于当前对象，若不加这层判断的话，该循环会将Map本身也遍历进去</span><br><span class="line">    if(curObj.hasOwnProperty(key)) &#123;</span><br><span class="line">      &#x2F;&#x2F; 三个参数：curObj[key]-当前key对应的值，key-当前的key，curObj-原对象</span><br><span class="line">      _obj[key] &#x3D; callback.call(_this, curObj[key], key, curObj)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return _obj</span><br><span class="line">&#125;</span><br><span class="line">Object.prototype.Map &#x3D; Map; &#x2F;&#x2F; 挂载到对象原型上</span><br><span class="line">var a &#x3D; &#123;&#39;name&#39;: &#39;cwj&#39;,&#39;age&#39;: 18, &#39;sex&#39;: &#39;男&#39;&#125;</span><br><span class="line">var o &#x3D; a.Map(function(value,key,obj)&#123;</span><br><span class="line">  return value + &#39;11&#39;</span><br><span class="line">&#125;)</span><br><span class="line">console.log(a) &#x2F;&#x2F; &#123;name: &quot;cwj&quot;, age: 18, sex: &quot;男&quot;&#125;</span><br><span class="line">console.log(o) &#x2F;&#x2F; &#123;name: &quot;cwj11&quot;, age: &quot;1811&quot;, sex: &quot;男11&quot;&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="第161题-用最精炼的代码实现数组非零非负最小值-index"><a href="#第161题-用最精炼的代码实现数组非零非负最小值-index" class="headerlink" title="第161题 用最精炼的代码实现数组非零非负最小值 index"></a>第161题 用最精炼的代码实现数组非零非负最小值 index</h2>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 例如：[10,21,0,-7,35,7,9,23,18] 输出 5, 7 最小</span><br><span class="line">function getIndex(arr)&#123;</span><br><span class="line">      let index&#x3D;null;</span><br><span class="line">      ...</span><br><span class="line">      return index;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>  实现：</p>
-<ul>
-<li>首先，仔细阅读题目要求，要求的是非零非负，那么就可以用大于0(&gt; 0)表示</li>
-<li>其次，要求是最小值，那么我们就应该想到直接使用Math.min()方法,要注意min()方法的参数不是数组哈，需要将数组解构</li>
-<li>接着，要求输出的是最小值的索引值index，那么数组有一个方法是可以返回数组中元素所在的索引findIndex(). </li>
-</ul>
-<p>  此处可以扩展一下find()和findIndex()方法的比较</p>
-<ul>
-<li>find()–find()函数用来查找目标元素，找到就返回该元素，找不到返回undefined</li>
-<li>findIndex()–findIndex()函数也是查找目标元素，找到就返回元素的位置，找不到就返回-1</li>
-<li>都是查找回调函数,都含有三个参数，<ul>
-<li>value–每一次迭代查找的数组元素</li>
-<li>index–每一次迭代查找的数组元素索引</li>
-<li>arr–被查找的数组</li>
-</ul>
-</li>
-<li>语法<ul>
-<li>[1,2,3,4].find((value, index, arr) =&gt; { return value &gt; 1}) // 2</li>
-<li>[1,2,3,4].findIndex((value, index, arr) =&gt; { return value &gt; 1}) // 1</li>
+          <h1 id="git的使用-连接github-提交代码"><a href="#git的使用-连接github-提交代码" class="headerlink" title="git的使用-连接github-提交代码"></a>git的使用-连接github-提交代码</h1><h3 id="github"><a href="#github" class="headerlink" title="github"></a>github</h3><p>首先，得有github账号，然后去创建一个新的项目仓库</p>
+<h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><ul>
+<li>安装git</li>
+<li>新建目录，作为本地仓库，进入目录，右键打开 git base here</li>
+<li>执行 git init,告知该目录参考用git来管理</li>
+<li>执行 git clone SSH地址，克隆github项目代码</li>
+<li>修改项目代码，然后需要提交代码需要执行一下操作<ul>
+<li>加入(指定文件)所有文件到暂存区<br><code>git add .</code><br><code>git add hello.txt</code></li>
+<li><code>git commit  -m &#39;修改原因，相关说明信息&#39;</code></li>
+<li>提交(根据情况选择)<ul>
+<li><code>git push</code> 直接到远程默认仓库</li>
+<li><code>git push orgin master</code> push到名为orgin的远程仓库的指定分支master</li>
 </ul>
 </li>
 </ul>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function getIndex(arr)&#123;</span><br><span class="line">      let index&#x3D;null;</span><br><span class="line">      &#x2F;&#x2F; 此处是实现代码开始</span><br><span class="line">      let newArr &#x3D; arr.filter(v &#x3D;&gt; v &gt; 0)</span><br><span class="line">      index &#x3D; arr.findIndex(i &#x3D;&gt; i &#x3D;&#x3D; Math.min(...newArr))</span><br><span class="line">      &#x2F;&#x2F; 此处是实现代码结束</span><br><span class="line">      return index;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="第-160-题：输出以下代码运行结果，为什么？如果希望每隔-1s-输出一个结果，应该如何改造？注意不可改动-square-方法"><a href="#第-160-题：输出以下代码运行结果，为什么？如果希望每隔-1s-输出一个结果，应该如何改造？注意不可改动-square-方法" class="headerlink" title="第 160 题：输出以下代码运行结果，为什么？如果希望每隔 1s 输出一个结果，应该如何改造？注意不可改动 square 方法"></a>第 160 题：输出以下代码运行结果，为什么？如果希望每隔 1s 输出一个结果，应该如何改造？注意不可改动 square 方法</h2>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">const list &#x3D; [1, 2, 3]</span><br><span class="line">const square &#x3D; num &#x3D;&gt; &#123;</span><br><span class="line">  return new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">    setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">      resolve(num * num)</span><br><span class="line">    &#125;, 1000)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function test() &#123;</span><br><span class="line">  list.forEach(async x&#x3D;&gt; &#123;</span><br><span class="line">    const res &#x3D; await square(x)</span><br><span class="line">    console.log(res)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line">test()</span><br></pre></td></tr></table></figure>
-
-<p>  实现：forEach是不能阻塞的，默认是请求并行发起，所以是同时输出1、4、9</p>
-<ul>
-<li>forEach是不能阻塞的，默认是请求并行发起</li>
-</ul>
-<p>  扩展：</p>
-<ul>
-<li>数组的其他常用循环方法<ul>
-<li>forEach()–不能终止循环(无法使用break语句或者return语句终止)，forEach方法对数组的每个元素执行一次提供的函数，forEach循环里不能有break或continue， 会产生报错 callback可以使用return但return的结果没有作用，只是提前结束函数运行，也就是calback总是返回undefined forEach返回值undefined</li>
-<li>for of–for…of语句在可迭代对象上创建一个迭代循环，执行语句; 和for循环一样，会等待await执行完后继续执行</li>
-<li>forEach和map,await不生效；使用break或continue会报错</li>
-<li>for循环、for…in,for…of，支持await，for和for…of中可以使用break和continue；for…in会忽略continue和break<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">async function test() &#123;</span><br><span class="line">  for (let i &#x3D; 0; i &lt; list.length; i++) &#123;</span><br><span class="line">    let x &#x3D; list[i]</span><br><span class="line">    const res &#x3D; await square(x)</span><br><span class="line">    console.log(res)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-for of 语法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">async function test() &#123;</span><br><span class="line">  for (let x of list) &#123;</span><br><span class="line">    const res &#x3D; await square(x)</span><br><span class="line">    console.log(res)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-axios 源码里所用到的，利用 promise 本身的链式调用来实现串行<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let promise &#x3D; Promise.resolve()</span><br><span class="line">function test(i &#x3D; 0) &#123;</span><br><span class="line">  if (i &#x3D;&#x3D;&#x3D; list.length) return</span><br><span class="line">  promise &#x3D; promise.then(() &#x3D;&gt; square(list[i]))</span><br><span class="line">  test(i + 1)</span><br><span class="line">&#125;</span><br><span class="line">test()</span><br></pre></td></tr></table></figure></li>
-</ul>
 </li>
+<li>切换版本,然后再强行推送<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard 目标版本号</span><br><span class="line">&#x2F;&#x2F; 如果直接 git push 报错的话，就执行下面的命令</span><br><span class="line">git push -f</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h2 id="第-159-题：实现-Promise-retry，成功后-resolve-结果，失败后重试，尝试超过一定次数才真正的-reject"><a href="#第-159-题：实现-Promise-retry，成功后-resolve-结果，失败后重试，尝试超过一定次数才真正的-reject" class="headerlink" title="第 159 题：实现 Promise.retry，成功后 resolve 结果，失败后重试，尝试超过一定次数才真正的 reject"></a>第 159 题：实现 Promise.retry，成功后 resolve 结果，失败后重试，尝试超过一定次数才真正的 reject</h2><p>  实现：</p>
-<ul>
-<li>首先，了解题目需求，理解retry函数有哪些参数，接收一个函数fn，然后还有一个次数参数num</li>
-<li>接着，内部返回一个Promise实例对象，题目要求一定次数内失败循环请求，所以用while来实现循环，用try/catch来抛出异常<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Promise.retry &#x3D; function(fn, num &#x3D; 3) &#123;</span><br><span class="line">  return new Promise(async (resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">    while(num &gt; 0)&#123;</span><br><span class="line">      try &#123;</span><br><span class="line">        var res &#x3D; await fn();</span><br><span class="line">        resolve(res);</span><br><span class="line">        break;</span><br><span class="line">      &#125;catch &#123;</span><br><span class="line">        if (!num) reject(error); &#x2F;&#x2F; !0 &#x3D;&#x3D; true   !-1 &#x3D;&#x3D; false !1 &#x3D;&#x3D; false</span><br><span class="line">      &#125;</span><br><span class="line">      num--</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<h4 id="分支查看与切换"><a href="#分支查看与切换" class="headerlink" title="分支查看与切换"></a>分支查看与切换</h4><ul>
+<li>查看所有分支<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -a</span><br></pre></td></tr></table></figure></li>
+<li>查看当前使用分支(结果列表中前面标*号的表示当前使用分支)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></figure></li>
+<li>切换分支<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout 分支名</span><br></pre></td></tr></table></figure>
+<h3 id="多人协作"><a href="#多人协作" class="headerlink" title="多人协作"></a>多人协作</h3></li>
 </ul>
-<h2 id="第-158-题：如何模拟实现-Array-prototype-splice"><a href="#第-158-题：如何模拟实现-Array-prototype-splice" class="headerlink" title="第 158 题：如何模拟实现 Array.prototype.splice"></a>第 158 题：如何模拟实现 Array.prototype.splice</h2><p>  实现：</p>
-<ul>
-<li>首先，要了解原生splice的定义,splice() 方法向/从数组中添加/删除项目，然后返回被删除的项目。</li>
-<li>接着，了解其语法，arrayObject.splice(index,howmany,item1,…..,itemX)<ul>
-<li>index - 必需。整数，规定添加/删除项目的位置，使用负数可从数组结尾处规定位置。</li>
-<li>howmany - 必需。要删除的项目数量。如果设置为 0，则不会删除项目。</li>
-<li>item1, …, itemX - 可选。向数组添加的新项目。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Array.prototype._splice &#x3D; function (start, deleteCount, ...addList) &#123;</span><br><span class="line">  if (start &lt; 0) &#123;</span><br><span class="line">    if (Math.abs(start) &gt; this.length) &#123; &#x2F;&#x2F; Math.abs() - 将负数转化为正数</span><br><span class="line">      start &#x3D; 0</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      start +&#x3D; this.length &#x2F;&#x2F; 相当于 start &#x3D; this.length - |start|</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  if (typeof deleteCount &#x3D;&#x3D;&#x3D; &#39;undefined&#39;) &#123;</span><br><span class="line">    deleteCount &#x3D; this.length - start</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  const removeList &#x3D;  this.slice(start, start + deleteCount) &#x2F;&#x2F; 返回选择的新数组</span><br><span class="line"></span><br><span class="line">  const right &#x3D; this.slice(start + deleteCount)</span><br><span class="line"></span><br><span class="line">  let addIndex &#x3D; start</span><br><span class="line">  addList.concat(right).forEach(item &#x3D;&gt; &#123;</span><br><span class="line">      this[addIndex] &#x3D; item</span><br><span class="line">      addIndex++</span><br><span class="line">  &#125;)</span><br><span class="line">  this.length &#x3D; addIndex</span><br><span class="line"></span><br><span class="line">  return removeList</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ul>
-<h2 id="第-156-题：求最终-left、right-的宽度（变形）"><a href="#第-156-题：求最终-left、right-的宽度（变形）" class="headerlink" title="第 156 题：求最终 left、right 的宽度（变形）"></a>第 156 题：求最终 left、right 的宽度（变形）</h2>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;container&quot;&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;left&quot;&gt;&lt;&#x2F;div&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;right&quot;&gt;&lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">  * &#123;</span><br><span class="line">    padding: 0;</span><br><span class="line">    margin: 0;</span><br><span class="line">  &#125;</span><br><span class="line">  .container &#123;</span><br><span class="line">    width: 600px;</span><br><span class="line">    height: 300px;</span><br><span class="line">    display: flex;</span><br><span class="line">  &#125;</span><br><span class="line">  .left &#123;</span><br><span class="line">    flex: 1 2 300px;</span><br><span class="line">    background: red;</span><br><span class="line">  &#125;</span><br><span class="line">  .right &#123;</span><br><span class="line">    flex: 2 1 200px;</span><br><span class="line">    background: blue;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br></pre></td></tr></table></figure>
-<p>  实现：</p>
-<ul>
-<li>先了解该题目要考察的是什么。该题目考察的flex布局的知识点，考察对css的flex属性的了解</li>
-<li>flex: flex-grow flex-shrink flex-basis|auto|initial|inherit;<ul>
-<li>flex-grow: 一个数字，规定项目将相对于其他灵活的项目进行扩展的量</li>
-<li>flex-shrink: 一个数字，规定项目将相对于其他灵活的项目进行收缩的量</li>
-<li>flex-basis:    项目的长度。合法值：”auto”、”inherit” 或一个后跟 “%”、”px”、”em” 或任何其他长度单位的数字</li>
-<li>auto:    与 1 1 auto 相同。</li>
-<li>none:    与 0 0 auto 相同。</li>
-<li>initial:    设置该属性为它的默认值，即为 0 1 auto。请参阅 initial。</li>
-<li>inherit:    从父元素继承该属性。请参阅 inherit。</li>
-</ul>
-</li>
-<li>在flex-basis设置了具体的长度之后，当flex-basis的总和未撑满容器时，执行的是flex-grow，反之执行flex-shrink</li>
+<h4 id="gitlab"><a href="#gitlab" class="headerlink" title="gitlab"></a>gitlab</h4><ul>
+<li>安装了git小乌龟之后，拉取gitlab项目</li>
+<li>新建目录，然后执行git clone（或者右键选择git 克隆）</li>
+<li>输入账号密码成功后即可克隆到代码</li>
 </ul>
 
       
@@ -1204,7 +811,7 @@ axios 源码里所用到的，利用 promise 本身的链式调用来实现串�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/06/%E6%B7%B1%E6%8B%B7%E8%B4%9D-%E6%B5%85%E6%8B%B7%E8%B4%9D/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/06/%E6%8B%96%E6%8B%BD%E5%8A%A8%E6%80%81%E7%94%9F%E6%88%90%E7%BB%84%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1217,7 +824,90 @@ axios 源码里所用到的，利用 promise 本身的链式调用来实现串�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/06/%E6%B7%B1%E6%8B%B7%E8%B4%9D-%E6%B5%85%E6%8B%B7%E8%B4%9D/" class="post-title-link" itemprop="url">深拷贝&&浅拷贝</a>
+          <a href="/2021/05/06/%E6%8B%96%E6%8B%BD%E5%8A%A8%E6%80%81%E7%94%9F%E6%88%90%E7%BB%84%E4%BB%B6/" class="post-title-link" itemprop="url">拖拽动态生成组件</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-05-06 09:26:36 / Modified: 11:36:18" itemprop="dateCreated datePublished" datetime="2021-05-06T09:26:36+08:00">2021-05-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="拖拽动态生成组件"><a href="#拖拽动态生成组件" class="headerlink" title="拖拽动态生成组件"></a>拖拽动态生成组件</h1><p>思路：<br>  首先，明确一下拖拽的话，我们可以使用现成的轮子，避免重复造轮子。其次就是如何处理动态生成组件，对于动态生成组件来说，每一次都是要生成一个全新的组件。</p>
+<p>  可以使用<component>中的is属性来加载对应的组件<br>  也可以通过$mount来挂载</p>
+<h2 id="拖拽库的选择"><a href="#拖拽库的选择" class="headerlink" title="拖拽库的选择"></a>拖拽库的选择</h2><ul>
+<li>vuedraggable<ul>
+<li><a target="_blank" rel="noopener" href="http://www.itxst.com/vue-draggable/tutorial.html">vuedraggable中文文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/SortableJS/Vue.Draggable">github地址</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="动态生成组件"><a href="#动态生成组件" class="headerlink" title="动态生成组件"></a>动态生成组件</h2><ul>
+<li>定义一个创建组件的函数，接收生成组件需要的组件名称，和想要传递给组件的 props, 和 事件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ReturnNewCom(&#123;props, on&#125;)&#123;&#125; </span><br></pre></td></tr></table></figure></li>
+<li>在函数内部，使用Vue.extend()构造函数来生成一个Vue的子类，将子类实例化后返回<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import Vue from &quot;vue&quot;;</span><br><span class="line">&#x2F;&#x2F; 想要动态生成的组件，先引入这个文件。</span><br><span class="line">import components1 from &quot;.&#x2F;components&#x2F;TestCom1.vue&quot;;</span><br><span class="line">import components2 from &quot;.&#x2F;components&#x2F;TestCom2.vue&quot;;</span><br><span class="line">&#x2F;&#x2F; 将组件的名称和组件做一个对应Map</span><br><span class="line">const comMap &#x3D; &#123;</span><br><span class="line">  components1,</span><br><span class="line">  components2,</span><br><span class="line">&#125;;</span><br><span class="line">const ReturnNewCom &#x3D; function (&#123; props, on &#125;) &#123;</span><br><span class="line">  const &#123;</span><br><span class="line">    comItem: &#123; name &#125;,</span><br><span class="line">  &#125; &#x3D; props;</span><br><span class="line">  const newComponent &#x3D; Vue.extend(&#123;</span><br><span class="line">    render(createElement) &#123;</span><br><span class="line">      &#x2F;&#x2F; 使用传进来的组件name来决定渲染哪一个组件。</span><br><span class="line">      return createElement(comMap[name], &#123;</span><br><span class="line">        props,</span><br><span class="line">        on,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;);</span><br><span class="line">  return new newComponent();</span><br><span class="line">&#125;;</span><br><span class="line">export default ReturnNewCom;</span><br></pre></td></tr></table></figure></li>
+<li>在挂载页面，定义一个函数来处理渲染动态组件以及挂载组件<ul>
+<li>待dom元素加载完毕后，调用上面定义的ReturnNewCom函数，创建组件，并传递 props 和 事件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const com &#x3D; CreateCom(&#123;</span><br><span class="line">  props,</span><br><span class="line">  on: &#123;</span><br><span class="line">    handleDelete: this.handleDeleteCom,</span><br><span class="line">    ...on,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+<li>生成组件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">com.$mount();</span><br></pre></td></tr></table></figure></li>
+<li>将生成的组件添加到对应的DOM中<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.$refs.comBody[index].appendChild(com.$el);</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/29/%E9%98%B2%E6%8A%96%E4%B8%8E%E8%8A%82%E6%B5%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/29/%E9%98%B2%E6%8A%96%E4%B8%8E%E8%8A%82%E6%B5%81/" class="post-title-link" itemprop="url">防抖与节流</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1228,14 +918,14 @@ axios 源码里所用到的，利用 promise 本身的链式调用来实现串�
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2021-04-06 15:42:08" itemprop="dateCreated datePublished" datetime="2021-04-06T15:42:08+08:00">2021-04-06</time>
+      <time title="Created: 2021-04-29 16:41:23" itemprop="dateCreated datePublished" datetime="2021-04-29T16:41:23+08:00">2021-04-29</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-22 10:30:35" itemprop="dateModified" datetime="2021-04-22T10:30:35+08:00">2021-04-22</time>
+        <time title="Modified: 2021-04-30 09:31:43" itemprop="dateModified" datetime="2021-04-30T09:31:43+08:00">2021-04-30</time>
       </span>
 
   
@@ -1248,84 +938,8 @@ axios 源码里所用到的，利用 promise 本身的链式调用来实现串�
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="深拷贝的原理"><a href="#深拷贝的原理" class="headerlink" title="深拷贝的原理"></a>深拷贝的原理</h2><p>深复制—&gt;实现原理，先新建一个空对象，内存中新开辟一块地址，把被复制对象的所有可枚举的(注意可枚举的对象)属性方法一一复制过来，注意要用递归来复制子对象里面的所有属性和方法，直到子子…..属性为基本数据类型</p>
-<h2 id="浅拷贝的原理"><a href="#浅拷贝的原理" class="headerlink" title="浅拷贝的原理"></a>浅拷贝的原理</h2><p>浅复制—&gt;就是将一个对象的内存地址的”编号”复制给另一个对象</p>
-<h2 id="深拷贝实现方法"><a href="#深拷贝实现方法" class="headerlink" title="深拷贝实现方法"></a>深拷贝实现方法</h2><h3 id="深拷贝-递归去复制所有层级属性"><a href="#深拷贝-递归去复制所有层级属性" class="headerlink" title="深拷贝-递归去复制所有层级属性"></a>深拷贝-递归去复制所有层级属性</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">function deepClone(obj)&#123;</span><br><span class="line">  let objClone &#x3D; Array.isArray(obj)?[]:&#123;&#125;;    </span><br><span class="line">  if(obj &amp;&amp; typeof obj&#x3D;&#x3D;&#x3D;&quot;object&quot;)&#123;</span><br><span class="line">    for(key in obj)&#123;</span><br><span class="line">      if(obj.hasOwnProperty(key))&#123;  &#x2F;&#x2F; 判断对象是否包含特定的自身（非继承）属性，返回一个布尔值</span><br><span class="line">        if(obj[key]&amp;&amp;typeof obj[key] &#x3D;&#x3D;&#x3D;&quot;object&quot;)&#123; &#x2F;&#x2F;判断ojb子元素是否为对象，如果是，递归复制</span><br><span class="line">          objClone[key] &#x3D; deepClone(obj[key]);</span><br><span class="line">        &#125;else&#123; &#x2F;&#x2F;如果不是，简单复制</span><br><span class="line">          objClone[key] &#x3D; obj[key];</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;    </span><br><span class="line">  return objClone;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function deepCopy(s) &#123;</span><br><span class="line">    const d &#x3D; &#123;&#125;</span><br><span class="line">    for (let k in s) &#123;</span><br><span class="line">        if (typeof s[k] &#x3D;&#x3D; &#39;object&#39;) &#123;</span><br><span class="line">            d[k] &#x3D; deepCopy(s[k])</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            d[k] &#x3D; s[k]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return d</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="深拷贝-JSON对象的parse和stringify"><a href="#深拷贝-JSON对象的parse和stringify" class="headerlink" title="深拷贝-JSON对象的parse和stringify"></a>深拷贝-JSON对象的parse和stringify</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JSON.parse(JSON.stringify(obj))</span><br></pre></td></tr></table></figure>
-
-<h3 id="深拷贝-…扩展符"><a href="#深拷贝-…扩展符" class="headerlink" title="深拷贝-…扩展符"></a>深拷贝-…扩展符</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let bb &#x3D; [1,2,&#123;w: &#39;1&#39;&#125;]</span><br><span class="line">let aa &#x3D; [...bb]</span><br><span class="line">aa[0] &#x3D; &#39;2&#39;</span><br><span class="line">&#x2F;&#x2F;bb[0] &#x3D; &#39;3&#39;</span><br><span class="line">console.log(bb) &#x2F;&#x2F; [1,2,&#123;w: &#39;1&#39;&#125;]</span><br><span class="line">console.log(aa) &#x2F;&#x2F; [&#39;&#39;,2,&#123;w: &#39;1&#39;&#125;]</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/06/Object-prototype-toString-call-%E7%9A%84%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/06/Object-prototype-toString-call-%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">Object.prototype.toString.call()的使用-判断对象类型</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-04-06 14:42:09 / Modified: 15:42:16" itemprop="dateCreated datePublished" datetime="2021-04-06T14:42:09+08:00">2021-04-06</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="Object-prototype-toString-call-的使用"><a href="#Object-prototype-toString-call-的使用" class="headerlink" title="Object.prototype.toString.call()的使用"></a>Object.prototype.toString.call()的使用</h3><p>在我们的日常开发中，时常会遇到需要做数据的类型做判断的，我们一般会使用typeof 来判断是哪一种类型的数据，但是对于对象的检测就不是那么准确了。用 typeof 是否能准确判断一个对象变量，答案是否定的，null 的结果也是 object，数组的结果也是 object。而Object.prototype.toString.call(obj)能够很好地处理这一类问题。Array 、Function等类型作为Object的实例，都重写了toString方法（Function类型返回内容为函数体的字符串，Array类型返回元素组成的字符串…..）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(Object.prototype.toString.call(obj) &#x3D;&#x3D;&#x3D; &quot;[object Object]&quot;);</span><br></pre></td></tr></table></figure>
-
-<h3 id="obj-toString-的结果和Object-prototype-toString-call-obj-的结果不一样，这是为什么？"><a href="#obj-toString-的结果和Object-prototype-toString-call-obj-的结果不一样，这是为什么？" class="headerlink" title="obj.toString()的结果和Object.prototype.toString.call(obj)的结果不一样，这是为什么？"></a>obj.toString()的结果和Object.prototype.toString.call(obj)的结果不一样，这是为什么？</h3><p>这是因为toString为Object的原型方法，而Array 、Function等类型作为Object的实例，都重写了toString方法。不同的对象类型调用toString方法时，根据原型链的知识，调用的是对应的重写之后的toString方法（Function类型返回内容为函数体的字符串，Array类型返回元素组成的字符串…..），而不会去调用Object上原型toString方法（返回对象的具体类型），所以采用obj.toString()不能得到其对象类型，只能将obj转换为字符串类型；因此，在想要得到对象的具体类型时，应该调用Object上原型toString方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">console.log(Object.prototype.toString.call(&quot;jerry&quot;));&#x2F;&#x2F;[object String]</span><br><span class="line">console.log(Object.prototype.toString.call(12));&#x2F;&#x2F;[object Number]</span><br><span class="line">console.log(Object.prototype.toString.call(true));&#x2F;&#x2F;[object Boolean]</span><br><span class="line">console.log(Object.prototype.toString.call(undefined));&#x2F;&#x2F;[object Undefined]</span><br><span class="line">console.log(Object.prototype.toString.call(null));&#x2F;&#x2F;[object Null]</span><br><span class="line">console.log(Object.prototype.toString.call(&#123;name: &quot;jerry&quot;&#125;));&#x2F;&#x2F;[object Object]</span><br><span class="line">console.log(Object.prototype.toString.call(function()&#123;&#125;));&#x2F;&#x2F;[object Function]</span><br><span class="line">console.log(Object.prototype.toString.call([]));&#x2F;&#x2F;[object Array]</span><br><span class="line">console.log(Object.prototype.toString.call(new Date));&#x2F;&#x2F;[object Date]</span><br><span class="line">console.log(Object.prototype.toString.call(&#x2F;\d&#x2F;));&#x2F;&#x2F;[object RegExp]</span><br><span class="line">function Person()&#123;&#125;;</span><br><span class="line">console.log(Object.prototype.toString.call(new Person));&#x2F;&#x2F;[object Object]</span><br></pre></td></tr></table></figure>
-
-
+          <h1 id="防抖与节流"><a href="#防抖与节流" class="headerlink" title="防抖与节流"></a>防抖与节流</h1><h2 id="防抖"><a href="#防抖" class="headerlink" title="防抖"></a>防抖</h2><p>  在触发事件后，等待一段时间后执行事件，如果在此等待时间内，再次触发事件，重置等待时间，再次等待一段时间后执行事件<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function debounce(fn, time) &#123;</span><br><span class="line">  let timeout;</span><br><span class="line">  return function () &#123;</span><br><span class="line">    let context &#x3D; this;</span><br><span class="line">    let args &#x3D; arguments;</span><br><span class="line">    if(timeout) clearTimeout(timeout)</span><br><span class="line">    timeout &#x3D; setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">      fn.call(context, args)</span><br><span class="line">    &#125;, time)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="节流-两种方式，一种是立即执行事件，另一种是延迟执行"><a href="#节流-两种方式，一种是立即执行事件，另一种是延迟执行" class="headerlink" title="节流(两种方式，一种是立即执行事件，另一种是延迟执行)"></a>节流(两种方式，一种是立即执行事件，另一种是延迟执行)</h2><p>  在触发事件之后，立马执行事件，然后在一段时间之内再次触发事件，不会执行事件，只有等待一段时间之后触发事件，才会执行事件<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function thorttle(fn, time) &#123;</span><br><span class="line">  let timeout;</span><br><span class="line">  return function () &#123;</span><br><span class="line">    let context &#x3D; this;</span><br><span class="line">    let args &#x3D; arguments;</span><br><span class="line">    if(timeout) return</span><br><span class="line">    fn.call(context, args)</span><br><span class="line">    timeout &#x3D; setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">      clearTimeout(timeout)</span><br><span class="line">      timeout &#x3D; null</span><br><span class="line">    &#125;, time)</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>  在触发事件时，设置定时器在一段时间之后再执行事件，在此段时间内，多次点击是不会执行事件的。<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">const throttle &#x3D; (fn, time) &#x3D;&gt; &#123;</span><br><span class="line">  let flag &#x3D; true;</span><br><span class="line">  return function() &#123;</span><br><span class="line">    if (!flag) return;</span><br><span class="line">    flag &#x3D; false;</span><br><span class="line">    setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">      fn.apply(this, arguments);</span><br><span class="line">      flag &#x3D; true;</span><br><span class="line">    &#125;, time);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -1352,7 +966,7 @@ axios 源码里所用到的，利用 promise 本身的链式调用来实现串�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/02/%E6%95%B0%E7%BB%84%E5%8E%BB%E9%87%8D%E7%9A%84%E6%96%B9%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/28/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1365,7 +979,7 @@ axios 源码里所用到的，利用 promise 本身的链式调用来实现串�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/02/%E6%95%B0%E7%BB%84%E5%8E%BB%E9%87%8D%E7%9A%84%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">数组去重的方法</a>
+          <a href="/2021/04/28/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">垃圾回收机制</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1377,7 +991,7 @@ axios 源码里所用到的，利用 promise 本身的链式调用来实现串�
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2021-04-02 15:49:28 / Modified: 16:19:06" itemprop="dateCreated datePublished" datetime="2021-04-02T15:49:28+08:00">2021-04-02</time>
+      <time title="Created: 2021-04-28 16:19:16 / Modified: 16:29:56" itemprop="dateCreated datePublished" datetime="2021-04-28T16:19:16+08:00">2021-04-28</time>
     </span>
 
   
@@ -1390,103 +1004,86 @@ axios 源码里所用到的，利用 promise 本身的链式调用来实现串�
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="数组去重"><a href="#数组去重" class="headerlink" title="数组去重"></a>数组去重</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>  没有前言，不知道说些什么，就这样吧，开始正文。</p>
-<h2 id="一：利用ES6-Set实现"><a href="#一：利用ES6-Set实现" class="headerlink" title="一：利用ES6 Set实现"></a>一：利用ES6 Set实现</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; new Set()的特性是所有元素唯一</span><br><span class="line">var arr &#x3D; [1, 2, 3, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;];</span><br><span class="line">console.log([...new Set(arr)]); &#x2F;&#x2F;  [1, 2, 3, &quot;a&quot;, &quot;b&quot;]</span><br></pre></td></tr></table></figure>
-
-<h2 id="二：利用filter"><a href="#二：利用filter" class="headerlink" title="二：利用filter"></a>二：利用filter</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var arr &#x3D; [1, 2, 3, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;];</span><br><span class="line">let filterArr &#x3D; arr.filter(function(item, index, arr) &#123;</span><br><span class="line">  &#x2F;&#x2F;当前元素，在原始数组中的第一个索引&#x3D;&#x3D;当前索引值，否则返回当前元素</span><br><span class="line">  return arr.indexOf(item, 0) &#x3D;&#x3D;&#x3D; index;</span><br><span class="line">&#125;);</span><br><span class="line">console.log(filterArr)</span><br></pre></td></tr></table></figure>
-
-<h2 id="三：reduce-includes"><a href="#三：reduce-includes" class="headerlink" title="三：reduce + includes"></a>三：reduce + includes</h2><p>reduce() 方法接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终计算为一个值.<br>array.reduce(function(total, currentValue, currentIndex, arr), initialValue)</p>
-<p>Array includes() 方法用来判断一个数组是否包含一个指定的值，如果是返回 true，否则false<br>arr.includes(searchElement, fromIndex)<br>参数    描述<br>searchElement    必须。需要查找的元素值。<br>fromIndex    可选。从该索引处开始查找 searchElement。如果为负值，则按升序从 array.length + fromIndex 的索引开始搜索。默认为 0。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr.reduce((prev,cur) &#x3D;&gt; prev.includes(cur) ? prev : [...prev,cur],[]);</span><br></pre></td></tr></table></figure>
-
-<h2 id="四：利用for嵌套for，然后splice去重（ES5中最常用）"><a href="#四：利用for嵌套for，然后splice去重（ES5中最常用）" class="headerlink" title="四：利用for嵌套for，然后splice去重（ES5中最常用）"></a>四：利用for嵌套for，然后splice去重（ES5中最常用）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function unique(arr)&#123;            </span><br><span class="line">  for(var i &#x3D; 0; i &lt; arr.length; i++)&#123;</span><br><span class="line">    for(var j &#x3D; i + 1; j &lt; arr.length; j++)&#123;</span><br><span class="line">      if(arr[i] &#x3D;&#x3D; arr[j])&#123; &#x2F;&#x2F;第一个等同于第二个，splice方法删除第二个</span><br><span class="line">        arr.splice(j, 1);</span><br><span class="line">        j--;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/02/Virtual-DOM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/02/Virtual-DOM/" class="post-title-link" itemprop="url">虚拟DOM(Virtual DOM)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-04-02 14:03:56" itemprop="dateCreated datePublished" datetime="2021-04-02T14:03:56+08:00">2021-04-02</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-05-31 16:49:23" itemprop="dateModified" datetime="2021-05-31T16:49:23+08:00">2021-05-31</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="虚拟DOM"><a href="#虚拟DOM" class="headerlink" title="虚拟DOM"></a>虚拟DOM</h1><p>我们都知道我们平时会使用js来操作DOM树，来改变页面的渲染效果，但是真实DOM的渲染比较消耗性能，于是为了解决浏览器的性能问题就有了虚拟DOM，用js来模拟DOM节点实现虚拟DOM</p>
-<h2 id="浏览器渲染引擎工作流程"><a href="#浏览器渲染引擎工作流程" class="headerlink" title="浏览器渲染引擎工作流程"></a>浏览器渲染引擎工作流程</h2><h3 id="创建DOM树"><a href="#创建DOM树" class="headerlink" title="创建DOM树"></a>创建DOM树</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用html分析器，分析html元素，构建一颗DOM树（标记化和树构建）</span><br></pre></td></tr></table></figure>
-<h3 id="创建stylerules"><a href="#创建stylerules" class="headerlink" title="创建stylerules"></a>创建stylerules</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用css分析器，分析css文件和元素上的inline样式，生成页面的样式表</span><br></pre></td></tr></table></figure>
-<h3 id="创建render（renderObject）树"><a href="#创建render（renderObject）树" class="headerlink" title="创建render（renderObject）树"></a>创建render（renderObject）树</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">将DOM树和样式表关联起来，构建一颗Render树，每一个DOM节点都有attach属性，接收样式信息，返回一个render对象，这些render对象最终构建成一个Render树</span><br></pre></td></tr></table></figure>
-<h3 id="布局（Layout）"><a href="#布局（Layout）" class="headerlink" title="布局（Layout）"></a>布局（Layout）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">有了render树之后，浏览器就会开始布局，为每一个DOM节点确定一个在显示屏上的精确的坐标</span><br></pre></td></tr></table></figure>
-<h3 id="浏览器绘制（Painting）"><a href="#浏览器绘制（Painting）" class="headerlink" title="浏览器绘制（Painting）"></a>浏览器绘制（Painting）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">有了render和节点的精确坐标后，浏览器就会调用每个节点的paint方法，把节点绘制出来</span><br></pre></td></tr></table></figure>
-
-<h2 id="真实DOM与虚拟DOM的比较"><a href="#真实DOM与虚拟DOM的比较" class="headerlink" title="真实DOM与虚拟DOM的比较"></a>真实DOM与虚拟DOM的比较</h2><h3 id="真实DOM"><a href="#真实DOM" class="headerlink" title="真实DOM"></a>真实DOM</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">DOM有几次更新就执行几次DOM操作</span><br><span class="line">在传统的开发中，用js操作DOM时，浏览器会从构建DOM树开始，从头到尾执行一次浏览器渲染流程。如果在一次操作中，需要更新10个DOM节点，那么浏览器在接收到第一个更新请求的时候并不知道后面还有9次操作，因此会马上执行浏览器渲染流程，最终会执行10次DOM的更新操作。</span><br><span class="line">频繁的操作可能会导致页面卡顿，给用户带来不好的体验</span><br></pre></td></tr></table></figure>
-<h3 id="虚拟DOM-1"><a href="#虚拟DOM-1" class="headerlink" title="虚拟DOM"></a>虚拟DOM</h3><p>在虚拟DOM中，一次操作需要更新10个节点的话，虚拟DOM不会立即执行DOM更行操作，而是先通过diff算法，将更新的内容保存到本地的一个js对象中，然后最终再将这个js对象一次性关联到DOM树中，再去执行浏览器的渲染流程。</p>
-<p>用js模拟DOM节点的好处是，页面更新时，可以先全部反应在js对象（虚拟DOM）上，操作内存中的js对象的速度更快，等页面完成后，再将最终的js对象映射成真实的DOM,交给浏览器绘制</p>
-<h3 id="解析真实DOM，生成虚拟DOM，再到生成真实DOM的过程"><a href="#解析真实DOM，生成虚拟DOM，再到生成真实DOM的过程" class="headerlink" title="解析真实DOM，生成虚拟DOM，再到生成真实DOM的过程"></a>解析真实DOM，生成虚拟DOM，再到生成真实DOM的过程</h3><ul>
-<li>1.解析DOM节点：使用js对象表示DOM节点，使用的对象的属性来表示节点的类型，属性，子节点。</li>
-<li>2.比较两个虚拟DOM树的差异：diff算法，树同层级比较，将差异存储到一个js对象中。</li>
-<li>3.将新旧虚拟DOM树的差异应用到真正的DOM树上：深层遍历DOM树，根据生成的差异js来生成真实DOM</li>
+          <h1 id="浏览器的垃圾回收机制"><a href="#浏览器的垃圾回收机制" class="headerlink" title="浏览器的垃圾回收机制"></a>浏览器的垃圾回收机制</h1><p>释放垃圾占用的空间，防止内存泄露</p>
+<h2 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h2><ul>
+<li>给每一个对象添加一个计数器，当该对象被引用的时，计数器+1，当引用失效是，计数器-1.用计数器是否为0来判断该对象是否可被回收。</li>
+<li>缺点：无法解决循环引用的问题。当两个对象互相引用时，这两个对象的计数器永远不为0 </li>
 </ul>
-<h2 id="diff算法"><a href="#diff算法" class="headerlink" title="diff算法"></a>diff算法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">4种情况:</span><br><span class="line">节点类型变了REPLACE</span><br><span class="line">节点类型一样，属性或者属性值变了PROPS</span><br><span class="line">文本变了TEXT</span><br><span class="line">移动-增加-删除子节点REORDER</span><br></pre></td></tr></table></figure>
-<p>以上部分内容来源于[<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/af0b398602bc]">https://www.jianshu.com/p/af0b398602bc]</a></p>
+<h2 id="标记清除"><a href="#标记清除" class="headerlink" title="标记清除"></a>标记清除</h2><ul>
+<li>先把内存中的对象进行标记，然后将标记为可回收的对象清理掉（有不同的标记状态。存活、可回收、未使用）</li>
+<li>缺点：碎片化（直接是在可回收对象的内存区域进行清除，然后会变成未使用的区域），可用新生代/老年代的算法来解决</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/23/%E5%A4%A7%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%BB%A5%E5%8F%8A%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/23/%E5%A4%A7%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%BB%A5%E5%8F%8A%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/" class="post-title-link" itemprop="url">大文件上传以及断点续传</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-04-23 11:08:04 / Modified: 11:22:02" itemprop="dateCreated datePublished" datetime="2021-04-23T11:08:04+08:00">2021-04-23</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="大文件上传以及断点续传"><a href="#大文件上传以及断点续传" class="headerlink" title="大文件上传以及断点续传"></a>大文件上传以及断点续传</h1><h2 id="大文件上传"><a href="#大文件上传" class="headerlink" title="大文件上传"></a>大文件上传</h2><p>  思路：大文件上传的基本思路是通过切片上传来实现，使用blod.prototype.slice来切割上传的文件，功能跟数组的slice相似。</p>
+<ul>
+<li>1.预设好切片的最大数量，使用slice()来切片，返回源文件的某一段的切片</li>
+<li>2.借助http请求的并发性，同时上传多个切片（Promise.all），减少上传时间</li>
+<li>3.由于是并发，上传的顺序可能发生变化，需要给每个切片记录一下顺序（传递hash参数，使用文件名+数组的形式记录每一个切片的顺序），方便后端合并</li>
+<li>4.上传之后还要给后端发送一个合并的请求，此处与切片上传是同步的，是需要文件上传完成之后才发送此请求</li>
+</ul>
 
       
     </div>
@@ -1506,7 +1103,7 @@ axios 源码里所用到的，利用 promise 本身的链式调用来实现串�
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1540,7 +1137,7 @@ axios 源码里所用到的，利用 promise 本身的链式调用来实现串�
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -23,16 +23,16 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="vue-router钩子函数路由守卫分类全局守卫  路由实例上直接操作的钩子函数，特点是所有路由配置的组件都会触发，直白点就是触发路由就会触发这些钩子函数;  12345678&#x2F;&#x2F; 全局前置守卫-在路由跳转前触发,主要是用于登录验证beforeEach（to，from， next） &#x2F;&#x2F; 全局解析守卫-导航被确认之前 &lt; 路由跳转前触发 &lt; 所有">
+<meta name="description" content="vue-router钩子函数router 实例router.matcher  router实例对象对外提供两个方法match(负责route匹配), addRoutes（动态添加路由）   在做路径切换transitionTo方法中，首先就会使用const route &#x3D; this.router.match(location, this.current)来匹配route, 其实内部会使用match">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vue-router钩子函数">
 <meta property="og:url" content="http://example.com/2021/06/01/vue-router%E9%92%A9%E5%AD%90%E5%87%BD%E6%95%B0/index.html">
 <meta property="og:site_name" content="尘世幽梦的BLOG">
-<meta property="og:description" content="vue-router钩子函数路由守卫分类全局守卫  路由实例上直接操作的钩子函数，特点是所有路由配置的组件都会触发，直白点就是触发路由就会触发这些钩子函数;  12345678&#x2F;&#x2F; 全局前置守卫-在路由跳转前触发,主要是用于登录验证beforeEach（to，from， next） &#x2F;&#x2F; 全局解析守卫-导航被确认之前 &lt; 路由跳转前触发 &lt; 所有">
+<meta property="og:description" content="vue-router钩子函数router 实例router.matcher  router实例对象对外提供两个方法match(负责route匹配), addRoutes（动态添加路由）   在做路径切换transitionTo方法中，首先就会使用const route &#x3D; this.router.match(location, this.current)来匹配route, 其实内部会使用match">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/9/12/16d2385e3732079d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 <meta property="article:published_time" content="2021-06-01T06:16:34.000Z">
-<meta property="article:modified_time" content="2021-06-02T07:05:33.252Z">
+<meta property="article:modified_time" content="2021-07-07T03:51:22.328Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2019/9/12/16d2385e3732079d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
@@ -149,7 +149,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vue-router%E9%92%A9%E5%AD%90%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">vue-router钩子函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E5%AE%88%E5%8D%AB%E5%88%86%E7%B1%BB"><span class="nav-number">1.0.1.</span> <span class="nav-text">路由守卫分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%AE%88%E5%8D%AB"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">全局守卫</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E7%8B%AC%E4%BA%AB%E5%AE%88%E5%8D%AB"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">路由独享守卫</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6%E5%AE%88%E5%8D%AB"><span class="nav-number">1.0.1.3.</span> <span class="nav-text">组件守卫</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E7%9A%84%E5%AF%BC%E8%88%AA%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B"><span class="nav-number">1.0.2.</span> <span class="nav-text">完整的导航解析流程</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vue-router%E9%92%A9%E5%AD%90%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">vue-router钩子函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#router-%E5%AE%9E%E4%BE%8B"><span class="nav-number">1.1.</span> <span class="nav-text">router 实例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#router-matcher"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">router.matcher</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#router-addRoutes"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">router.addRoutes()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E5%AE%88%E5%8D%AB%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.1.</span> <span class="nav-text">路由守卫分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%AE%88%E5%8D%AB"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">全局守卫</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E7%8B%AC%E4%BA%AB%E5%AE%88%E5%8D%AB"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">路由独享守卫</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6%E5%AE%88%E5%8D%AB"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">组件守卫</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E7%9A%84%E5%AF%BC%E8%88%AA%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.2.</span> <span class="nav-text">完整的导航解析流程</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -162,7 +162,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -233,7 +233,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-02 15:05:33" itemprop="dateModified" datetime="2021-06-02T15:05:33+08:00">2021-06-02</time>
+        <time title="Modified: 2021-07-07 11:51:22" itemprop="dateModified" datetime="2021-07-07T11:51:22+08:00">2021-07-07</time>
       </span>
 
   
@@ -246,9 +246,16 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="vue-router钩子函数"><a href="#vue-router钩子函数" class="headerlink" title="vue-router钩子函数"></a>vue-router钩子函数</h1><h3 id="路由守卫分类"><a href="#路由守卫分类" class="headerlink" title="路由守卫分类"></a>路由守卫分类</h3><h4 id="全局守卫"><a href="#全局守卫" class="headerlink" title="全局守卫"></a>全局守卫</h4><p>  路由实例上直接操作的钩子函数，特点是所有路由配置的组件都会触发，直白点就是触发路由就会触发这些钩子函数;<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 全局前置守卫-在路由跳转前触发,主要是用于登录验证</span><br><span class="line">beforeEach（to，from， next） </span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 全局解析守卫-导航被确认之前 &lt; 路由跳转前触发 &lt; 所有组件内守卫和异步路由组件被解析之后</span><br><span class="line">beforeResolve（to，from， next） </span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 全局后置钩子-和beforeEach相反-路由跳转完成后触发-不会接受next函数</span><br><span class="line">afterEach（to，from）</span><br></pre></td></tr></table></figure><br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import VueRouter from &#39;vue-router&#39;</span><br><span class="line">const router &#x3D; new VueRouter(&#123;...&#125;);</span><br><span class="line">router.beforeEach((to, from, next)&#x3D;&gt;&#123;...&#125;)</span><br></pre></td></tr></table></figure></p>
+        <h1 id="vue-router钩子函数"><a href="#vue-router钩子函数" class="headerlink" title="vue-router钩子函数"></a>vue-router钩子函数</h1><h2 id="router-实例"><a href="#router-实例" class="headerlink" title="router 实例"></a>router 实例</h2><h4 id="router-matcher"><a href="#router-matcher" class="headerlink" title="router.matcher"></a>router.matcher</h4><p>  router实例对象对外提供两个方法match(负责route匹配), addRoutes（动态添加路由）</p>
+<p>  在做路径切换transitionTo方法中，首先就会使用const route = this.router.match(location, this.current)来匹配route, 其实内部会使用matcher来做匹配。修改了matcher即新的routes生效。</p>
+<p>  对router.matcher属性做修改，即新的routes就会替换老的routes, 其实就是replaceRoutes()的含义（但是官方没有提供这个API）<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 替换现有router的routes</span><br><span class="line">router.matcher &#x3D; new VueRouter(&#123;</span><br><span class="line">  routes: newRoutes</span><br><span class="line">&#125;).matcher</span><br></pre></td></tr></table></figure></p>
+<h4 id="router-addRoutes"><a href="#router-addRoutes" class="headerlink" title="router.addRoutes()"></a>router.addRoutes()</h4><p>  添加一条新的路由规则记录作为现有路由的子路由。如果该路由规则有 name，并且已经存在一个与之相同的名字，则会覆盖它</p>
+<h3 id="路由守卫分类"><a href="#路由守卫分类" class="headerlink" title="路由守卫分类"></a>路由守卫分类</h3><h4 id="全局守卫"><a href="#全局守卫" class="headerlink" title="全局守卫"></a>全局守卫</h4><p>  路由实例上直接操作的钩子函数，特点是所有路由配置的组件都会触发，直白点就是触发路由就会触发这些钩子函数;<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 全局前置守卫-在路由跳转前触发,主要是用于登录验证</span><br><span class="line">beforeEach（to，from， next） </span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 全局解析守卫-导航被确认之前 &lt; 路由跳转前触发 &lt; 所有组件内守卫和异步路由组件被解析之后</span><br><span class="line">beforeResolve（to，from， next） </span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 全局后置钩子-和beforeEach相反-路由跳转完成后触发-不会接受next函数</span><br><span class="line">afterEach（to，from）</span><br></pre></td></tr></table></figure><br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import VueRouter from &#39;vue-router&#39;</span><br><span class="line">const router &#x3D; new VueRouter(&#123;...&#125;);</span><br><span class="line">router.beforeEach((to, from, next)&#x3D;&gt;&#123;...&#125;)</span><br></pre></td></tr></table></figure></p>
 <h4 id="路由独享守卫"><a href="#路由独享守卫" class="headerlink" title="路由独享守卫"></a>路由独享守卫</h4><p>  直接可以在路由配置上设置的钩子函数<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 和beforeEach完全相同-如果两个都设置了，beforeEnter则在beforeEach之后紧随执行</span><br><span class="line">beforeEnter（to，from， next）</span><br></pre></td></tr></table></figure></p>
-<h4 id="组件守卫"><a href="#组件守卫" class="headerlink" title="组件守卫"></a>组件守卫</h4><p>  在组件内执行的钩子函数,类似于组件内的生命周期，相当于为配置路由的组件添加的生命周期钩子函数。<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 在全局守卫的前置守卫和路由守卫之后触发，在全局解析守卫和全局后置守卫之前调用，访问不到组件实例，即this为undefined</span><br><span class="line">beforeRouteEnter（to，from， next）</span><br><span class="line"></span><br><span class="line">beforeRouteUpdate（to，from， next）</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 导航离开该组件的对应路由时调用，可以访问组件实例this。这个离开守卫通常用来禁止用户在还 &#x2F;&#x2F; 未保存修改前突然离开。该导航可以通过next( false )来取消</span><br><span class="line">beforeRouteLeave（to，from， next）</span><br></pre></td></tr></table></figure></p>
+<h4 id="组件守卫"><a href="#组件守卫" class="headerlink" title="组件守卫"></a>组件守卫</h4><p>  在组件内执行的钩子函数,类似于组件内的生命周期，相当于为配置路由的组件添加的生命周期钩子函数。</p>
+<p>  beforeRouteEnter（to，from， next）<br>    在进入路由组件之前调用<br>    在全局守卫的前置守卫和路由守卫之后触发，在全局解析守卫和全局后置守卫之前调用，<span style="color: #c7254e;">访问不到组件实例，即this为undefined</span></p>
+<p>  beforeRouteUpdate（to，from， next）</p>
+<p>  beforeRouteLeave（to，from， next）<br>    导航离开该组件的对应路由时调用，<span style="color: #c7254e;">beforeRouteLeave可以访问组件实例this</span>。这个离开守卫通常用来禁止用户在还未保存修改前突然离开。该导航可以通过next( false )来取消</p>
 <h3 id="完整的导航解析流程"><a href="#完整的导航解析流程" class="headerlink" title="完整的导航解析流程"></a>完整的导航解析流程</h3><ul>
 <li>1.触发进入其它路由</li>
 <li>2.调用要离开路由的组件守卫beforeRouteLeave</li>
@@ -283,8 +290,8 @@
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/06/04/vue%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86-%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/" rel="next" title="vue事件绑定原理-发布订阅模式">
-                  vue事件绑定原理-发布订阅模式 <i class="fa fa-chevron-right"></i>
+                <a href="/2021/06/04/vue%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86-%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/" rel="next" title="vue事件绑定原理-发布订阅模式/事件总线">
+                  vue事件绑定原理-发布订阅模式/事件总线 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -328,7 +335,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

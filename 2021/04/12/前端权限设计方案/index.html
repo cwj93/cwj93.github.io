@@ -23,15 +23,15 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="前端权限设计方案以此记录一下在掘金看到的一篇关于前端权限设计方案的文章，故在此放上掘金的访问地址，以便以后查看。 链接：[https:&#x2F;&#x2F;juejin.cn&#x2F;post&#x2F;6949453195987025927] 登录权限一般在vue中的登录权限控制是通过路由meta属性来控制的。在路由管理页面，每一个路由都有自己对应的meta(元数据)属性，可以用来存放一些路由状态相关的信息。  首先在路由meta">
+<meta name="description" content="前端权限设计方案以此记录一下在掘金看到的一篇关于前端权限设计方案的文章，故在此放上掘金的访问地址，以便以后查看。 链接：[https:&#x2F;&#x2F;juejin.cn&#x2F;post&#x2F;6949453195987025927] 知识累计：  在路由守卫中，只有next()是放行，其他的诸如：next(‘&#x2F;logon’) 、 next(to) 或者 next({ …to, replace: true })都不是放行，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="前端权限设计方案">
 <meta property="og:url" content="http://example.com/2021/04/12/%E5%89%8D%E7%AB%AF%E6%9D%83%E9%99%90%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88/index.html">
 <meta property="og:site_name" content="尘世幽梦的BLOG">
-<meta property="og:description" content="前端权限设计方案以此记录一下在掘金看到的一篇关于前端权限设计方案的文章，故在此放上掘金的访问地址，以便以后查看。 链接：[https:&#x2F;&#x2F;juejin.cn&#x2F;post&#x2F;6949453195987025927] 登录权限一般在vue中的登录权限控制是通过路由meta属性来控制的。在路由管理页面，每一个路由都有自己对应的meta(元数据)属性，可以用来存放一些路由状态相关的信息。  首先在路由meta">
+<meta property="og:description" content="前端权限设计方案以此记录一下在掘金看到的一篇关于前端权限设计方案的文章，故在此放上掘金的访问地址，以便以后查看。 链接：[https:&#x2F;&#x2F;juejin.cn&#x2F;post&#x2F;6949453195987025927] 知识累计：  在路由守卫中，只有next()是放行，其他的诸如：next(‘&#x2F;logon’) 、 next(to) 或者 next({ …to, replace: true })都不是放行，">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-04-12T01:52:02.000Z">
-<meta property="article:modified_time" content="2021-04-12T06:47:19.288Z">
+<meta property="article:modified_time" content="2021-07-07T02:54:18.786Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
@@ -160,7 +160,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -223,10 +223,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-04-12 09:52:02 / Modified: 14:47:19" itemprop="dateCreated datePublished" datetime="2021-04-12T09:52:02+08:00">2021-04-12</time>
+      <time title="Created: 2021-04-12 09:52:02" itemprop="dateCreated datePublished" datetime="2021-04-12T09:52:02+08:00">2021-04-12</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-07 10:54:18" itemprop="dateModified" datetime="2021-07-07T10:54:18+08:00">2021-07-07</time>
+      </span>
 
   
 </div>
@@ -239,13 +245,34 @@
     
     <div class="post-body" itemprop="articleBody">
         <h1 id="前端权限设计方案"><a href="#前端权限设计方案" class="headerlink" title="前端权限设计方案"></a>前端权限设计方案</h1><p>以此记录一下在掘金看到的一篇关于前端权限设计方案的文章，故在此放上掘金的访问地址，以便以后查看。</p>
-<p>链接：[<a target="_blank" rel="noopener" href="https://juejin.cn/post/6949453195987025927]">https://juejin.cn/post/6949453195987025927]</a></p>
+<p>链接：[<a target="_blank" rel="noopener" href="https://juejin.cn/post/6949453195987025927]">https://juejin.cn/post/6949453195987025927]</a><br><span style="color: #c7254e;"></span></p>
+<p>知识累计：</p>
+<ol>
+<li>在路由守卫中，只有next()是放行，其他的诸如：next(‘/logon’) 、 next(to) 或者 next({ …to, replace: true })都不是放行，而是：中断当前导航（**<span style="color: #c7254e;">不进入router.afterEach(() =&gt; {}全局后置守卫中，而是重新进入会去判断，如果参数to不能找到对应的路由的话，就再执行一次beforeEach的前置守卫中</span>**），执行新的导航</li>
+<li>next({ …to, replace: true })来确保addRoutes()时动态添加的路由已经被完全加载上去<ul>
+<li>next({ …to, replace: true })中的replace: true只是一个设置信息，告诉VUE本次操作后，不能通过浏览器后退按钮，返回前一个路由。</li>
+<li>next({ …to })会去判断，如果参数to不能找到对应的路由的话，就再执行一次beforeEach((to, from, next)直到其中的next({ …to})能找到对应的路由为止</li>
+</ul>
+</li>
+</ol>
 <h3 id="登录权限"><a href="#登录权限" class="headerlink" title="登录权限"></a>登录权限</h3><p>一般在vue中的登录权限控制是通过路由meta属性来控制的。在路由管理页面，每一个路由都有自己对应的meta(元数据)属性，可以用来存放一些路由状态相关的信息。</p>
 <ol>
 <li>首先在路由meta属性中设置登录权限字段<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">export const routes &#x3D; [</span><br><span class="line">  &#123;</span><br><span class="line">    path: &#39;&#x2F;login&#39;, &#x2F;&#x2F;登录页面</span><br><span class="line">    name: &#39;login&#39;,</span><br><span class="line">    component: Login,</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    path:&quot;&#x2F;personCenter&quot;, &#x2F;&#x2F; 个人中心</span><br><span class="line">    name:&quot;personCenter&quot;,</span><br><span class="line">    component: PersonCenter, </span><br><span class="line">    meta:&#123;</span><br><span class="line">      isNeedLogin: true &#x2F;&#x2F;是否需要登录</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure></li>
 <li>接着就可以在main.js（路由挂载页面）通过路由导航守卫来处理登录逻辑<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const router &#x3D; new VueRouter(&#123; ... &#125;)</span><br><span class="line"></span><br><span class="line">router.beforeEach((to, from, next) &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; to: Route: 即将要进入的目标 路由对象</span><br><span class="line">  &#x2F;&#x2F; from: Route: 当前导航正要离开的路由</span><br><span class="line">  &#x2F;&#x2F; next: Function: 一定要调用该方法来 resolve 这个钩子</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h3 id="菜单权限"><a href="#菜单权限" class="headerlink" title="菜单权限"></a>菜单权限</h3><p>菜单权限的话，需要配合后端，后端对应角色的权限菜单返回给前端</p>
+<h3 id="菜单权限"><a href="#菜单权限" class="headerlink" title="菜单权限"></a>菜单权限</h3><p>菜单权限的话，需要配合后端，后端对应角色的权限菜单返回给前端。</p>
+<p>前端在获取到对应的权限菜单，然后根据权限菜单去筛选动态加载路由（只加载当前权限菜单对应的路由）</p>
+<p>逻辑：</p>
+<ol>
+<li>获取权限菜单数据，做数据持久化，缓存到本地存储localStorage</li>
+<li>创建静态路由文件staticRouter.js，导出系统所有的静态路由</li>
+<li>根据权限菜单筛选出权限路由，然后在beforeEach中通过addRoutes()方法来动态添加路由，然后通过next({ …to, replace: true })来确保addRoutes()时动态添加的路由已经被完全加载上去</li>
+<li>路由入口文件index.js中引入vue,vue-router,staticRouter,接着实例化Router对象</li>
+<li>配置前置路由导航守卫beforeEach,根据项目需求编写相关逻辑</li>
+</ol>
+<p>通过router实例对象的addRoutes来动态添加路由</p>
+<p>代码如下<br>  创建静态路由文件staticRouter.js<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const staticRouter &#x3D; [</span><br><span class="line">  &#123;</span><br><span class="line">    path: &#39;&#x2F;home&#39;,</span><br><span class="line">    name: &#39;home&#39;,</span><br><span class="line">    component: () &#x3D;&gt; import(&#39;@&#x2F;views&#x2F;home&#x2F;index&#39;),</span><br><span class="line">    children: [],</span><br><span class="line">  &#125;,</span><br><span class="line">]</span><br><span class="line">export default staticRouter</span><br></pre></td></tr></table></figure></p>
+<p>  router文件夹下的index.js<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">import Vue from &#39;vue&#39;;</span><br><span class="line">import Router from &#39;vue-router&#39;;</span><br><span class="line">import staticRouter from &#39;@&#x2F;router&#x2F;staticRouter&#39;</span><br><span class="line">Vue.use(Router);</span><br><span class="line">&#x2F;&#x2F; 定义基础路由（公共路由）</span><br><span class="line">const basicRouter &#x3D; [</span><br><span class="line">  &#123;</span><br><span class="line">    path: &#39;&#x2F;&#39;,</span><br><span class="line">    name: &#39;layout&#39;,</span><br><span class="line">    component: () &#x3D;&gt; import(&#39;@&#x2F;components&#x2F;layout&#x2F;index&#39;),</span><br><span class="line">    redirect: &#39;&#x2F;home&#39;, &#x2F;&#x2F; 如果有公共的默认的首页的话，可以配置重定向，反之取消，然后到beforeEach中去通过next去处理</span><br><span class="line">    children: [],</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    path: &#39;&#x2F;login&#39;,</span><br><span class="line">    name: &#39;login&#39;,</span><br><span class="line">    component: () &#x3D;&gt; import(&#39;@&#x2F;views&#x2F;login.vue&#39;),</span><br><span class="line">    meta: &#123;</span><br><span class="line">      title: &#39;登录&#39;,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">]</span><br><span class="line">&#x2F;&#x2F; 替换老的router实例对象的mode属性以及routes</span><br><span class="line">const setAsyncRouters &#x3D; (router, asyncRouters) &#x3D;&gt; &#123;</span><br><span class="line">  router.matcher &#x3D; new Router(&#123; mode: &#39;history&#39; &#125;).matcher;</span><br><span class="line">  router.addRoutes(asyncRouters); &#x2F;&#x2F; 动态添加可访问路由表</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const &#x3D; router &#x3D; new Router(&#123;</span><br><span class="line">  base: process.env.NODE_ENV &#x3D;&#x3D;&#x3D; &#39;development&#39; ? &#39;&#x2F;&#39; : &#39;&#x2F;learningsystem&#x2F;&#39;,</span><br><span class="line">  mode: &#39;history&#39;,</span><br><span class="line">  routes: basicRouters,</span><br><span class="line">&#125;)</span><br><span class="line">&#x2F;&#x2F; 前置路由守卫</span><br><span class="line">router.beforeEach((to, from, next) &#x3D;&gt; &#123;</span><br><span class="line">  let userInfo &#x3D; JSON.parse(localStorage.getItem(&#39;userInfo&#39;) || &#39;&#123;&#125;&#39;);</span><br><span class="line">  if (getToken(to)) &#123;</span><br><span class="line">    if (!accessedRouters.length &amp;&amp; to.path !&#x3D;&#x3D; &#39;&#x2F;login&#39;) &#123; &#x2F;&#x2F; 避免重复添加， 和登录缓存</span><br><span class="line">    setAsyncRouters(router, getAccessedRouters(userInfo.menuPermissions));</span><br><span class="line">    if (to.path &#x3D;&#x3D;&#x3D; &#39;&#x2F;&#39;) &#123; &#x2F;&#x2F; 处理根节点访问时无重定向路由问题</span><br><span class="line">      userInfo.role.indexOf(&#39;管理员&#39;) !&#x3D; &#39;-1&#39; ? next(&#123; path: &#39;&#x2F;rygl&#39; &#125;) : next(&#123; path: &#39;&#x2F;home&#39; &#125;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      next(&#123; ...to, replace: true &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F; next(&#123; ...to, replace: true &#125;); &#x2F;&#x2F; hack方法 确保addRoutes已完成</span><br><span class="line">    &#x2F;&#x2F; setAsyncRouter(router, routers404); &#x2F;&#x2F; 动态添加可访问路由表</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">      next();</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F; next();</span><br><span class="line">    &#x2F;&#x2F; 判断是否登录</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    &#x2F;* has no token*&#x2F;</span><br><span class="line">    if (whiteList.includes(to.path)) &#123;</span><br><span class="line">      &#x2F;&#x2F; 在免登录白名单，直接进入</span><br><span class="line">      next();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      next(&#123; path: &#39;&#x2F;login&#39; &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
 
     </div>
 
@@ -309,7 +336,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

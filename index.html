@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -194,7 +194,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/02/this%E7%9A%84%E6%8C%87%E5%90%91/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/25/%E6%89%A7%E8%A1%8Cnpm-run-xxx%E7%9A%84%E6%97%B6%E5%80%99%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -207,7 +207,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/02/this%E7%9A%84%E6%8C%87%E5%90%91/" class="post-title-link" itemprop="url">this的指向</a>
+          <a href="/2022/05/25/%E6%89%A7%E8%A1%8Cnpm-run-xxx%E7%9A%84%E6%97%B6%E5%80%99%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88/" class="post-title-link" itemprop="url">执行npm run xxx的时候发生了什么</a>
         </h2>
 
         <div class="post-meta-container">
@@ -219,7 +219,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2021-07-02 10:13:24 / Modified: 10:27:42" itemprop="dateCreated datePublished" datetime="2021-07-02T10:13:24+08:00">2021-07-02</time>
+      <time title="Created: 2022-05-25 10:11:28 / Modified: 10:45:11" itemprop="dateCreated datePublished" datetime="2022-05-25T10:11:28+08:00">2022-05-25</time>
     </span>
 
   
@@ -232,17 +232,29 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="this的指向"><a href="#this的指向" class="headerlink" title="this的指向"></a>this的指向</h2><p>this的指向在函数创建的时候是决定不了的，在调用的时候才能决定，谁调用的就指向谁（this永远指向的是最后调用它的对象）</p>
-<ul>
-<li>1.全局作用域下，this执行window</li>
-<li>2.函数作用域下，在非严格模式下，this指向window</li>
-<li>3.函数作用域下，在严格模式下，this执行undefined</li>
-<li>4.在对象里面，this指向的是当前对象</li>
-<li>5.箭头函数的this指向在创建时就已确定（箭头函数不能作为构造函数）</li>
-<li>6.new 关键字调用函数，指向是创建的新对象</li>
-<li>7.在定时器函数中，this指向window</li>
-<li>8.通过call、apply、bind修改this指向，指向绑定的对象</li>
+          <h1 id="执行npm-run-xxx的时候发生了什么"><a href="#执行npm-run-xxx的时候发生了什么" class="headerlink" title="执行npm run xxx的时候发生了什么"></a>执行npm run xxx的时候发生了什么</h1><h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><ul>
+<li>一：执行 npm run serve</li>
+<li>二：找到项目中的package.json文件</li>
+<li>三：找到package.json文件中的scripts配置</li>
+<li>四：找到scripts配置中serve对应的命令<ul>
+<li>serve: ‘vue-cli-service serve’</li>
+<li>问题：为什么要执行npm run serve，而不是直接执行vue-cli-service serve呢？<ul>
+<li>因为vue-cli-service在操作系统中找不到vue-cli-service这个指令，直接执行vue-cli-service 会报错</li>
 </ul>
+</li>
+<li>问题：既然vue-cli-service这条指令不存在操作系统中，为什么执行npm run serve的时候，也就是相当于执行了vue-cli-service serve ，为什么这样它就能成功，而且不报指令不存在的错误呢？<ul>
+<li>因为npm i 的时候，npm 就帮我们把这种软连接配置好了，其实这种软连接相当于一种映射，执行npm run xxx 的时候，就会到 node_modules/bin中找对应的映射文件，然后再找到相应的js文件来执行。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>五：通过scripts配置中serve对应的命令去./node_modules/.bin找到对应的vue-cli-service文件作为脚本执行,相当于执行了 ./node_modules/.bin/vue-cli-service serve（最后的 serve 作为参数传入）</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><pre><code>+ 1、运行 npm run xxx的时候，npm 会先在当前目录的 node_modules/.bin 查找要执行的程序，如果找到则运行；
++ 2、没有找到则从全局的 node_modules/.bin 中查找，npm i -g xxx就是安装到到全局目录；
++ 3、如果全局目录还是没找到，那么就从 path 环境变量中查找有没有其他同名的可执行程序。
+</code></pre>
+<h4 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h4><p>链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/7078924628525056007">https://juejin.cn/post/7078924628525056007</a></p>
 
       
     </div>
@@ -269,7 +281,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/01/css3%E6%96%B0%E7%89%B9%E6%80%A7/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/18/vue-%E4%BD%BF%E7%94%A8Vue-observable-%E8%BF%9B%E8%A1%8C%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -282,7 +294,439 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/01/css3%E6%96%B0%E7%89%B9%E6%80%A7/" class="post-title-link" itemprop="url">css3新特性</a>
+          <a href="/2022/03/18/vue-%E4%BD%BF%E7%94%A8Vue-observable-%E8%BF%9B%E8%A1%8C%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">vue-使用Vue.observable()进行状态管理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-03-18 15:11:44 / Modified: 15:23:51" itemprop="dateCreated datePublished" datetime="2022-03-18T15:11:44+08:00">2022-03-18</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="vue-使用Vue-observable-进行状态管理"><a href="#vue-使用Vue-observable-进行状态管理" class="headerlink" title="vue-使用Vue.observable()进行状态管理"></a>vue-使用Vue.observable()进行状态管理</h1><h3 id="用法："><a href="#用法：" class="headerlink" title="用法："></a>用法：</h3><p>让一个对象可响应。Vue 内部会用它来处理 data 函数返回的对象。</p>
+<p>返回的对象可以直接用于渲染函数和计算属性内，并且会在发生变更时触发相应的更新。也可以作为最小化的跨组件状态存储器，用于简单的场景</p>
+<h3 id="注意事项："><a href="#注意事项：" class="headerlink" title="注意事项："></a>注意事项：</h3><p>在 Vue 2.x 中，被传入的对象会直接被 Vue.observable 变更，所以如这里展示的，它和被返回的对象是同一个对象。在 Vue 3.x 中，则会返回一个可响应的代理，而对源对象直接进行变更仍然是不可响应的。因此，为了向前兼容，我们推荐始终操作使用 Vue.observable 返回的对象，而不是传入源对象。</p>
+<h3 id="用例"><a href="#用例" class="headerlink" title="用例"></a>用例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 1.先定义一个observable.js,用于存放Vue.observable监控的数据对象</span><br><span class="line">import Vue from &#39;vue&#39;</span><br><span class="line">export default &#123;</span><br><span class="line">  state: Vue.observable(&#123;</span><br><span class="line">    name: &#39;&#39;,</span><br><span class="line">    age: 12,</span><br><span class="line">    family: &#123;</span><br><span class="line">      mom: &#39;&#39;,</span><br><span class="line">      father: &#39;&#39;,</span><br><span class="line">      child: &#39;&#39;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;),</span><br><span class="line">  setState (key, value) &#123;</span><br><span class="line">    this.state[key] &#x3D; value</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 2.在需要使用的文件中引入observable.js</span><br><span class="line">import ObserVable from &#39;.&#x2F;observable.js&#39;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 调用setState方法修改Vue.observable监控的数据对象的属性</span><br><span class="line">ObserVable.setState(&#39;name&#39;, &#39;cwj&#39;)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/14/React-%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E4%B8%8Eclass%E7%BB%84%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/03/14/React-%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E4%B8%8Eclass%E7%BB%84%E4%BB%B6/" class="post-title-link" itemprop="url">React-函数组件与class组件</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-03-14 16:02:04 / Modified: 17:08:16" itemprop="dateCreated datePublished" datetime="2022-03-14T16:02:04+08:00">2022-03-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="React-函数组件与class组件"><a href="#React-函数组件与class组件" class="headerlink" title="React-函数组件与class组件"></a>React-函数组件与class组件</h1><p>组件名称必须以大写字母开头。</p>
+<h2 id="函数组件"><a href="#函数组件" class="headerlink" title="函数组件"></a>函数组件</h2><p>  所有 React 组件都必须像纯函数(不更改入参)一样保护它们的 props 不被更改</p>
+<p>  函数组件本质上一个Javascript函数，接收唯一一个带数据的props(只读)属性对象，返回一个React元素</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function Hi(props) &#123;</span><br><span class="line">  return &lt;h1&gt;hi, my world, &#123;&#123; props.date&#125;&#125;&lt;&#x2F;h1&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="class组件"><a href="#class组件" class="headerlink" title="class组件"></a>class组件</h2><p>  State 与 props 类似，但是 state 是私有的，并且完全受控于当前组件</p>
+<p>  不要直接修改 State, 应该使用 this.setState() 来时刻更新组件 state</p>
+<p>  存在多个state更新时，state的更新可能是异步的，建议让setState接收一个函数而不是对象，这个函数用上一个state作为第一参数，将props作为第二个参数</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">this.setState((state, props) &#x3D;&gt; (&#123;</span><br><span class="line">  counter: state.counter + props.increment</span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">class Hi extends React.Component &#123;</span><br><span class="line">  constructor(props) &#123; &#x2F;&#x2F; 构造函数是唯一可以给 this.state 赋值的地方</span><br><span class="line">    &#x2F;&#x2F; Class 组件应该始终使用 props 参数来调用父类的构造函数。</span><br><span class="line">    super(props); </span><br><span class="line">    this.state &#x3D; &#123;date: new Date()&#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  tick() &#123;</span><br><span class="line">    this.setState(&#123;</span><br><span class="line">      date: new Date()</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    return (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;Hello, world!&lt;&#x2F;h1&gt;</span><br><span class="line">        &lt;h2&gt;It is &#123;this.state.date.toLocaleTimeString()&#125;.&lt;&#x2F;h2&gt;</span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="注意事项："><a href="#注意事项：" class="headerlink" title="注意事项："></a>注意事项：</h3><h4 id="受控组件输入空值"><a href="#受控组件输入空值" class="headerlink" title="受控组件输入空值"></a>受控组件输入空值</h4><p>  在受控组件上指定 value 属性会阻止用户更改输入（没有使用 onChange 去更改 value 绑定的值时）。如果你指定了 value，但输入仍可编辑，则可能是你意外地将 value 设置为 undefined 或 null。<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 输入最初被锁定，但在短时间延迟后变为可编辑</span><br><span class="line">ReactDOM.render(&lt;input value&#x3D;&quot;hi&quot; &#x2F;&gt;, mountNode);</span><br><span class="line"></span><br><span class="line">setTimeout(function() &#123;</span><br><span class="line">  ReactDOM.render(&lt;input value&#x3D;&#123;null&#125; &#x2F;&gt;, mountNode);</span><br><span class="line">&#125;, 1000);</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/21/git%E7%9A%84%E4%BD%BF%E7%94%A8-%E6%8E%98%E9%87%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/02/21/git%E7%9A%84%E4%BD%BF%E7%94%A8-%E6%8E%98%E9%87%91/" class="post-title-link" itemprop="url">git的使用-掘金</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-02-21 15:50:05 / Modified: 15:53:40" itemprop="dateCreated datePublished" datetime="2022-02-21T15:50:05+08:00">2022-02-21</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>来源：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6967634683811069982">掘金-一份工作4年前端的Git备忘指南</a></p>
+<p>Git常用命令</p>
+<p>git克隆远程分支仓库：</p>
+<p>git clone -b 分支名称 远程地址<br>git克隆远程仓库项目时如果不指定分支，只会克隆默认分支的内容。</p>
+<p>查看git用户名和邮箱</p>
+<p>git config user.name<br>git config user.email<br>复制代码</p>
+<p>分支相关</p>
+<p>git branch（查看当前分支)<br>git branch -a（查看所有分支）<br>git checkout 分支名（切换到对应分支） 会自动将代码更新为分支代码<br>git branch 分支名（创建一个分支）<br>git branch -d 分支名（删除一个分支）<br>git branch -D 分支名（强制删除一个未合并的分支）<br>git checkout -b 分支名 [基于的分支名或commit值]（切换分支并直接切换过去）<br>复制代码</p>
+<p>查看git历史</p>
+<p>history</p>
+<p>按照关键词搜索git历史</p>
+<p>history | grep push</p>
+<p>查看commit历史</p>
+<p>git log<br>git log –summary<br>复制代码</p>
+<p>设置git账号</p>
+<p>git config –global user.name “foo”<br>git config –global user.email <a href="mailto:&#x66;&#x6f;&#111;&#64;&#103;&#x6d;&#97;&#105;&#x6c;&#x2e;&#99;&#x6f;&#109;">&#x66;&#x6f;&#111;&#64;&#103;&#x6d;&#97;&#105;&#x6c;&#x2e;&#99;&#x6f;&#109;</a>“<br>git config user.name “foo”<br>git config user.email “<a href="mailto:&#102;&#111;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;">&#102;&#111;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;</a>“<br>复制代码</p>
+<p>查看git账号</p>
+<p>git config –global –list<br>git config –local –list<br>复制代码</p>
+<p>仅仅查看某一项的配置</p>
+<p>git config –local user.name</p>
+<p>回滚本次修改</p>
+<p>git reset HEAD foo.js<br>git checkout – foo.js<br>复制代码</p>
+<p>查看本次修改的代码</p>
+<p>git diff<br>git diff HEAD<br>git diff –staged<br>复制代码</p>
+<p>提交后发现丢了几个文件没有提交</p>
+<p>发现丢了修改记录，重新添加<br>git add “*.html”<br>重新提交，最终只有一个提交<br>git commit –amend<br>复制代码</p>
+<p>缓存某种后缀的文件</p>
+<p>git add “*.js”</p>
+<p>清除缓存区中的文件</p>
+<p>git reset octofamily/octodog.txt</p>
+<p>彻底删除某种后缀的文件</p>
+<p>git rm “*.txt”</p>
+<p>合并分支到master</p>
+<p>git merge 分支名</p>
+<p>add .之前取消提交某些文件</p>
+<p>git checkout – <filename></p>
+<p>藏代码到脏目录（适用于其他成员修改了相同分支代码，但又不想提交）</p>
+<p>git stash</p>
+<p>释放脏目录代码</p>
+<p>git stash pop</p>
+<p>释放指定脏目录代码</p>
+<p>git stash pop stash@{0}</p>
+<p>删除远程分支(此分支必须是非默认分支)</p>
+<p>git push origin –delete branchname</p>
+<p>已经commit，强制回退到旧版本</p>
+<p>git log//找到commit hash值<br>git reset –hard hash值<br>复制代码</p>
+<p>查看stash目录</p>
+<p>git stash list</p>
+<p>删除某一个stash</p>
+<p>git stash drop stash@{0}</p>
+<p>设置远程仓库地址</p>
+<p>git remote set-url origin <a href="mailto:&#x67;&#105;&#x74;&#64;&#102;&#x6f;&#111;&#46;&#x62;&#x61;&#x72;&#x2e;&#x63;&#111;&#109;">&#x67;&#105;&#x74;&#64;&#102;&#x6f;&#111;&#46;&#x62;&#x61;&#x72;&#x2e;&#x63;&#111;&#109;</a>:baz/helloworld.git</p>
+<p>本地创建了新分支，但是orgin没有，push代码前</p>
+<p>git push –set-upstream origin preproduction</p>
+<p>指定tag到远程</p>
+<p>git push origin <tag_name></p>
+<p>将全部tag打到远程</p>
+<p>git push –tags</p>
+<p>查看当前tags</p>
+<p>git tag –list</p>
+<p>仅仅删除index不删除working tree上的.idea文件</p>
+<p>git rm –cached -r .idea // –cached仅仅删除index，-r（recursive）递归删除.idea目录下的所有文件</p>
+<p>git主动track文件，控制文件，做好提交准备</p>
+<p>git add &lt;file(s)&gt;/.</p>
+<p>git unstage文件，释放文件，选择性控制</p>
+<p>git reset HEAD &lt;file(s)&gt;/.</p>
+<p>暂存区文件如何覆盖工作目录文件</p>
+<p>git reset HEAD &lt;file(s)&gt;/. &amp;&amp; git checkout – &lt;file(s)&gt;/.</p>
+<p>提交已经被git管理的，modified为红色的所有文件</p>
+<p>git add -u</p>
+<p>重置工作区和暂存区的所有文件为原始状态</p>
+<p>git reset –hard</p>
+<p>比较当前分支与某次提交的区别</p>
+<p>git diff HEAD [commit hash fragment]</p>
+<p>删除一个分支</p>
+<p>git branch -D [branch name]</p>
+<p>同步到remote后，合并多个commit 为1个</p>
+<p>git rebase -i HEAD~2/hash<br>pick &amp;&amp; squash<br>:wq!<br>复制代码</p>
+<p>查看项目的origin代表的地址</p>
+<p>git remote -v</p>
+<p>pick中途误退出</p>
+<p>git rebase –abort</p>
+<p>未同步到remote，重新提交</p>
+<p>reset soft</p>
+<p>gitflow release 发布新版本</p>
+<p>git flow release start v0.5.0<br>npm version minor<br>git flow release finish -n<br>git push<br>git checkout master<br>git push<br>复制代码</p>
+<p>gitflow hotfix 修复一个master上的bug</p>
+<p>git flow hotfix start foo<br>npm version patch // 注意：一定要在修复bug代码之前新增版本号<br>git add .<br>git commit -m “version change message”<br>git flow hotfix finish -n<br>git push<br>git checkout master<br>git push<br>复制代码</p>
+<p>对比2个分支的日志</p>
+<p>git log develop..master<br>复制代码</p>
+<p>合并master代码到feature</p>
+<p>git checkout feature<br>git merge master<br>复制代码<br>git merge master feature<br>复制代码</p>
+<p>git rebase冲突时怎么办</p>
+<p>resolve conficts<br>git add .<br>git rebase –continue<br>复制代码</p>
+<p>squash多个commits成一个怎么敲？</p>
+<p>假设merge feature到master。<br>git checkout master<br>git merge –squash feature<br>git commit -m “这是一次squash commit”<br>git push<br>复制代码</p>
+<p>查看当前分支的父分支</p>
+<p>git reflog show <childBranch><br>32c3956 (HEAD -&gt; currentBranch, origin/fatherBranch, fatherBranch, list) childBranch@{0}: branch: Created from fatherBranch<br>复制代码<br>childBranch 是你新建的分支。<br>fatherBranch 是它的父分支，也就是来源分支。</p>
+<p>撤销远程分支错误提交</p>
+<p>…reset<br>git push –force<br>复制代码<br>其实使用本地分支的提交替代远程分支。</p>
+<p>误删除领先远程的本地分支如何恢复？</p>
+<p>git reflog // 找出最新的commit sha1值，HEAD@{1}比HEAD@{2}新<br>git branch branchName <sha1><br>复制代码<br>通过git reflog找到一个commit，然后再cherry-pick也可以。</p>
+<p>删除由npm version patch/minor/major误添加的tag</p>
+<p>git tag | grep v1.1.38<br>git tag -d v1.1.38<br>git push origin :refs/tags/v1.1.38<br>复制代码</p>
+<p>git fetch与git pull的区别</p>
+<p>git fetch 更新origin/*下的所有分支，在发布git flow feature前很有用，用于更新remote分支。<br>git pull 主要用来更新多人合作的当前分支，多用于更新local分支。<br>// <a target="_blank" rel="noopener" href="https://www.git-tower.com/learn/git/faq/difference-between-git-fetch-git-pull">https://www.git-tower.com/learn/git/faq/difference-between-git-fetch-git-pull</a><br>复制代码</p>
+<p>远程分支删除，本地git fetch不能更新到最新分支</p>
+<p>git fetch –prune</p>
+<p>–prune什么意思？<br>Before fetching, remove any remote-tracking references that no longer exist on the remote.<br>复制代码</p>
+<p>及时查看本地所有分支的状态</p>
+<p>git remote show origin<br>复制代码</p>
+<p>假如远程已不存在这个分支，git fetch –prune也更新不到状态，该怎么办？</p>
+<p>git push origin –delete feature/fix-chat-unread-msg-async<br>复制代码</p>
+<p>删除单个脱离的远程分支</p>
+<p>git remote prune <name><br>复制代码</p>
+<p>取消一次合并（merge）</p>
+<p>git merge –abort</p>
+<p>回退一次commit</p>
+<p>git revert Head/[commit hash]<br>优雅使用Git的一些实践</p>
+<p>windows下gitbash支持中文输入：</p>
+<p>1）鼠标左键点击左上角git的logo<br>2）找到options并且切换到text目录，将Character set设置为UTF-8<br>复制代码</p>
+<p>生成ssh-key</p>
+<p>ssh-keygen -t rsa -C “<a href="mailto:&#x67;&#97;&#111;&#107;&#x61;&#105;&#50;&#x30;&#x31;&#48;&#48;&#x38;&#48;&#49;&#64;&#x71;&#x71;&#46;&#x63;&#x6f;&#x6d;">&#x67;&#97;&#111;&#107;&#x61;&#105;&#50;&#x30;&#x31;&#48;&#48;&#x38;&#48;&#49;&#64;&#x71;&#x71;&#46;&#x63;&#x6f;&#x6d;</a>“</p>
+<p>windows查看ssh-key</p>
+<p>/c/Users/frank/.ssh/id_rsa.pub</p>
+<p>mac/linux查看ssh-key</p>
+<p>cd ~/.ssh<br>ls<br>cat id_rsa.pub</p>
+<p>git flow</p>
+<p>danielkummer.github.io/git-flow-ch…</p>
+<p>误删除stash，该怎么办？</p>
+<p>git fsck –unreachable |<br>grep commit | cut -d\  -f3 |<br>xargs git log –merges –no-walk –grep=WIP<br>复制代码<br>找到对应的commit hash值<br>git stash apply 1f55da93d26cd51f15f9e93351dae6b75e25e36f<br>复制代码</p>
+<p>.idea修改总是会提醒，.gitignore不生效</p>
+<p>.idea/<br>git rm -r –cached .idea<br>复制代码</p>
+<p>Git中的origin是什么？</p>
+<p>origin是一个变量，代表着一个git仓库地址。可以使用git remote -v查看origin代表的地址。</p>
+<p>Git的system，global和local参数分别代表什么？</p>
+<p>–system可以输出很多git的系统设置，其中最有用的是alias，例如git s代表了git status，系统所有登录用户有用。<br>–global输出了git的全局设置，主要包括全局的user.name和user.email，优先级低于单个仓库中设置的user.name和user.email，当前用户所有仓库有用。<br>–local输出了git的项目设置，主要包括remote.origin.url以及gitflow的很多配置，只对某个仓库有用。<br>复制代码</p>
+<p>Git工作区和暂存区的区别？</p>
+<pre><code>   add           commit
+</code></pre>
+<p>工作目录—-&gt;暂存区—-&gt;版本历史<br>复制代码<br>暂存区：git已经获得了对文件的管理权限，暂存区文件有状态：new file，deleted，modified等等。<br>版本历史：git log查看每一次commit记录。<br>意外收获：<br>若是想非常细粒度的控制commit记录，可以使用git add 指定文件，分开多次commit，每一次commit提交一个细粒度功能的变更文件集合，多次走文件目录 暂存区 版本历史这个流程。<br>复制代码</p>
+<p>Git如何重命名文件？</p>
+<p>git mv README.md readme.md<br>复制代码</p>
+<p>Git的working tree和index是什么意思？</p>
+<p>index指的是git索引，可以理解成git有文件的一个复制，仅删除index则仅删除存在于git中的文件。<br>working tree则是指操作系统的工作树，也就是操作系统的磁盘上存储的文件。<br>举两个常用的例子：</p>
+<ol>
+<li>仅删除git index中的文件，.idea等IDE隐藏的工作树文件是不能删除的：**–cached**<br>git rm –cached -r .idea // <strong>–cached仅仅删除index</strong>，-r（recursive）递归删除.idea目录下的所有文件</li>
+<li>删除index和working tree上的文件，恩断义绝</li>
+</ol>
+<p>git rm 删除index上和working tree上的文件，<br>仅仅删除working tree不删除index的情况，不存在。<br>复制代码</p>
+<p>nothing to commit 和 working tree clean?</p>
+<p>暂存区没有可以提交到版本历史的内容。<br>工作区也是干净的。<br>复制代码</p>
+<p>如何一目了然地区分出工作区和暂存区？</p>
+<p>Your branch is ahead of ‘origin/master’ by 1 commit 版本历史<br>Changes to be committed 暂存区<br>Untracked files 工作区</p>
+<p>// 版本历史<br>Your branch is ahead of ‘origin/master’ by 1 commit.<br>  (use “git push” to publish your local commits)<br>// 暂存区<br>Changes to be committed:<br>  (use “git reset HEAD <file>…” to unstage)</p>
+<pre><code>    renamed:    readme.md -&gt; README.md
+    new file:   helloman
+</code></pre>
+<p>// 工作区<br>Untracked files:<br>  (use “git add <file>…” to include in what will be committed)</p>
+<pre><code>    hi
+</code></pre>
+<p>复制代码</p>
+<p>如何更加优雅地查看日志？</p>
+<p>git log –oneline 简洁的commit记录<br>git log -n2 –oneline 最近的2次简洁的commit记录<br>git log –all 所有分支的历史版本信息<br>git log –graph 图形化查看版本演进历史<br>git log –oneline –all -n4 –graph 组合查看日志<br>复制代码</p>
+<p>如何快速定位到git的命令文档？</p>
+<p>git help –web log 浏览器查看git log的用法</p>
+<p>git自带的图形化界面怎么看？</p>
+<p>gitk 无需安装第三方插件，在纯命令行下，无第三方软件情况下可用。</p>
+<p>git 里的作者和提交人不一样吗？</p>
+<p>作者是代码的生成者，是为了版权保护。</p>
+<p>神秘的.git目录</p>
+<p>HEAD 工作分支refs/heads/foo<br>config repo的配置信息<br>refs heads，分支；tags，标签或者里程碑<br>refs/heads/master 存放了什么，最新的一个commit<br>refs/tags/js01 存放了什么，最新的一个tag，包含一个object<br>objects 文件夹，2个字符的和松散的pack文件夹，存放的是tree，tree下有blob文件<br>复制代码<br>可以直接通过vim修改HEAD，config等信息，和命令的作用是相同的。</p>
+<p>如何判断git文件的类型？</p>
+<p>git cat-file -t/-p [hash fragment] // -t 类型，-p 内容<br>只要任何文件的文件内容相同，在git眼里，它就是唯一的一个blob。<br>commit<br>tree // 位于objects目录下<br>blob // 位于objects目录的二级目录下，具体的文件<br>复制代码</p>
+<p>tree, commit, blob的区别？</p>
+<p>commit：一个commit肯定会对应一棵树，包含了根tree，author，committer，parent等等一个commit对象的信息。<br>tree：取出一个commit，存放了一个快照，这个快照，对应了当前项目的所有的文件夹及其文件的快照，是特定时间的整个仓库的一个状态；树里可以有blob，也可以有树，因为树是文件夹；根树是最大的树。<br>blob:  与文件名是否相同无关，只要内容相同，就是唯一的blob。<br>复制代码</p>
+<p>一个commit包含了哪些？</p>
+<p>git cat-file -p [commit hash fragment]<br>复制代码<br>包含tree，parent，author和commiter。<br>tree f06f7f36af17cb9098031c66d22a7910c0fa1bac<br>parent 92a55c8a5b1d38d224232ad84b9b728ae77189cb<br>parent eda632a1f2a3ea049c5f5268f6b2f064b71898ce<br>author FrankKai <a href="mailto:&#103;&#97;&#x6f;&#107;&#97;&#105;&#50;&#x30;&#x31;&#48;&#48;&#56;&#x30;&#x31;&#x40;&#x67;&#x6d;&#97;&#105;&#108;&#46;&#99;&#x6f;&#x6d;">&#103;&#97;&#x6f;&#107;&#97;&#105;&#50;&#x30;&#x31;&#48;&#48;&#56;&#x30;&#x31;&#x40;&#x67;&#x6d;&#97;&#105;&#108;&#46;&#99;&#x6f;&#x6d;</a> 1548139120 +0800<br>committer FrankKai <a href="mailto:&#x67;&#x61;&#111;&#x6b;&#x61;&#105;&#x32;&#48;&#49;&#x30;&#48;&#x38;&#x30;&#x31;&#64;&#x67;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#111;&#109;">&#x67;&#x61;&#111;&#x6b;&#x61;&#105;&#x32;&#48;&#49;&#x30;&#48;&#x38;&#x30;&#x31;&#64;&#x67;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#111;&#109;</a> 1548139120 +0800</p>
+<p>Merge branch ‘feature/chatBreakChange’ into prerelease</p>
+<h1 id="Conflicts"><a href="#Conflicts" class="headerlink" title="Conflicts:"></a>Conflicts:</h1><h1 id="src-api-chat-js"><a href="#src-api-chat-js" class="headerlink" title="src/api/chat.js"></a>src/api/chat.js</h1><p>复制代码</p>
+<p>一个tree包含了哪些？</p>
+<p>git cat-file -p [tree hash fragment]<br>复制代码<br>包含tree，blob。<br>100644 blob 015aaf344153ed7822069b2a98898b7d7a215b0d    .babelrc<br>100644 blob 9d08a1a828a3bd2d60de3952744df29f9add27fa    .editorconfig<br>100644 blob 080140b833db5b758b1eb869a269f4bbb068a19e    .eslintignore<br>100644 blob 8f777c376c0314e480f9bbba273d4902810bcb11    .eslintrc.js<br>100644 blob 895e844218637929546ed2295ae90f991ceb5d38    .gitignore<br>100644 blob db7b635d23657349dbe4c33cc353ef4efd8ca960    .npmrc<br>100644 blob 797e871f4b8c0a3071e8b6ab2cc40b804cd2971c    .postcssrc.js<br>100644 blob d3983c1d6a5525aae58b823448723434ca83ceed    .prettierrc<br>100644 blob 93cc7473ab066204f3329221111a945e2dc83576    BUS.md<br>100644 blob defc3d9914d1af08e6670b96995261bfe1fb61a6    CHANGELOG.md<br>100644 blob bfd46fd4008cbe7103181fc5cd64392a74426e96    MQTT.md<br>100644 blob abdb55935d833dd4f4b79475aa7d63ffcb0cc9cd    README.md<br>040000 tree f1f80f844bb80389826198a15ec0f224a53525f8    build<br>100644 blob 2aefa3130f4ff753b5c3e538db53b9b186f12540    index.html<br>100644 blob 967b8f243420a9a8a07b8f429f0a7ba874a834ad    package-lock.json<br>100644 blob 35d9fa46f569395b25a87daef4820de42d071831    package.json<br>040000 tree f6bdc675a8f9af805867b5a19c263e5bbfe4c26c    src<br>040000 tree 09e231414b91779326447a0c8d5b3421aa2308c2    static<br>040000 tree ad94369cfdd2038a552e44fc0abbd1738113b5e6    test<br>100644 blob 0b96f21c27a3759cecde02fba1e050d86a8e9a54    yarn.lock<br>复制代码</p>
+<p>一个blob包含了哪些？</p>
+<p>git cat-file -p [tree hash fragment]<br>就是一个具体的文件。<br>复制代码</p>
+<p>detached HEAD是什么？</p>
+<p>分离头指针。<br><code>git checkout [commit hash fragment]</code>，切换到分离头指针状态，不与任何branch或tag关联，git会认为这是不重要的，当成垃圾清理掉。<br>缺点：切换分支后，需要用<code>git branch [branch name] [commit hash fragment]</code>新建一个分支，否则会丢失原消息。<br>优点：可以基于某一次commit切出分支，然后新建一个commit，快速会退到想要的版本。<br>复制代码</p>
+<p>HEAD可以指向什么？</p>
+<p>它位于.git/HEAD。<br>可以指向分支或者commit，<strong>但其实分支归根结底还是指向了commit</strong>。<br>git log 查看HEAD指针指向的分支名：<code>(HEAD-&gt;foo, bar, master)</code><br>可以快速diff，<code>git diff HEAD [commit hash fragment]</code>。<br>父亲的父亲diff：<code>git diff HEAD HEAD~2</code>，<code>git diff HEAD HEAD^^</code>。<br>复制代码</p>
+<p>如何修改最新一次commit的message？</p>
+<p>git commit –amend<br>注意：不能在团队的集成分支上，做这样的变更，仅适用于本地。</p>
+<p>如何修改老旧commit的message？</p>
+<p>git rebase -i [父 commit hash fragment]<br>reward<br>添加修改后的commit message<br>注意：不能在团队的集成分支上，做这样的变更，仅适用于本地。<br>复制代码</p>
+<p>git stash pop stash@{n}还能做什么操作？</p>
+<p>当前分支的本地代码未提交的情况下，pull了领先的远程分支代码，此时远程代码会覆盖本地代码。<br>git比较聪明，它不会完全将本地的代码扔掉，即使没有人为的生成一次commit记录，也会自动为我们在stash下生成一次记录，以免造成重大的代码丢失。<br>复制代码</p>
+<p>gitflow模式下，如何规范版本发布？</p>
+<p>版本号升级gitflow对应bug -&gt; patchhotfixfeature-&gt;minorrelease系统重构-&gt;majorrelease<br>但是在scrum的情况下，迭代非常快速，若所有feature都升级minor，会导致minor数字很大，该怎么处理这种情况？<br>只升级minor时，在commit提交信息中，添加以下信息：</p>
+<p>类型提交信息bug patch[bug patch]feature patch[feature patch</p>
+<p>创建一个新的项目并上传到git</p>
+<p>git init<br>git ac<br>git remote add origin remote repository URL<br>复制代码</p>
+<p>git参数–decorate是什么？</p>
+<p>有short，full，auto，no几种值，–decorate=short<br>打印出commit的ref name。<br>short时，ref name 前缀refs/head,refs/tags/和refs/remotes不会打印<br>full时，完整前缀会被打印<br>auto时，如果输出是一个终端，会按照short的方式打印；非终端会显示全部<br>no时，会隐藏HEAD和tag等等refs信息<br>默认值是short</p>
+<p>cherry pick是什么？</p>
+<p>如何理解git cherry pick？</p>
+<p>清空所有本地git 缓存</p>
+<p>git rm -r –cache .<br>复制代码</p>
+<p>error Command “husky-run” not found</p>
+<p>rm -rf .git/hooks/</p>
+<p>一次完整的rebase流程</p>
+<ol>
+<li>git checkout feature</li>
+<li>git rebase master</li>
+<li>resolve conflicts</li>
+<li>git add .</li>
+<li>git rebase –continue<br>复制代码</li>
+</ol>
+<p>git revert和git reset的区别</p>
+<p>git revert 生成一个新的commit的方式回滚到上一个或者指定commit版本的代码，原理是Head继续前进。有存在被回滚掉的commit分支代码合并过来时，代码正常被合并</p>
+<p>git reset 删除某个commit之后的代码，原理是Head向后退。有存在被回滚掉的commit分支代码合并过来时，被reset掉的代码仍然会合并上来<br>复制代码<br>oh-my-zsh 常用命令<br>缩写全写对照表</p>
+<p>缩写全写gstgit statusgaagit add .gcmsg “”git commit -m “”gpgit pushgloggit log –oneline –decorate –graphglgit pullgfgit fetchgfagit fetch –all –prune<br>使用小技巧</p>
+<p>如何修改默认指令的参数，比如，glog的decorate默认是short，我想指定glog的decorate为no，要怎么做？</p>
+<p>glog –decorate=no</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/20/vue3%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8BdefineProps%E5%92%8CdefineEmits/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/20/vue3%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8BdefineProps%E5%92%8CdefineEmits/" class="post-title-link" itemprop="url">vue3新特性之defineProps和defineEmits</a>
         </h2>
 
         <div class="post-meta-container">
@@ -293,14 +737,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2021-07-01 10:24:03" itemprop="dateCreated datePublished" datetime="2021-07-01T10:24:03+08:00">2021-07-01</time>
+      <time title="Created: 2021-12-20 10:34:43" itemprop="dateCreated datePublished" datetime="2021-12-20T10:34:43+08:00">2021-12-20</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-02 10:05:00" itemprop="dateModified" datetime="2021-07-02T10:05:00+08:00">2021-07-02</time>
+        <time title="Modified: 2022-02-14 16:07:32" itemprop="dateModified" datetime="2022-02-14T16:07:32+08:00">2022-02-14</time>
       </span>
 
   
@@ -313,87 +757,12 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="css-三大特性"><a href="#css-三大特性" class="headerlink" title="css 三大特性"></a>css 三大特性</h2><ul>
-<li>继承  父级文本样式会被子级继承</li>
-<li>层叠  当样式发生冲突时，权重高的覆盖权重低的</li>
-<li>优先级  !important &gt; 行内样式 &gt; id选择器 &gt; 类选择器 &gt; 标签选择器 &gt; *通用选择器 &gt; 继承</li>
+          <h1 id="defineProps和defineEmits以及defineExpose"><a href="#defineProps和defineEmits以及defineExpose" class="headerlink" title="defineProps和defineEmits以及defineExpose"></a>defineProps和defineEmits以及defineExpose</h1><h2 id="defineProps-在子组件中获取父组件传值-父组件给子组件传的值"><a href="#defineProps-在子组件中获取父组件传值-父组件给子组件传的值" class="headerlink" title="defineProps-在子组件中获取父组件传值-父组件给子组件传的值"></a>defineProps-在子组件中获取父组件传值-父组件给子组件传的值</h2><ul>
+<li>相当于vue2组件中的props属性<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; vue3中的使用：</span><br><span class="line">&lt;script setup&gt;</span><br><span class="line">  const props &#x3D; defineProps(&#123;</span><br><span class="line">    msg: String,</span><br><span class="line">    value: &#123;</span><br><span class="line">      type: String,</span><br><span class="line">      default: () &#x3D;&gt; &#123;</span><br><span class="line">        return &#39;默认值&#39;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h2 id="BFC-块级格式化上下文"><a href="#BFC-块级格式化上下文" class="headerlink" title="BFC 块级格式化上下文"></a>BFC 块级格式化上下文</h2><ul>
-<li>概念： css盒模型的渲染规则</li>
-<li>渲染规则：（html标签就是一个BFC元素）<ul>
-<li>规则1：创建的BFC元素，在垂直方向上的margin会发生重叠（塌陷）</li>
-<li>规则2：BFC元素在页面上独立的容器，外面的元素和里面的元素互不影响</li>
-<li>规则3：BFC元素不会和浮动的元素重叠（可以解释两栏自适应）</li>
-<li>规则4：计算BFC元素的高度时，里面浮动的元素的高度也会参与计算（用来解释overflow：hidden可以清楚浮动）</li>
-</ul>
-</li>
-<li>普通元素创建BFC<ul>
-<li>float浮动属性不为none</li>
-<li>overflow: hidden / auto</li>
-<li>position: 不为static 、 relative都可以</li>
-<li>display: table-cell … 表格相关的</li>
-</ul>
-</li>
-</ul>
-<h2 id="css3新增的选择器"><a href="#css3新增的选择器" class="headerlink" title="css3新增的选择器"></a>css3新增的选择器</h2><ul>
-<li>css3属性选择器<ul>
-<li>a[href] - 选择指定属性href的元素</li>
-<li>a[href=www] - 选择指定属性href值为www的元素</li>
-<li>a[href^=’www’] - 选择指定属性href值中以www开头的元素</li>
-<li>a[href$=’www’] - 选择指定属性href值中以www结尾的元素</li>
-<li>a[href*=’www’] - 选择指定属性href值中含有www的元素</li>
-</ul>
-</li>
-<li>css3结构伪类选择器(odd奇数、even偶数)<ul>
-<li>:nth-child(n) - 选择所有在其父元素中的第n个位置的匹配E的子元素</li>
-<li>:nth-last-child(n) - 选择所有在其父元素中倒数第n个位置的匹配E的子元素</li>
-<li>:last-child - 最后一个元素</li>
-<li>:fisrt-child - 第一个元素</li>
-<li>:empty - 选择匹配的元素不包含子元素</li>
-</ul>
-</li>
-</ul>
-<h2 id="css3新特性"><a href="#css3新特性" class="headerlink" title="css3新特性"></a>css3新特性</h2><h3 id="1-过渡-transition"><a href="#1-过渡-transition" class="headerlink" title="1.过渡 transition"></a>1.过渡 transition</h3><ul>
-<li>作用： 给元素添加一个过渡效果，让页面效果不过于生硬</li>
-<li>语法：transition： CSS属性，花费时间，效果曲线(默认ease)，延迟时间(默认0)</li>
-<li>例子：transition：width,.5s,ease,.2s   /  transition：all,.5s</li>
-<li>应用场景：下拉的显示/隐藏的过渡  元素hover时一些过渡的效果，如颜色等</li>
-</ul>
-<h3 id="2-动画-animation"><a href="#2-动画-animation" class="headerlink" title="2.动画 animation"></a>2.动画 animation</h3><ul>
-<li>作用：做一个预设的动画和一些页面交互的动画效果。给元素添加一个动画效果，让页面效果不过于生硬</li>
-<li>语法：animation：动画名称，一个周期花费时间，运动曲线（默认ease），动画延迟（默认0），播放次数（默认1），是否反向播放动画（默认normal），是否暂停动画（默认running）</li>
-<li>例子： animation: logo2-line 2s linear;  //执行一次logo2-line动画，运动时间2秒，运动曲线为 linear</li>
-<li>重要属性：animation-fill-mode 属性规定动画在播放之前或之后，其动画效果是否可见</li>
-<li>用法： animation-fill-mode : none | forwards | backwards | both;</li>
-<li><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">none	不改变默认行为。</span><br><span class="line">forwards	当动画完成后，保持最后一个属性值（在最后一个关键帧中定义）。</span><br><span class="line">backwards	在 animation-delay 所指定的一段时间内，在动画显示之前，应用开始属性值（在第一个关键帧中定义）。</span><br><span class="line">both	向前和向后填充模式都被应用。</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="3-形状转换-transform"><a href="#3-形状转换-transform" class="headerlink" title="3.形状转换 transform"></a>3.形状转换 transform</h3><ul>
-<li>作用：适用于2D或3D转换的元素</li>
-<li>相关属性：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">transform-origin：转换元素的位置（围绕那个点进行转换）。默认(x,y,z)：(50%,50%,0)</span><br></pre></td></tr></table></figure></li>
-<li>语法： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1.旋转角度 rotateX  rotateY rotate3d</span><br><span class="line">  transform:rotate(30deg)</span><br><span class="line">2.偏移量(x,y)</span><br><span class="line">  transform:translate(30px,30px);</span><br><span class="line">3.缩放</span><br><span class="line">  transform:scale(.8);</span><br><span class="line">4.倾斜</span><br><span class="line">  transform: skew(10deg,10deg);</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="4-阴影-box-shadow"><a href="#4-阴影-box-shadow" class="headerlink" title="4.阴影 box-shadow"></a>4.阴影 box-shadow</h3><ul>
-<li>作用：实现阴影效果</li>
-<li>语法： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">box-shadow: 水平阴影的位置 垂直阴影的位置 模糊距离 阴影的大小 阴影的颜色 阴影开始方向（默认是从里往外，设置inset就是从外往里）;</span><br></pre></td></tr></table></figure></li>
-<li>例子： box-shadow: 10px 10px 5px #888888</li>
-</ul>
-<h3 id="5-边框图片"><a href="#5-边框图片" class="headerlink" title="5.边框图片"></a>5.边框图片</h3><ul>
-<li>作用：设置内容边框图片</li>
-<li>语法：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">border-image: 图片url 图像边界向内偏移 图像边界的宽度(默认为边框的宽度) 用于指定在边框外部绘制偏移的量（默认0） 铺满方式--重复（repeat）、拉伸（stretch）或铺满（round）（默认：拉伸（stretch））;</span><br></pre></td></tr></table></figure></li>
-<li>语法拆分/例子：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.borderImg&#123;</span><br><span class="line">  border: 15px solid transparent;</span><br><span class="line">  padding: 15px;   </span><br><span class="line">  border-image: url(border.png);</span><br><span class="line">  border-image-slice: 30;</span><br><span class="line">  border-image-repeat: round;</span><br><span class="line">  border-image-outset: 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="6-边框圆角"><a href="#6-边框圆角" class="headerlink" title="6.边框圆角"></a>6.边框圆角</h3><ul>
-<li>作用：设置边框圆角</li>
-<li>语法： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">border-radius: n1,n2,n3,n4;</span><br><span class="line">border-radius: n1,n2,n3,n4&#x2F;n1,n2,n3,n4;</span><br><span class="line">&#x2F;*n1-n4四个值的顺序是：左上角，右上角，右下角，左下角。*&#x2F;</span><br></pre></td></tr></table></figure></li>
-<li>例子：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 左上角以及右下角为圆角</span><br><span class="line">border-radius:25px 0 25px 0;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="7-背景"><a href="#7-背景" class="headerlink" title="7.背景"></a>7.背景</h3><ul>
-<li>作用：控制背景的显示</li>
-<li>关键属性：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">1.background-clip</span><br><span class="line">制定背景绘制（显示）区域</span><br><span class="line">background-clip: border-box; &#x2F;&#x2F; 默认情况-从边框开始绘制</span><br><span class="line">background-clip: padding-box; &#x2F;&#x2F; 背景显示包含boder以及内容content</span><br><span class="line">background-clip: content-box; &#x2F;&#x2F; 背景显示只包含内容content</span><br><span class="line"></span><br><span class="line">2.background-origin</span><br><span class="line">指定背景的相对位置</span><br><span class="line">background-origin: border-box; &#x2F;&#x2F; 背景从boder处开始</span><br><span class="line">background-origin: padding-box; &#x2F;&#x2F; 背景从padding处开始</span><br><span class="line">background-origin: content-box; &#x2F;&#x2F; 背景从内容content处开始</span><br><span class="line"></span><br><span class="line">3. background-size</span><br><span class="line">制定背景大小</span><br><span class="line">&#x2F;&#x2F; 图片保持纵横比，并将图片缩放成当前区域的最大大小-不铺满</span><br><span class="line">background-size: contain; </span><br><span class="line">&#x2F;&#x2F; 图片保持纵横比，将图片缩放成完全覆盖当前区域的最小大小-全部覆盖，但是图片展示不全</span><br><span class="line">background-size: cover; </span><br><span class="line"></span><br><span class="line">4. 多张背景图片</span><br><span class="line">background:url(&#39;test.jpg&#39;) no-repeat left,url(logo.png) no-repeat right</span><br></pre></td></tr></table></figure>
-<h3 id="8-反射-倒影"><a href="#8-反射-倒影" class="headerlink" title="8.反射/倒影"></a>8.反射/倒影</h3></li>
-<li>好看：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src&#x3D;&quot;test.jpg&quot; class&#x3D;&quot;reflect-bottom-img&quot;&gt;</span><br><span class="line"></span><br><span class="line">.reflect-bottom-img &#123;</span><br><span class="line">  -webkit-box-reflect: below 0 url(shou.png);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="9-flex布局"><a href="#9-flex布局" class="headerlink" title="9.flex布局"></a>9.flex布局</h3></li>
-</ul>
+<h2 id="defineEmits-用于子组件给父组件事件传递"><a href="#defineEmits-用于子组件给父组件事件传递" class="headerlink" title="defineEmits - 用于子组件给父组件事件传递"></a>defineEmits - 用于子组件给父组件事件传递</h2>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 子组件</span><br><span class="line">const emit &#x3D; defineEmits([&#39;changeState&#39;])</span><br><span class="line">const emitChangeState &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  emit(&#39;changeState&#39;, true)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 父组件</span><br><span class="line">&lt;parentCom @changeState&#x3D;&quot;changeState&quot;&gt;&lt;&#x2F;parentCom&gt;</span><br><span class="line">const changeState &#x3D; (e) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(e); &#x2F;&#x2F; e是子组件传递的值</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="defineExpose-组件暴露自己的属性"><a href="#defineExpose-组件暴露自己的属性" class="headerlink" title="defineExpose - 组件暴露自己的属性"></a>defineExpose - 组件暴露自己的属性</h2><p>  在vue3.x的setup语法糖中定义的变量默认不会暴露出去，这时使用definExpose({ })来暴露组件内部属性给父组件使用<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 子组件</span><br><span class="line">&lt;script setup lang&#x3D;&quot;ts&quot;&gt;</span><br><span class="line">  import &#123; ref &#125; from &#39;vue&#39;</span><br><span class="line">  const count &#x3D; ref(123456)</span><br><span class="line">  defineExpose(&#123;</span><br><span class="line">    count</span><br><span class="line">  &#125;)</span><br><span class="line">&lt;&#x2F;script&gt;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 父组件</span><br><span class="line">&lt;script setup lang&#x3D;&quot;ts&quot;&gt;</span><br><span class="line">  import &#123; ref &#125; from &#39;vue&#39;</span><br><span class="line">  const child &#x3D; ref(null)</span><br><span class="line">  child.value.count &#x2F;&#x2F; 获取子组件的count  &#x2F;&#x2F; 123456</span><br><span class="line">  </span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -420,7 +789,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/15/vue-v-for%E4%B8%ADkey%E7%9A%84%E4%BD%9C%E7%94%A8/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/18/21-11-18-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -433,7 +802,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/15/vue-v-for%E4%B8%ADkey%E7%9A%84%E4%BD%9C%E7%94%A8/" class="post-title-link" itemprop="url">vue v-for中key的作用</a>
+          <a href="/2021/11/18/21-11-18-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">21-11-18-设计模式-单例模式</a>
         </h2>
 
         <div class="post-meta-container">
@@ -445,7 +814,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2021-06-15 11:14:00 / Modified: 11:36:13" itemprop="dateCreated datePublished" datetime="2021-06-15T11:14:00+08:00">2021-06-15</time>
+      <time title="Created: 2021-11-18 15:55:16 / Modified: 16:46:40" itemprop="dateCreated datePublished" datetime="2021-11-18T15:55:16+08:00">2021-11-18</time>
     </span>
 
   
@@ -458,10 +827,17 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="vue-v-for中key的作用"><a href="#vue-v-for中key的作用" class="headerlink" title="vue v-for中key的作用"></a>vue v-for中key的作用</h2><p>高效地更新虚拟DOM</p>
-<p>v-for中的key是为循环里面的每一个虚拟DOM节点添加一个唯一的标识值，是为了跟踪每一个节点，便于在DOM更新的时候能够高效地更新虚拟DOM。</p>
-<p>vue中v-for更新已渲染过的元素列表时，采用的是【就地复用】的策略。当数据项顺序发生变化时，vue中不是移动DOM元素来匹配数据项的改变，而是简单复用此处的每一个元素，并且确保它在特定索引下显示已渲染过的每一个元素。</p>
-<p>key 的特殊属性主要用在Vue的虚拟DOM算法，在新旧nodes对比时辨识VNodes。如果不使用 key，Vue会使用一种【最大限度减少动态元素】并且【尽可能的尝试修复/再利用相同类型元素】的算法。使用key，它会基于key的变化重新排列元素顺序，并且会移除 key 不存在的元素。</p>
+          <h1 id="设计模式-单例模式"><a href="#设计模式-单例模式" class="headerlink" title="设计模式-单例模式"></a>设计模式-单例模式</h1><blockquote>
+<p>保证一个类仅有一个实例，并提供一个访问它的全局访问点</p>
+</blockquote>
+<blockquote>
+<p>用一个变量来记录当前是否已为该类创建过对象，是则在下次获取该类实例时直接返回之前创建的对象</p>
+</blockquote>
+<h2 id="透明的单例模式（代理）"><a href="#透明的单例模式（代理）" class="headerlink" title="透明的单例模式（代理）"></a>透明的单例模式（代理）</h2> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">var CreateDiv &#x3D; function( html ) &#123;</span><br><span class="line">    this.html &#x3D; html</span><br><span class="line">    this.init()</span><br><span class="line">&#125;</span><br><span class="line">CreateDiv.prototype.init &#x3D; function() &#123;</span><br><span class="line">    &#x2F;&#x2F; 待执行的操作</span><br><span class="line">    var div &#x3D; document.createElement(&#39;div&#39;)</span><br><span class="line">    div.innerHTML &#x3D; this.html</span><br><span class="line">    document.body.appendChild(div)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 代理类</span><br><span class="line">var ProxySingletonCreateDiv &#x3D; (function() &#123;</span><br><span class="line">    var instance</span><br><span class="line">    return function(html) &#123;</span><br><span class="line">        if(!instance) &#123;</span><br><span class="line">            instance &#x3D; new CreateDiv(html)</span><br><span class="line">        &#125;</span><br><span class="line">        return instance</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)()</span><br><span class="line"></span><br><span class="line">var a &#x3D; new ProxySingletonCreateDiv(&#39;a&#39;)</span><br><span class="line"></span><br><span class="line">var b &#x3D; new ProxySingletonCreateDiv(&#39;b&#39;) </span><br><span class="line">&#x2F;&#x2F; 由于前面存在了a实例，所以该实例不会去调用new CreateDiv(html)函数了，所以此处返回的还是前面返回的实例，即a实例</span><br><span class="line">console.log(a &#x3D;&#x3D;&#x3D; b) &#x2F;&#x2F; true</span><br><span class="line"></span><br><span class="line">作者：moe_</span><br><span class="line">链接：https:&#x2F;&#x2F;juejin.cn&#x2F;post&#x2F;7031461636158259214</span><br><span class="line">来源：稀土掘金</span><br><span class="line">著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</span><br></pre></td></tr></table></figure>
+
+<h2 id="惰性单例"><a href="#惰性单例" class="headerlink" title="惰性单例"></a>惰性单例</h2><blockquote>
+<p>惰性单例只有在需要的时候才创建对象实例。实现思路如最开始，用一个变量来标志是否创建过对象，是则返回创建好的对象。<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var getSingle &#x3D; function(fn) &#123;</span><br><span class="line">    var result </span><br><span class="line">    return function() &#123;</span><br><span class="line">        return result || (result &#x3D; fn.apply(this,arguments))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">作者：moe_</span><br><span class="line">链接：https:&#x2F;&#x2F;juejin.cn&#x2F;post&#x2F;7031461636158259214</span><br><span class="line">来源：稀土掘金</span><br><span class="line">著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</span><br></pre></td></tr></table></figure></p>
+</blockquote>
 
       
     </div>
@@ -488,7 +864,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/15/vue-nextTick%E7%9A%84%E4%BD%9C%E7%94%A8/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/20/vue%E6%89%8B%E5%8A%A8%E9%85%8D%E7%BD%AEpackage-json%E4%B8%AD%E7%9A%84%E6%89%93%E5%8C%85%E5%91%BD%E4%BB%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -501,7 +877,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/15/vue-nextTick%E7%9A%84%E4%BD%9C%E7%94%A8/" class="post-title-link" itemprop="url">vue-$nextTick的作用</a>
+          <a href="/2021/10/20/vue%E6%89%8B%E5%8A%A8%E9%85%8D%E7%BD%AEpackage-json%E4%B8%AD%E7%9A%84%E6%89%93%E5%8C%85%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">vue手动配置package.json中的打包命令</a>
         </h2>
 
         <div class="post-meta-container">
@@ -513,7 +889,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2021-06-15 09:37:49 / Modified: 10:25:45" itemprop="dateCreated datePublished" datetime="2021-06-15T09:37:49+08:00">2021-06-15</time>
+      <time title="Created: 2021-10-20 16:58:30 / Modified: 17:19:12" itemprop="dateCreated datePublished" datetime="2021-10-20T16:58:30+08:00">2021-10-20</time>
     </span>
 
   
@@ -526,9 +902,90 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="nextTick的作用"><a href="#nextTick的作用" class="headerlink" title="$nextTick的作用"></a>$nextTick的作用</h2><p>$nextTick是在【下次DOM更新循环】结束之后执行的【延迟回调】，在修改数据之后使用$nextTick,则可以在回调中获取更新后的DOM.</p>
-<p>vue中实现响应式并不是数据发生变化之后DOM就立即变化的，而是按照一定的策略（同一事件循环的所有数据变化完成后，再异步进行视图更新）来进行DOM更新的</p>
-<p>【$nextTick的实现】中使用到了【ES6的Promise】及【HTML5的MutationObserver】，当环境不支持时，使用【setTimeout(fn, 0)】替代。上述的三种方法，均为【异步API】。其中MutationObserver类似事件，又有所区别；事件是同步触发，其为异步触发，即DOM发生变化之后，不会立刻触发，等当前所有的DOM操作都结束后触发</p>
+          <h1 id="vue手动配置package-json中的打包命令"><a href="#vue手动配置package-json中的打包命令" class="headerlink" title="vue手动配置package.json中的打包命令"></a>vue手动配置package.json中的打包命令</h1><p>pacakage.json</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    ...</span><br><span class="line">    &quot;build&quot;: &quot;vue-cli-service build&quot;, &#x2F;&#x2F; 打包命令-打包整个项目</span><br><span class="line">    &quot;custBuild&quot;: &quot;vue-cli-service build --target lib --name vue-msg-cwj --dest lib src&#x2F;plugins&#x2F;index.js&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参数解析"><a href="#参数解析" class="headerlink" title="参数解析"></a>参数解析</h2><h3 id="vue-cli-service-serve-启动一个开发服务器"><a href="#vue-cli-service-serve-启动一个开发服务器" class="headerlink" title="vue-cli-service serve  启动一个开发服务器"></a>vue-cli-service serve  启动一个开发服务器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(基于 webpack-dev-server) 并附带开箱即用的模块热重载 (Hot-Module-Replacement)</span><br><span class="line"></span><br><span class="line">用法：vue-cli-service serve [options] [entry]</span><br><span class="line"></span><br><span class="line">选项：</span><br><span class="line">  --open    在服务器启动时打开浏览器</span><br><span class="line">  --copy    在服务器启动时将 URL 复制到剪切版</span><br><span class="line">  --mode    指定环境模式 (默认值：development)</span><br><span class="line">  --host    指定 host (默认值：0.0.0.0)</span><br><span class="line">  --port    指定 port (默认值：8080)</span><br><span class="line">  --https   使用 https (默认值：false)</span><br></pre></td></tr></table></figure>
+<h3 id="vue-cli-service-build-打包命令"><a href="#vue-cli-service-build-打包命令" class="headerlink" title="vue-cli-service build 打包命令"></a>vue-cli-service build 打包命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">用法：vue-cli-service build [options] [entry|pattern]</span><br><span class="line"></span><br><span class="line">选项：</span><br><span class="line">  --mode        指定环境模式 (默认值：production)</span><br><span class="line">  --dest        指定输出目录 (默认值：dist)</span><br><span class="line">  --modern      面向现代浏览器带自动回退地构建应用</span><br><span class="line">  --target      app | lib | wc | wc-async (默认值：app)</span><br><span class="line">  --name        库或 Web Components 模式下的名字 (默认值：package.json 中的 &quot;name&quot; 字段或入口文件名)</span><br><span class="line">  --no-clean    在构建项目之前不清除目标目录</span><br><span class="line">  --report      生成 report.html 以帮助分析包内容</span><br><span class="line">  --report-json 生成 report.json 以帮助分析包内容</span><br><span class="line">  --watch       监听文件变化</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/11/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/11/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/" class="post-title-link" itemprop="url">Untitled</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-08-11 16:54:49 / Modified: 16:55:17" itemprop="dateCreated datePublished" datetime="2021-08-11T16:54:49+08:00">2021-08-11</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="前端学习路线"><a href="#前端学习路线" class="headerlink" title="前端学习路线"></a>前端学习路线</h1><p>第一步: 掌握HTML/CSS<br>这是你最初必须掌握的<br>是网站的构建元素<br>没得选!<br>随着你前端的学习进程,熟练掌握<br>HTML/CSS简单易学</p>
+<p>第二步: 使用基础工具<br>文本编辑器: Notepad2 / Sublime Text / <a target="_blank" rel="noopener" href="http://atom.io/">http://Atom.io</a> / IDE<br>图像编辑器:Photoshop, Illustrator, GIMP, Something slse<br>FTP / SSH 工具 : Filezilla ,Putty<br>好的浏览器: Chrome<br>云盘: Dropbox, Google Drive, Box</p>
+<p>第三步: 学习原生JavaScript<br>原生JavaScript(现阶段不需要理会Node.js 和任何框架)<br>理解数据类型: String, Number, Arrays, Objects, etc<br>理解函数, 条件表达式, 循环,操作符等<br>事件处理<br>JSON(JavaScript Object Notation), JavaScript对象表示法<br>jQuery框架</p>
+<p>第四步:搭建一个基础网站:<br>获取一个虚拟主机账户(Hostgator, InMotion, etc)<br>学习虚拟主机控制系统基础——cPanel (Email ,FTP Setup)<br>通过FPT(文件传输协议)上传你的项目<br>创建域名并和你的主机连接</p>
+<p>第五步:恭喜你! 你现在是一个网页设计师了!——(现阶段还不足以称Web Developer)<br>有能力搭建一个专业的简单网站<br>有能力搭建网页应用的界面<br>能够把一张PSD 转化为基于HTML/CSS的静态网页<br>有在公司上班的实力, 或者选择成为一名自由职业者</p>
+<p>第六步: 思考接下来的侧重点!<br>HTML/CSS框架: Bootstrap, Foudation(建议优先掌握!)<br>服务器端语言: PHP, Ruby…<br>JavaScript框架: React ,Angular<br>数据库: MySQL, PostgreSQL</p>
+<p>第七步: HTML/CSS框架<br>Bootstrap(强烈推荐学习该框架!)<br>Zurb Foundation<br>Skeleton<br>MUI<br>Pure</p>
+<p>第八步: 服务器端编程语言(专注于一个!)<br>PHP(不是最好的语言,但是是最可靠的服务器端语言)<br>Node.js(一款新型, 强大的后台语言)<br>Ruby on Rails (最好的框架,但已经到了瓶颈期)<br>Python(简单易学,但相对于主流语言并不流行)——可现在AI的爆红导致Python最近很火!</p>
+<p>第九步: 数据库(专注于一个!)<br>关系型数据库: MySQL 和 PostgreSQL<br>非机构化数据库: MongoDB 和 CouchDB<br>建议选择一个以下的组合:<br>PHP/ MySQL<br>Node.js/ MongoDB</p>
+<p>第十步: 需要学习的一些端技术<br>Git &amp; Github<br>SSH(安全外壳协议) &amp; Basic Command Line<br>CSS 预编译器: Sass/Less<br>APIS / REST Service<br>HTTPS / SSL</p>
+<p>第十一步: 部署应用<br>专用服务器/ VPS<br>应用云平台: Heroku, Digital Ocean, AWS<br>部署工具<br>Linux命令行<br>维护和升级</p>
+<p>第十二步:恭喜你,你现在成为一名网页开发者了!<br>能够创造出网页引用<br>能构建后端APIs<br>能连接服务器<br>能够管理数据库<br>你的选择: 得到一份很好的工作 / 成为自由职业者 / 开始一项事业</p>
+<p>第十三步:编程框架<br>JavaScript框架: React, Angular 2, Vue.js, Express(后端)<br>PHP框架: Laravel, Codeigniter, Symfony<br>Ruby on rails<br>MVC框架: Routing, Database Mapping, Helpers, Data Binding, Templating &amp; UI</p>
+<p>第十四步: 内容管理系统(基于PHP)<br>Wordpress(强烈推荐), Joomla, Drupal<br>有利用客户更新和维护<br>丰富的插件<br>开发速度快<br>模板的功能有限</p>
+<p>第十五步: 移动App发展<br>这是未来的趋势<br>你不需要学习Java 和C语言!<br>你只需要掌握JavaScript!我们可以使用React Native, Ionic, Cordova 等框架来构建移动App</p>
+<p>第十六步:现阶段,现在你需要考虑什么?<br>专注于你的事业<br>回去学习更多的数据结构<br>跟进现在的新技术<br>学习一门高级语言,类似于Java, C语言</p>
 
       
     </div>
@@ -555,7 +1012,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/10/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E7%9F%A5%E8%AF%86%E7%82%B9%E6%A2%B3%E7%90%86/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/11/VR%E7%9C%8B%E6%88%BF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -568,7 +1025,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/10/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95%E7%9F%A5%E8%AF%86%E7%82%B9%E6%A2%B3%E7%90%86/" class="post-title-link" itemprop="url">前端面试知识点梳理</a>
+          <a href="/2021/08/11/VR%E7%9C%8B%E6%88%BF/" class="post-title-link" itemprop="url">Untitled</a>
         </h2>
 
         <div class="post-meta-container">
@@ -580,7 +1037,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2021-06-10 15:28:02 / Modified: 15:39:47" itemprop="dateCreated datePublished" datetime="2021-06-10T15:28:02+08:00">2021-06-10</time>
+      <time title="Created: 2021-08-11 16:00:38 / Modified: 16:12:44" itemprop="dateCreated datePublished" datetime="2021-08-11T16:00:38+08:00">2021-08-11</time>
     </span>
 
   
@@ -593,82 +1050,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="前端面试知识点梳理"><a href="#前端面试知识点梳理" class="headerlink" title="前端面试知识点梳理"></a>前端面试知识点梳理</h1><h2 id="微信小程序"><a href="#微信小程序" class="headerlink" title="微信小程序"></a>微信小程序</h2><p>  <a target="_blank" rel="noopener" href="https://juejin.cn/post/6886267464506671118">微信小程序</a></p>
-<h2 id="uniapps"><a href="#uniapps" class="headerlink" title="uniapps"></a>uniapps</h2>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/09/vue-%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/09/vue-%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">vue-图片懒加载的实现原理</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-06-09 15:07:21" itemprop="dateCreated datePublished" datetime="2021-06-09T15:07:21+08:00">2021-06-09</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-10 09:24:59" itemprop="dateModified" datetime="2021-06-10T09:24:59+08:00">2021-06-10</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="vue-图片懒加载的实现原理"><a href="#vue-图片懒加载的实现原理" class="headerlink" title="vue-图片懒加载的实现原理"></a>vue-图片懒加载的实现原理</h1><h3 id="图片懒加载的优点"><a href="#图片懒加载的优点" class="headerlink" title="图片懒加载的优点"></a>图片懒加载的优点</h3><ul>
-<li>提升页面渲染效率，避免大量图片加载造成页面卡顿。</li>
-<li>按需加载，减少无效的图片加载，节约网络资源。</li>
-</ul>
-<h3 id="图片懒加载插件-vue-lazyload"><a href="#图片懒加载插件-vue-lazyload" class="headerlink" title="图片懒加载插件   vue-lazyload"></a>图片懒加载插件   vue-lazyload</h3><h3 id="自定义指令的方式实现图片懒加载"><a href="#自定义指令的方式实现图片懒加载" class="headerlink" title="自定义指令的方式实现图片懒加载"></a>自定义指令的方式实现图片懒加载</h3><p>首先，我们会先定义一个变量(let imgs = [])存储所有的图片数据，然后准备一张占位图，为每一张图片都默认使用的是占位图；接着监听图片滚动事件（scroll）去触发(eventBus.$emit())事件总线中的注册的”isScroll”事件；为了避免滚动过程中加载不必要的图片，所以需要做防抖处理，待滚动停止后的某个时间点再执行图片加载函数（根据图片是否在图片容器可视区内）。然后加载过了的图片需要从imgs中清除，避免二次加载</p>
+          <h1 id="VR-看房"><a href="#VR-看房" class="headerlink" title="VR 看房"></a>VR 看房</h1><p>实现web前端VR全景看房的三种方案，threejs，css3d（作者不维护了），pano2vr</p>
 
       
     </div>
@@ -695,7 +1077,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/09/vue-%E5%A4%9A%E4%B8%AA%E7%BB%84%E4%BB%B6%E5%85%A8%E5%B1%80%E6%B3%A8%E5%86%8C%EF%BC%8C%E5%8D%B3%E6%A8%A1%E6%8B%9F%E7%AC%AC%E4%B8%89%E6%96%B9UI%E5%BA%93%E7%9A%84%E6%B3%A8%E5%86%8C%E6%A8%A1%E5%BC%8F/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/09/axios%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8promise%E6%97%A0%E7%97%9B%E5%88%B7%E6%96%B0token/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -708,158 +1090,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/09/vue-%E5%A4%9A%E4%B8%AA%E7%BB%84%E4%BB%B6%E5%85%A8%E5%B1%80%E6%B3%A8%E5%86%8C%EF%BC%8C%E5%8D%B3%E6%A8%A1%E6%8B%9F%E7%AC%AC%E4%B8%89%E6%96%B9UI%E5%BA%93%E7%9A%84%E6%B3%A8%E5%86%8C%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">vue-多个组件全局注册，即模拟第三方UI库的注册模式</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-06-09 10:38:19" itemprop="dateCreated datePublished" datetime="2021-06-09T10:38:19+08:00">2021-06-09</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-15 09:36:49" itemprop="dateModified" datetime="2021-06-15T09:36:49+08:00">2021-06-15</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="多个组件全局注册，即模拟第三方UI库的注册模式"><a href="#多个组件全局注册，即模拟第三方UI库的注册模式" class="headerlink" title="多个组件全局注册，即模拟第三方UI库的注册模式"></a>多个组件全局注册，即模拟第三方UI库的注册模式</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 建一个收集组件的js文件，如 components_index.js</span><br><span class="line">import ComponentA from &#39;.&#x2F;components&#x2F;compnentA.vue&#39;</span><br><span class="line">import ComponentB from &#39;.&#x2F;components&#x2F;componentB.vue&#39;</span><br><span class="line"></span><br><span class="line">const components &#x3D; [</span><br><span class="line">    ComponentA,</span><br><span class="line">    ComponentB</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; Vue.use 必须保证注册的组件有 install 函数</span><br><span class="line">const install &#x3D; (vue) &#x3D;&gt; &#123;  </span><br><span class="line">    components.map(component &#x3D;&gt; &#123;</span><br><span class="line">　　　　&#x2F;&#x2F; 注意这里的 component.name 是每个组件中export default自定义的 name，这个 name 可以在项目vue组件中直接使用</span><br><span class="line">       Vue.component(component.name, component);  </span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 注：导出，供 Vue.use注册，其实 Veu.use()是调用Vue.js中的install函数，然后将我们暴露的install执行，真正的注册还是 Vue.component()</span><br><span class="line">&#x2F;&#x2F; 第三方库基本以这种方式注册他们的各个组件，直接使用 Vue.use(element)，其内部已经有 instatll &#x3D;&gt; Vue.component()</span><br><span class="line">export default &#123;</span><br><span class="line">    install,   &#x2F;&#x2F; install 必须暴露，供vue去调用，检测并注册组件</span><br><span class="line">    ComponentA, &#x2F;&#x2F; 按需加载</span><br><span class="line">    ComponentB  &#x2F;&#x2F; 按需加载</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 入口文件，如 main.js</span><br><span class="line">import Vue from &#39;vue&#39;</span><br><span class="line">import All_ui_unit from &#39;.&#x2F;components&#x2F;components_index.js&#39;;</span><br><span class="line"></span><br><span class="line">Vue.use(All_ui_unit );</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/08/vue%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/08/vue%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4/" class="post-title-link" itemprop="url">vue自定义指令</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-06-08 15:34:47" itemprop="dateCreated datePublished" datetime="2021-06-08T15:34:47+08:00">2021-06-08</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-09 10:39:53" itemprop="dateModified" datetime="2021-06-09T10:39:53+08:00">2021-06-09</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="vue自定义指令"><a href="#vue自定义指令" class="headerlink" title="vue自定义指令"></a>vue自定义指令</h1><p>指令本质上是装饰器，是 vue 对 HTML 元素的扩展，给 HTML 元素增加自定义功能。vue 编译 DOM 时，会找到指令对象，执行指令的相关方法</p>
-<p>自定义指令有五个生命周期（也叫钩子函数），分别是 bind、inserted、update、componentUpdated、unbind</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1. bind：只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置。</span><br><span class="line"></span><br><span class="line">2. inserted：被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。</span><br><span class="line"></span><br><span class="line">3. update：被绑定于元素所在的模板更新时调用，而无论绑定值是否变化。通过比较更新前后的绑定值，可以忽略不必要的模板更新。</span><br><span class="line"></span><br><span class="line">4. componentUpdated：被绑定元素所在模板完成一次更新周期时调用。</span><br><span class="line"></span><br><span class="line">5. unbind：只调用一次，指令与元素解绑时调用。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="自定义指令的注册"><a href="#自定义指令的注册" class="headerlink" title="自定义指令的注册"></a>自定义指令的注册</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Vue.directive(&quot;hello&quot;, &#123;</span><br><span class="line">    &#x2F;&#x2F; 只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置</span><br><span class="line">    bind: function(el, bingind, vnode) &#123;</span><br><span class="line">        console.log(options)</span><br><span class="line">        el.style[&quot;color&quot;] &#x3D; bingind.value;</span><br><span class="line">        console.log(&quot;1-bind&quot;);</span><br><span class="line">    &#125;,</span><br><span class="line">    &#x2F;&#x2F; 被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)</span><br><span class="line">    inserted: function() &#123;</span><br><span class="line">        console.log(&quot;2-insert&quot;);</span><br><span class="line">    &#125;,</span><br><span class="line">    &#x2F;&#x2F; 被绑定于元素所在的模板更新时调用，而无论绑定值是否变化。通过比较更新前后的绑定值，可以忽略不必要的模板更新</span><br><span class="line">    update: function() &#123;</span><br><span class="line">        console.log(&quot;3-update&quot;);</span><br><span class="line">    &#125;,</span><br><span class="line">    &#x2F;&#x2F; 被绑定元素所在模板完成一次更新周期时调用</span><br><span class="line">    componentUpdated: function() &#123;</span><br><span class="line">        console.log(&#39;4 - componentUpdated&#39;);</span><br><span class="line">    &#125;,</span><br><span class="line">    &#x2F;&#x2F; 只调用一次，指令与元素解绑时调用。</span><br><span class="line">    unbind: function() &#123;</span><br><span class="line">        console.log(&#39;5 - unbind&#39;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="怎么将自定义指令注册到全局"><a href="#怎么将自定义指令注册到全局" class="headerlink" title="怎么将自定义指令注册到全局"></a>怎么将自定义指令注册到全局</h2><ul>
-<li>先新建一个js文件，命名为directive.js。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; directive.js</span><br><span class="line">export default (vue) &#x3D;&gt; &#123;       </span><br><span class="line">    &#x2F;&#x2F; 自定义全局自动聚焦</span><br><span class="line">    vue.directive(&#39;focus&#39;, &#123;</span><br><span class="line">        inserted: function (el) &#123;      </span><br><span class="line">            el.focus()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>在main.js中注册指令 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;注册自定义指令</span><br><span class="line">import Vue from &#39;vue&#39;</span><br><span class="line">import Directive  from &#39;.&#x2F;directive&#x2F;index.js&#39;   &#x2F;&#x2F;因为我把自定义指令封装成一个函数了，</span><br><span class="line">&#x2F;&#x2F;只要调用它，传入Vue就行啦！</span><br><span class="line">Directive(Vue)</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/08/uniapp%E7%9A%84%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/08/uniapp%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">uniapp的使用</a>
+          <a href="/2021/07/09/axios%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8promise%E6%97%A0%E7%97%9B%E5%88%B7%E6%96%B0token/" class="post-title-link" itemprop="url">axios如何利用promise无痛刷新token</a>
         </h2>
 
         <div class="post-meta-container">
@@ -871,7 +1102,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2021-06-08 11:22:10 / Modified: 11:37:45" itemprop="dateCreated datePublished" datetime="2021-06-08T11:22:10+08:00">2021-06-08</time>
+      <time title="Created: 2021-07-09 15:06:25 / Modified: 15:46:46" itemprop="dateCreated datePublished" datetime="2021-07-09T15:06:25+08:00">2021-07-09</time>
     </span>
 
   
@@ -884,101 +1115,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="uniapp的使用"><a href="#uniapp的使用" class="headerlink" title="uniapp的使用"></a>uniapp的使用</h1><p>  uniapp是一个跨平台的框架。可以用于开发小程序、H5、原生app等等。</p>
-<p>  上手：</p>
-<ul>
-<li>通过使用HbuilderX(编辑器)可视化页面创建项目</li>
-<li>直接在编辑器中新建项目，然后选择uni-ui项目内置项目模板</li>
-<li>运行项目的话，则是直接通过编辑器的运行功能运行对应的设备即可</li>
-<li>在编辑器中选择发行，即可打包发布</li>
-</ul>
-<p>  注意：</p>
-<ul>
-<li><p>pages.json 文件用来对 uni-app 进行全局配置，决定页面文件的路径、窗口样式、原生的导航栏、底部的原生tabbar ;</p>
-</li>
-<li><p>pages.json类似微信小程序中app.json的页面管理部分。注意定位权限申请等原属于app.json的内容，在uni-app中是在manifest中配置</p>
-</li>
-<li><p>manifest.json 文件是应用的配置文件，用于指定应用的名称、图标、权限等。HBuilderX 创建的工程此文件在根目录，CLI 创建的工程此文件在 src 目录</p>
-</li>
-</ul>
-<p>生命周期：</p>
-<ul>
-<li>应用生命周期<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 应用生命周期仅可在App.vue中监听，在其它页面监听无效。</span><br><span class="line">onLaunch	当uni-app 初始化完成时触发（全局只触发一次）</span><br><span class="line"></span><br><span class="line">onShow	当 uni-app 启动，或从后台进入前台显示</span><br><span class="line"></span><br><span class="line">onHide	当 uni-app 从前台进入后台</span><br><span class="line"></span><br><span class="line">onError	当 uni-app 报错时触发</span><br><span class="line"></span><br><span class="line">onUniNViewMessage	对 nvue 页面发送的数据进行监听，可参考 nvue 向 vue 通讯</span><br><span class="line"></span><br><span class="line">onUnhandledRejection	对未处理的 Promise 拒绝事件监听函数（2.8.1+）</span><br><span class="line"></span><br><span class="line">onPageNotFound	页面不存在监听函数</span><br><span class="line"></span><br><span class="line">onThemeChange	监听系统主题变化</span><br></pre></td></tr></table></figure></li>
-<li>页面生命周期<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 常用的</span><br><span class="line">onLoad	监听页面加载，其参数为上个页面传递的数据，参数类型为 Object（用于页面传参），参考示例		</span><br><span class="line">onShow	监听页面显示。页面每次出现在屏幕上都触发，包括从下级页面点返回露出当前页面		</span><br><span class="line">onReady	监听页面初次渲染完成。注意如果渲染速度快，会在页面进入动画完成前触发		</span><br><span class="line">onHide	监听页面隐藏</span><br><span class="line">onPageScroll	监听页面滚动，参数为Object</span><br><span class="line">onPullDownRefresh	监听用户下拉动作，一般用于下拉刷新，参考示例		</span><br><span class="line">onReachBottom	页面滚动到底部的事件（不是scroll-view滚到底），常用于下拉下一页数据。具体见下方注意事项</span><br></pre></td></tr></table></figure></li>
-<li>组件生命周期(vue的生命周期)</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/08/H5%E4%B8%8EAPP%E7%9A%84%E5%8C%BA%E5%88%AB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/08/H5%E4%B8%8EAPP%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">H5与APP的区别</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-06-08 11:15:12 / Modified: 11:21:34" itemprop="dateCreated datePublished" datetime="2021-06-08T11:15:12+08:00">2021-06-08</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="H5与APP的区别"><a href="#H5与APP的区别" class="headerlink" title="H5与APP的区别"></a>H5与APP的区别</h1><p>1.开发不同</p>
-<p>  app开发是基于移动操作系统的，比如安卓，ios；而H5是在运行在浏览器的应用，不受移动操作系统的限制</p>
-<p>2.运行能力有差距</p>
-<p>  移动app可以完全发挥手机的硬件优势，比如摄像头，本地信息等；而H5只能使用少量的硬件功能</p>
-<p>3.获取来源不同</p>
-<p>  移动app是需要下载安装到本地才能使用；而H5只需要手机可以访问浏览器即可使用</p>
-<p>4.存储容量不同</p>
-<p>  移动app是安装到手机本地的，使用的手机的内存容量；而H5是在浏览器运行的，消耗的是服务器的内存，缺点是对网络的要求较高</p>
+          <h1 id="axios如何利用promise无痛刷新token"><a href="#axios如何利用promise无痛刷新token" class="headerlink" title="axios如何利用promise无痛刷新token"></a>axios如何利用promise无痛刷新token</h1><h2 id="方法一：-利用axios拦截器在请求之前拦截"><a href="#方法一：-利用axios拦截器在请求之前拦截" class="headerlink" title="方法一： 利用axios拦截器在请求之前拦截"></a>方法一： 利用axios拦截器在请求之前拦截</h2><p>在请求之前拦截的话，则需要让后端在刷新token的接口中返回一个失效时间段，比如一个小时3000秒。（放过刷新token接口以及登录接口）根据当前时间与计算之后的失效时间做比较，如果当前时间大于失效时间，就说明需要调用重新刷新token。为了防止多次个请求进来导致多次刷新token，我们需要设置一个唯一标识来处理。为了处理在token已经过期或者刷新token的时候，还有请求发起，此时需要让后面的请求等一等，等到token刷新接口结束之后再真正发起，此时需要借助promise来实现，因为promise如果不返回的话，状态会一直是pending.</p>
+<p>完整代码：在请求之前拦截<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">import axios from &#39;axios&#39;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 从localStorage中获取token，token存的是object信息，有tokenExpireTime和token两个字段</span><br><span class="line">function getToken () &#123;</span><br><span class="line">  let tokenObj &#x3D; &#123;&#125;</span><br><span class="line">  try &#123;</span><br><span class="line">    tokenObj &#x3D; storage.get(&#39;token&#39;)</span><br><span class="line">    tokenObj &#x3D; tokenObj ? JSON.parse(tokenObj) : &#123;&#125;</span><br><span class="line">  &#125; catch &#123;</span><br><span class="line">    console.error(&#39;get token from localStorage error&#39;)</span><br><span class="line">  &#125;</span><br><span class="line">  return tokenObj</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function refreshToken () &#123;</span><br><span class="line">    &#x2F;&#x2F; instance是当前request.js中已创建的axios实例</span><br><span class="line">    return instance.post(&#39;&#x2F;refreshtoken&#39;).then(res &#x3D;&gt; res.data)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 给实例添加一个setToken方法，用于登录后方便将最新token动态添加到header，同时将token保存在localStorage中</span><br><span class="line">instance.setToken &#x3D; (obj) &#x3D;&gt; &#123;</span><br><span class="line">  instance.defaults.headers[&#39;X-Token&#39;] &#x3D; obj.token</span><br><span class="line">  window.localStorage.setItem(&#39;token&#39;, JSON.stringify(obj)) &#x2F;&#x2F; 注意这里需要变成字符串后才能放到localStorage中</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">instance.interceptors.request.use((config) &#x3D;&gt; &#123;</span><br><span class="line">  const tokenObj &#x3D; getToken()</span><br><span class="line">  &#x2F;&#x2F; 添加请求头</span><br><span class="line">  config.headers[&#39;X-Token&#39;] &#x3D; tokenObj.token</span><br><span class="line">  &#x2F;&#x2F; 登录接口和刷新token接口绕过</span><br><span class="line">  if (config.url.indexOf(&#39;&#x2F;rereshToken&#39;) &gt;&#x3D; 0 || config.url.indexOf(&#39;&#x2F;login&#39;) &gt;&#x3D; 0) &#123;</span><br><span class="line">    return config</span><br><span class="line">  &#125;</span><br><span class="line">  if (tokenObj.token &amp;&amp; tokenObj.tokenExpireTime) &#123;</span><br><span class="line">    const now &#x3D; Date.now()</span><br><span class="line">    if (now &gt;&#x3D; tokenObj.tokenExpireTime) &#123;</span><br><span class="line">      &#x2F;&#x2F; 立即刷新token</span><br><span class="line">      if (!isRefreshing) &#123;</span><br><span class="line">        console.log(&#39;刷新token ing&#39;)</span><br><span class="line">        isRefreshing &#x3D; true</span><br><span class="line">        refreshToken().then(res &#x3D;&gt; &#123;</span><br><span class="line">          const &#123; token, tokenExprieIn &#125; &#x3D; res.data</span><br><span class="line">          const tokenExpireTime &#x3D; now + tokenExprieIn * 1000</span><br><span class="line">          instance.setToken(&#123; token, tokenExpireTime &#125;)</span><br><span class="line">          isRefreshing &#x3D; false</span><br><span class="line">          return token</span><br><span class="line">        &#125;).then((token) &#x3D;&gt; &#123;</span><br><span class="line">          console.log(&#39;刷新token成功，执行队列&#39;)</span><br><span class="line">          requests.forEach(cb &#x3D;&gt; cb(token))</span><br><span class="line">          &#x2F;&#x2F; 执行完成后，清空队列</span><br><span class="line">          requests &#x3D; []</span><br><span class="line">        &#125;).catch(res &#x3D;&gt; &#123;</span><br><span class="line">          console.error(&#39;refresh token error: &#39;, res)</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">      const retryOriginalRequest &#x3D; new Promise((resolve) &#x3D;&gt; &#123;</span><br><span class="line">        requests.push((token) &#x3D;&gt; &#123;</span><br><span class="line">          &#x2F;&#x2F; 因为config中的token是旧的，所以刷新token后要将新token传进来</span><br><span class="line">          config.headers[&#39;X-Token&#39;] &#x3D; token</span><br><span class="line">          resolve(config)</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;)</span><br><span class="line">      return retryOriginalRequest</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return config</span><br><span class="line">&#125;, (error) &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; Do something with request error</span><br><span class="line">  return Promise.reject(error)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 请求返回后拦截</span><br><span class="line">instance.interceptors.response.use(response &#x3D;&gt; &#123;</span><br><span class="line">  const &#123; code &#125; &#x3D; response.data</span><br><span class="line">  if (code &#x3D;&#x3D;&#x3D; 1234) &#123;</span><br><span class="line">    &#x2F;&#x2F; token过期了，直接跳转到登录页 </span><br><span class="line">    window.location.href &#x3D; &#39;&#x2F;&#39;</span><br><span class="line">  &#125;</span><br><span class="line">  return response</span><br><span class="line">&#125;, error &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;catch&#39;, error)</span><br><span class="line">  return Promise.reject(error)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">export default instance</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;作者：fengxianqi</span><br><span class="line">&#x2F;&#x2F;链接：https:&#x2F;&#x2F;juejin.cn&#x2F;post&#x2F;6844903993274007565</span><br><span class="line">&#x2F;&#x2F;来源：掘金</span><br><span class="line">&#x2F;&#x2F;著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</span><br></pre></td></tr></table></figure></p>
+<h2 id="方法二：利用axios拦截器在请求之后拦截"><a href="#方法二：利用axios拦截器在请求之后拦截" class="headerlink" title="方法二：利用axios拦截器在请求之后拦截"></a>方法二：利用axios拦截器在请求之后拦截</h2><p>与后端约定token过期会返回的数据结构，根据数据结构判断是否token过期，过期则刷新token。<br>为了防止多次刷新token，需要使用一个唯一标识来标记当前是否在刷新token的状态。如果正在刷新则不再调用刷新token的接口。同时发起两个或以上的请求时，其他接口如何重试？先将这个请求存到一个数组队列中，想办法让这个请求处于等待中，一直等到刷新token后再逐个重试清空请求队列。<br>那么如何做到让这个请求处于等待中呢？为了解决这个问题，我们得借助Promise。将请求存进队列中后，同时返回一个Promise，让这个Promise一直处于Pending状态（即不调用resolve），此时这个请求就会一直等啊等，只要我们不执行resolve，这个请求就会一直在等待。当刷新请求的接口返回来后，我们再调用resolve</p>
+<p>完整代码：在请求之后拦截<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">import axios from &#39;axios&#39;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 从localStorage中获取token</span><br><span class="line">function getLocalToken () &#123;</span><br><span class="line">    const token &#x3D; window.localStorage.getItem(&#39;token&#39;)</span><br><span class="line">    return token</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 给实例添加一个setToken方法，用于登录后将最新token动态添加到header，同时将token保存在localStorage中</span><br><span class="line">instance.setToken &#x3D; (token) &#x3D;&gt; &#123;</span><br><span class="line">  instance.defaults.headers[&#39;X-Token&#39;] &#x3D; token</span><br><span class="line">  window.localStorage.setItem(&#39;token&#39;, token)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function refreshToken () &#123;</span><br><span class="line">    &#x2F;&#x2F; instance是当前request.js中已创建的axios实例</span><br><span class="line">    return instance.post(&#39;&#x2F;refreshtoken&#39;).then(res &#x3D;&gt; res.data)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 创建一个axios实例</span><br><span class="line">const instance &#x3D; axios.create(&#123;</span><br><span class="line">  baseURL: &#39;&#x2F;api&#39;,</span><br><span class="line">  timeout: 300000,</span><br><span class="line">  headers: &#123;</span><br><span class="line">    &#39;Content-Type&#39;: &#39;application&#x2F;json&#39;,</span><br><span class="line">    &#39;X-Token&#39;: getLocalToken() &#x2F;&#x2F; headers塞token</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 是否正在刷新的标记</span><br><span class="line">let isRefreshing &#x3D; false</span><br><span class="line">&#x2F;&#x2F; 重试队列，每一项将是一个待执行的函数形式</span><br><span class="line">let requests &#x3D; []</span><br><span class="line"></span><br><span class="line">instance.interceptors.response.use(response &#x3D;&gt; &#123;</span><br><span class="line">  const &#123; code &#125; &#x3D; response.data</span><br><span class="line">  if (code &#x3D;&#x3D;&#x3D; 1234) &#123;</span><br><span class="line">    const config &#x3D; response.config</span><br><span class="line">    if (!isRefreshing) &#123;</span><br><span class="line">      isRefreshing &#x3D; true</span><br><span class="line">      return refreshToken().then(res &#x3D;&gt; &#123;</span><br><span class="line">        const &#123; token &#125; &#x3D; res.data</span><br><span class="line">        instance.setToken(token)</span><br><span class="line">        config.headers[&#39;X-Token&#39;] &#x3D; token</span><br><span class="line">        config.baseURL &#x3D; &#39;&#39;</span><br><span class="line">        &#x2F;&#x2F; 已经刷新了token，将所有队列中的请求进行重试</span><br><span class="line">        requests.forEach(cb &#x3D;&gt; cb(token))</span><br><span class="line">        requests &#x3D; []</span><br><span class="line">        return instance(config)</span><br><span class="line">      &#125;).catch(res &#x3D;&gt; &#123;</span><br><span class="line">        console.error(&#39;refreshtoken error &#x3D;&gt;&#39;, res)</span><br><span class="line">        window.location.href &#x3D; &#39;&#x2F;&#39;</span><br><span class="line">      &#125;).finally(() &#x3D;&gt; &#123;</span><br><span class="line">        isRefreshing &#x3D; false</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      &#x2F;&#x2F; 正在刷新token，将返回一个未执行resolve的promise</span><br><span class="line">      return new Promise((resolve) &#x3D;&gt; &#123;</span><br><span class="line">        &#x2F;&#x2F; 将resolve放进队列，用一个函数形式来保存，等token刷新后直接执行</span><br><span class="line">        requests.push((token) &#x3D;&gt; &#123;</span><br><span class="line">          config.baseURL &#x3D; &#39;&#39;</span><br><span class="line">          config.headers[&#39;X-Token&#39;] &#x3D; token</span><br><span class="line">          resolve(instance(config))</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return response</span><br><span class="line">&#125;, error &#x3D;&gt; &#123;</span><br><span class="line">  return Promise.reject(error)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">export default instance</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -998,7 +1138,7 @@
 
 
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1032,7 +1172,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
