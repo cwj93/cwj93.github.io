@@ -253,7 +253,7 @@
 <p>查看commit历史</p>
 <p>git log<br>git log –summary<br>复制代码</p>
 <p>设置git账号</p>
-<p>git config –global user.name “foo”<br>git config –global user.email <a href="mailto:&#102;&#x6f;&#x6f;&#64;&#103;&#x6d;&#97;&#105;&#108;&#46;&#x63;&#111;&#109;">&#102;&#x6f;&#x6f;&#64;&#103;&#x6d;&#97;&#105;&#108;&#46;&#x63;&#111;&#109;</a>“<br>git config user.name “foo”<br>git config user.email “<a href="mailto:&#102;&#x6f;&#111;&#64;&#103;&#x6d;&#97;&#105;&#108;&#x2e;&#x63;&#x6f;&#x6d;">&#102;&#x6f;&#111;&#64;&#103;&#x6d;&#97;&#105;&#108;&#x2e;&#x63;&#x6f;&#x6d;</a>“<br>复制代码</p>
+<p>git config –global user.name “foo”<br>git config –global user.email <a href="mailto:&#x66;&#111;&#111;&#x40;&#x67;&#x6d;&#x61;&#x69;&#x6c;&#x2e;&#x63;&#111;&#x6d;">&#x66;&#111;&#111;&#x40;&#x67;&#x6d;&#x61;&#x69;&#x6c;&#x2e;&#x63;&#111;&#x6d;</a>“<br>git config user.name “foo”<br>git config user.email “<a href="mailto:&#x66;&#x6f;&#x6f;&#x40;&#x67;&#x6d;&#97;&#x69;&#x6c;&#x2e;&#x63;&#111;&#x6d;">&#x66;&#x6f;&#x6f;&#x40;&#x67;&#x6d;&#97;&#x69;&#x6c;&#x2e;&#x63;&#111;&#x6d;</a>“<br>复制代码</p>
 <p>查看git账号</p>
 <p>git config –global –list<br>git config –local –list<br>复制代码</p>
 <p>仅仅查看某一项的配置</p>
@@ -289,7 +289,7 @@
 <p>删除某一个stash</p>
 <p>git stash drop stash@{0}</p>
 <p>设置远程仓库地址</p>
-<p>git remote set-url origin <a href="mailto:&#103;&#105;&#x74;&#x40;&#102;&#111;&#x6f;&#46;&#x62;&#x61;&#114;&#46;&#x63;&#x6f;&#109;">&#103;&#105;&#x74;&#x40;&#102;&#111;&#x6f;&#46;&#x62;&#x61;&#114;&#46;&#x63;&#x6f;&#109;</a>:baz/helloworld.git</p>
+<p>git remote set-url origin <a href="mailto:&#x67;&#105;&#x74;&#64;&#102;&#111;&#111;&#x2e;&#98;&#x61;&#x72;&#46;&#99;&#111;&#109;">&#x67;&#105;&#x74;&#64;&#102;&#111;&#111;&#x2e;&#98;&#x61;&#x72;&#46;&#99;&#111;&#109;</a>:baz/helloworld.git</p>
 <p>本地创建了新分支，但是orgin没有，push代码前</p>
 <p>git push –set-upstream origin preproduction</p>
 <p>指定tag到远程</p>
@@ -360,7 +360,7 @@
 <p>windows下gitbash支持中文输入：</p>
 <p>1）鼠标左键点击左上角git的logo<br>2）找到options并且切换到text目录，将Character set设置为UTF-8<br>复制代码</p>
 <p>生成ssh-key</p>
-<p>ssh-keygen -t rsa -C “<a href="mailto:&#x67;&#97;&#x6f;&#x6b;&#x61;&#x69;&#50;&#x30;&#x31;&#x30;&#48;&#56;&#x30;&#x31;&#64;&#113;&#x71;&#x2e;&#x63;&#x6f;&#109;">&#x67;&#97;&#x6f;&#x6b;&#x61;&#x69;&#50;&#x30;&#x31;&#x30;&#48;&#56;&#x30;&#x31;&#64;&#113;&#x71;&#x2e;&#x63;&#x6f;&#109;</a>“</p>
+<p>ssh-keygen -t rsa -C “<a href="mailto:&#x67;&#97;&#x6f;&#x6b;&#97;&#105;&#50;&#x30;&#49;&#x30;&#x30;&#x38;&#48;&#x31;&#64;&#113;&#x71;&#46;&#x63;&#111;&#109;">&#x67;&#97;&#x6f;&#x6b;&#97;&#105;&#50;&#x30;&#49;&#x30;&#x30;&#x38;&#48;&#x31;&#64;&#113;&#x71;&#46;&#x63;&#111;&#109;</a>“</p>
 <p>windows查看ssh-key</p>
 <p>/c/Users/frank/.ssh/id_rsa.pub</p>
 <p>mac/linux查看ssh-key</p>
@@ -415,7 +415,7 @@
 <p>tree, commit, blob的区别？</p>
 <p>commit：一个commit肯定会对应一棵树，包含了根tree，author，committer，parent等等一个commit对象的信息。<br>tree：取出一个commit，存放了一个快照，这个快照，对应了当前项目的所有的文件夹及其文件的快照，是特定时间的整个仓库的一个状态；树里可以有blob，也可以有树，因为树是文件夹；根树是最大的树。<br>blob:  与文件名是否相同无关，只要内容相同，就是唯一的blob。<br>复制代码</p>
 <p>一个commit包含了哪些？</p>
-<p>git cat-file -p [commit hash fragment]<br>复制代码<br>包含tree，parent，author和commiter。<br>tree f06f7f36af17cb9098031c66d22a7910c0fa1bac<br>parent 92a55c8a5b1d38d224232ad84b9b728ae77189cb<br>parent eda632a1f2a3ea049c5f5268f6b2f064b71898ce<br>author FrankKai <a href="mailto:&#x67;&#x61;&#111;&#107;&#97;&#105;&#50;&#x30;&#49;&#x30;&#48;&#x38;&#48;&#49;&#64;&#x67;&#x6d;&#97;&#x69;&#108;&#x2e;&#99;&#x6f;&#109;">&#x67;&#x61;&#111;&#107;&#97;&#105;&#50;&#x30;&#49;&#x30;&#48;&#x38;&#48;&#49;&#64;&#x67;&#x6d;&#97;&#x69;&#108;&#x2e;&#99;&#x6f;&#109;</a> 1548139120 +0800<br>committer FrankKai <a href="mailto:&#x67;&#97;&#x6f;&#107;&#x61;&#x69;&#50;&#x30;&#49;&#x30;&#x30;&#56;&#x30;&#49;&#64;&#x67;&#109;&#x61;&#105;&#108;&#46;&#99;&#111;&#109;">&#x67;&#97;&#x6f;&#107;&#x61;&#x69;&#50;&#x30;&#49;&#x30;&#x30;&#56;&#x30;&#49;&#64;&#x67;&#109;&#x61;&#105;&#108;&#46;&#99;&#111;&#109;</a> 1548139120 +0800</p>
+<p>git cat-file -p [commit hash fragment]<br>复制代码<br>包含tree，parent，author和commiter。<br>tree f06f7f36af17cb9098031c66d22a7910c0fa1bac<br>parent 92a55c8a5b1d38d224232ad84b9b728ae77189cb<br>parent eda632a1f2a3ea049c5f5268f6b2f064b71898ce<br>author FrankKai <a href="mailto:&#x67;&#x61;&#111;&#107;&#x61;&#105;&#x32;&#48;&#x31;&#48;&#48;&#56;&#48;&#49;&#64;&#x67;&#x6d;&#x61;&#105;&#x6c;&#x2e;&#x63;&#111;&#109;">&#x67;&#x61;&#111;&#107;&#x61;&#105;&#x32;&#48;&#x31;&#48;&#48;&#56;&#48;&#49;&#64;&#x67;&#x6d;&#x61;&#105;&#x6c;&#x2e;&#x63;&#111;&#109;</a> 1548139120 +0800<br>committer FrankKai <a href="mailto:&#103;&#x61;&#111;&#107;&#97;&#105;&#50;&#x30;&#x31;&#48;&#x30;&#56;&#48;&#49;&#x40;&#x67;&#x6d;&#x61;&#x69;&#108;&#x2e;&#99;&#111;&#109;">&#103;&#x61;&#111;&#107;&#97;&#105;&#50;&#x30;&#x31;&#48;&#x30;&#56;&#48;&#49;&#x40;&#x67;&#x6d;&#x61;&#x69;&#108;&#x2e;&#99;&#111;&#109;</a> 1548139120 +0800</p>
 <p>Merge branch ‘feature/chatBreakChange’ into prerelease</p>
 <h1 id="Conflicts"><a href="#Conflicts" class="headerlink" title="Conflicts:"></a>Conflicts:</h1><h1 id="src-api-chat-js"><a href="#src-api-chat-js" class="headerlink" title="src/api/chat.js"></a>src/api/chat.js</h1><p>复制代码</p>
 <p>一个tree包含了哪些？</p>
