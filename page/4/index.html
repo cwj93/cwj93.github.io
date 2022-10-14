@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-count">59</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -185,6 +185,557 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/07/ES6%E4%B8%AD%E7%9A%84%E6%95%B0%E7%BB%84%E4%BB%A5%E5%8F%8A%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/07/ES6%E4%B8%AD%E7%9A%84%E6%95%B0%E7%BB%84%E4%BB%A5%E5%8F%8A%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">ES6中的数组以及对象的方法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-06-07 14:25:41 / Modified: 15:13:58" itemprop="dateCreated datePublished" datetime="2021-06-07T14:25:41+08:00">2021-06-07</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="ES6中的数组以及对象的方法"><a href="#ES6中的数组以及对象的方法" class="headerlink" title="ES6中的数组以及对象的方法"></a>ES6中的数组以及对象的方法</h1><h2 id="ES6-对象"><a href="#ES6-对象" class="headerlink" title="ES6 对象"></a>ES6 对象</h2><p>  es6对象中有两个新的方法，分别是Object.assign(),以及Object.is();</p>
+<ul>
+<li><p>Object.assign(target, source_1, ···)</p>
+<ul>
+<li>用于将源对象的所有可枚举属性复制到目标对象中。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let target &#x3D; &#123;a: 1&#125;;</span><br><span class="line">let object2 &#x3D; &#123;b: 2&#125;;</span><br><span class="line">let object3 &#x3D; &#123;c: 3&#125;;</span><br><span class="line">let object4 &#x3D; &#123;c: 3, d: 4&#125;;</span><br><span class="line">Object.assign(target,object2,object3);  </span><br><span class="line">&#x2F;&#x2F; 第一个参数是目标对象，后面的参数是源对象</span><br><span class="line">target;  &#x2F;&#x2F; &#123;a: 1, b: 2, c: 3, d: 4&#125;</span><br></pre></td></tr></table></figure></li>
+<li>null 和 undefined 不能转化为对象，所以会报错<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; TypeError: Cannot convert undefined or null to object</span><br><span class="line">Object.assign(null);       </span><br><span class="line">&#x2F;&#x2F; TypeError: Cannot convert undefined or null to object</span><br><span class="line">Object.assign(undefined);  </span><br></pre></td></tr></table></figure></li>
+<li>assign 的属性拷贝是浅拷贝<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">let sourceObj &#x3D; &#123; a: &#123; b: 1&#125;&#125;;</span><br><span class="line">let targetObj &#x3D; &#123;c: 3&#125;;</span><br><span class="line">Object.assign(targetObj, sourceObj);</span><br><span class="line">targetObj.a.b &#x3D; 2;</span><br><span class="line">sourceObj.a.b;  &#x2F;&#x2F; 2</span><br></pre></td></tr></table></figure></li>
+<li>数组的处理: 会将数组处理成对象，所以先将 [2,3] 转为 {0:2,1:3} ，然后再进行属性复制，所以源对象的 0 号属性覆盖了目标对象的 0。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object.assign([2,3], [5]);  &#x2F;&#x2F; [5,3]</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>Object.is(value1, value2)</p>
+<ul>
+<li>用来比较两个值是否严格相等，与（===）基本类似。</li>
+<li>基本用法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  Object.is(&quot;q&quot;,&quot;q&quot;);      &#x2F;&#x2F; true</span><br><span class="line">  Object.is(1,1);          &#x2F;&#x2F; true</span><br><span class="line">  Object.is([1],[1]);      &#x2F;&#x2F; false</span><br><span class="line">  Object.is(&#123;q:1&#125;,&#123;q:1&#125;);  &#x2F;&#x2F; false</span><br><span class="line">  &#96;&#96;&#96;  </span><br><span class="line">+ 与（&#x3D;&#x3D;&#x3D;）的区别</span><br></pre></td></tr></table></figure>
+//一是+0不等于-0<br>Object.is(+0,-0);  //false<br>+0 === -0  //true<br>//二是NaN等于本身<br>Object.is(NaN,NaN); //true<br>NaN === NaN  //false<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## ES6 数组</span><br><span class="line"></span><br><span class="line">  + Array.of()</span><br><span class="line">    + 将参数中所有值作为元素形成数组。</span><br></pre></td></tr></table></figure>
+console.log(Array.of(1, 2, 3, 4)); // [1, 2, 3, 4]<br>// 参数值可为不同类型<br>console.log(Array.of(1, ‘2’, true)); // [1, ‘2’, true]<br>// 参数为空时返回空数组<br>console.log(Array.of()); // []<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">+ Array.from()</span><br><span class="line">  + 将类数组对象或可迭代对象转化为数组。返回新数组（类数组对象必须包含length属性）</span><br></pre></td></tr></table></figure>
+// 参数为数组,返回与原数组一样的数组<br>console.log(Array.from([1, 2])); // [1, 2]<br>// 参数含空位<br>console.log(Array.from([1, , 3])); // [1, undefined, 3]<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">+ flat()</span><br><span class="line">  + 嵌套数组转一维数组</span><br></pre></td></tr></table></figure>
+console.log([1 ,[2, 3]].flat()); // [1, 2, 3]<br>// 指定转换的嵌套层数<br>console.log([1, [2, [3, [4, 5]]]].flat(2)); // [1, 2, 3, [4, 5]]<br>// 不管嵌套多少层<br>console.log([1, [2, [3, [4, 5]]]].flat(Infinity)); // [1, 2, 3, 4, 5]<br>// 自动跳过空位<br>console.log([1, [2, , 3]].flat());<p> // [1, 2, 3]<br>```</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/07/vue%E4%B8%ADrouter%E4%B8%8Eroute%E7%9A%84%E5%8C%BA%E5%88%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/07/vue%E4%B8%ADrouter%E4%B8%8Eroute%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">vue中router与route的区别</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-06-07 13:51:09 / Modified: 15:23:04" itemprop="dateCreated datePublished" datetime="2021-06-07T13:51:09+08:00">2021-06-07</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="vue中router与route的区别"><a href="#vue中router与route的区别" class="headerlink" title="vue中router与route的区别"></a>vue中router与route的区别</h1><h2 id="route对象"><a href="#route对象" class="headerlink" title="$route对象"></a>$route对象</h2><p>  表示当前正在跳转的路由对象。</p>
+<p>  $route表示当前的路由信息，包含了当前URL解析得到的信息，包含当前的路径，参数等信息</p>
+<h2 id="router对象"><a href="#router对象" class="headerlink" title="$router对象"></a>$router对象</h2><p>  可以在任何地方使用它</p>
+<p>  $router是全局路由对象，是router构造方法的实例，具有push，replace, go等路由实例方法。作用是路由切换</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/04/vue%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86-%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/04/vue%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86-%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">vue事件绑定原理-发布订阅模式/事件总线</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-04 10:14:06" itemprop="dateCreated datePublished" datetime="2021-06-04T10:14:06+08:00">2021-06-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-08-24 15:25:47" itemprop="dateModified" datetime="2021-08-24T15:25:47+08:00">2021-08-24</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="vue事件绑定原理"><a href="#vue事件绑定原理" class="headerlink" title="vue事件绑定原理"></a>vue事件绑定原理</h1><h2 id="发布订阅模式"><a href="#发布订阅模式" class="headerlink" title="发布订阅模式"></a>发布订阅模式</h2><p>  发布-订阅模式其实是一种对象间一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都将得到状态改变的通知</p>
+<p>  既然一对多 肯定有一个事件调度中心用来调度事件 订阅者可以注册事件（on）到事件中心 发布者可以发布事件（emit）到调度中心 订阅者也可以取消订阅（off）或者只订阅一次（once）</p>
+<p>  主要功能：</p>
+<ul>
+<li>维护一个变量 listeners，初识状态为一个空对象字面量，用于存储不同事件和事件对应的处理函数。</li>
+<li>实现$on方法：用于监听事件。</li>
+<li>实现$once方法：用于一次性事件监听。</li>
+<li>实现$emit方法：用于触发对应的事件监听。</li>
+<li>实现$off方法：用于消除对应的事件监听。</li>
+</ul>
+<p>  代码实现如下：<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">class EventEmitter&#123;</span><br><span class="line">  constructor() &#123;</span><br><span class="line">    this.events &#x3D; &#123;&#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  &#x2F;&#x2F; 实现订阅</span><br><span class="line">  $on(type, callBack) &#123;</span><br><span class="line">    &#x2F;&#x2F; 判断是否存在事件调度中心对象</span><br><span class="line">    if(!this.events) this.events &#x3D; Object.create(null);</span><br><span class="line">    &#x2F;&#x2F; 判断当前事件是否存在</span><br><span class="line">    if(!this.events[type]) &#123;</span><br><span class="line">      &#x2F;&#x2F; 每一个事件都是一个数组对象，用于存储该事件的回调函数;</span><br><span class="line">      &#x2F;&#x2F; 因为事件可能会被订阅多次，每一次的回调函数都是不同的</span><br><span class="line">      this.events[type] &#x3D; [callBack]; </span><br><span class="line">    &#125;else&#123;</span><br><span class="line">      this.events[type].push(callBack);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  &#x2F;&#x2F; 取消订阅</span><br><span class="line">  $off(type, callBack) &#123;</span><br><span class="line">    &#x2F;&#x2F; 判断需要去掉订阅的事件是否存在事件中心对象中，不存在，则直接return，不执行操作</span><br><span class="line">    if(!this.events[type]) return</span><br><span class="line"></span><br><span class="line">    this.events[type] &#x3D; this.events[type].filter(item &#x3D;&gt; &#123;</span><br><span class="line">      return item !&#x3D; callBack</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  &#x2F;&#x2F; 只执行一次订阅事件</span><br><span class="line">  $once(type,callBack)&#123;</span><br><span class="line">    &#x2F;&#x2F; 执行on订阅事件，然后在回调函数中，执行off取消订阅操作</span><br><span class="line">    function() fn&#123;</span><br><span class="line">      callBack();</span><br><span class="line">      this.off(type, fn)</span><br><span class="line">    &#125;</span><br><span class="line">    this.on(type, fn)</span><br><span class="line">  &#125;</span><br><span class="line">  &#x2F;&#x2F; 触发事件</span><br><span class="line">  $emit(type, ...args) &#123;</span><br><span class="line">    &#x2F;&#x2F; 当事件存在于事件中心中才会去触发后续（on订阅事件中回调）操作</span><br><span class="line">    this.events[type] &amp;&amp; this,.events[type].forEach(fn &#x3D;&gt; &#123;</span><br><span class="line">      &#x2F;&#x2F; fn.call(this, ...args)</span><br><span class="line">      fn.apply(this, args)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>  使用如下<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">const event &#x3D; new EventEmitter();</span><br><span class="line">const handle &#x3D; (...args) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(args)</span><br><span class="line">&#125;</span><br><span class="line">event.on(&#39;click&#39;, handle);</span><br><span class="line">event.emit(&#39;click&#39;, 1,2,3);</span><br><span class="line">event.off(&#39;click&#39;, handle);</span><br><span class="line"></span><br><span class="line">event.once(&#39;dbClick&#39;, () &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;dbClick&#39;);</span><br><span class="line">&#125;)</span><br><span class="line">event.emit(&#39;dbClick&#39;);</span><br><span class="line">event.emit(&#39;dbClick&#39;)</span><br></pre></td></tr></table></figure></p>
+<h2 id="巧借Vue内置EventBus实现，封装vue事件总线插件"><a href="#巧借Vue内置EventBus实现，封装vue事件总线插件" class="headerlink" title="巧借Vue内置EventBus实现，封装vue事件总线插件"></a>巧借Vue内置EventBus实现，封装vue事件总线插件</h2>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">export default function install(Vue) &#123;</span><br><span class="line">  const bus &#x3D; new Vue(&#123;</span><br><span class="line">    methods: &#123;</span><br><span class="line">      on(event, handler) &#123;</span><br><span class="line">        this.$on(event, handler)</span><br><span class="line">        return this</span><br><span class="line">      &#125;,</span><br><span class="line">      once(event, handler) &#123;</span><br><span class="line">        this.$once(event, handler)</span><br><span class="line">        return this</span><br><span class="line">      &#125;,</span><br><span class="line">      emit(event, ...args) &#123;</span><br><span class="line">        this.$emit(event, ...args)</span><br><span class="line">        return this</span><br><span class="line">      &#125;,</span><br><span class="line">      off(event, handler) &#123;</span><br><span class="line">        this.$off(event, handler)</span><br><span class="line">        return this</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  Vue.prototype.$bus &#x3D; bus</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  我们在Vue实例化之前，安装一下这个插件，就可以在组件内的任意位置使用了<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import Vue from &#39;vue&#39;</span><br><span class="line">import EventBus from &#39;.&#x2F;EventBus&#39;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 安装 EventBus 插件</span><br><span class="line">Vue.use(EventBus)</span><br><span class="line"></span><br><span class="line">new Vue(&#123;</span><br><span class="line">  &#x2F;&#x2F;...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/01/vue-router%E9%92%A9%E5%AD%90%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/01/vue-router%E9%92%A9%E5%AD%90%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">vue-router钩子函数</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-01 14:16:34" itemprop="dateCreated datePublished" datetime="2021-06-01T14:16:34+08:00">2021-06-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-07 11:51:22" itemprop="dateModified" datetime="2021-07-07T11:51:22+08:00">2021-07-07</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="vue-router钩子函数"><a href="#vue-router钩子函数" class="headerlink" title="vue-router钩子函数"></a>vue-router钩子函数</h1><h2 id="router-实例"><a href="#router-实例" class="headerlink" title="router 实例"></a>router 实例</h2><h4 id="router-matcher"><a href="#router-matcher" class="headerlink" title="router.matcher"></a>router.matcher</h4><p>  router实例对象对外提供两个方法match(负责route匹配), addRoutes（动态添加路由）</p>
+<p>  在做路径切换transitionTo方法中，首先就会使用const route = this.router.match(location, this.current)来匹配route, 其实内部会使用matcher来做匹配。修改了matcher即新的routes生效。</p>
+<p>  对router.matcher属性做修改，即新的routes就会替换老的routes, 其实就是replaceRoutes()的含义（但是官方没有提供这个API）<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 替换现有router的routes</span><br><span class="line">router.matcher &#x3D; new VueRouter(&#123;</span><br><span class="line">  routes: newRoutes</span><br><span class="line">&#125;).matcher</span><br></pre></td></tr></table></figure></p>
+<h4 id="router-addRoutes"><a href="#router-addRoutes" class="headerlink" title="router.addRoutes()"></a>router.addRoutes()</h4><p>  添加一条新的路由规则记录作为现有路由的子路由。如果该路由规则有 name，并且已经存在一个与之相同的名字，则会覆盖它</p>
+<h3 id="路由守卫分类"><a href="#路由守卫分类" class="headerlink" title="路由守卫分类"></a>路由守卫分类</h3><h4 id="全局守卫"><a href="#全局守卫" class="headerlink" title="全局守卫"></a>全局守卫</h4><p>  路由实例上直接操作的钩子函数，特点是所有路由配置的组件都会触发，直白点就是触发路由就会触发这些钩子函数;<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 全局前置守卫-在路由跳转前触发,主要是用于登录验证</span><br><span class="line">beforeEach（to，from， next） </span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 全局解析守卫-导航被确认之前 &lt; 路由跳转前触发 &lt; 所有组件内守卫和异步路由组件被解析之后</span><br><span class="line">beforeResolve（to，from， next） </span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 全局后置钩子-和beforeEach相反-路由跳转完成后触发-不会接受next函数</span><br><span class="line">afterEach（to，from）</span><br></pre></td></tr></table></figure><br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import VueRouter from &#39;vue-router&#39;</span><br><span class="line">const router &#x3D; new VueRouter(&#123;...&#125;);</span><br><span class="line">router.beforeEach((to, from, next)&#x3D;&gt;&#123;...&#125;)</span><br></pre></td></tr></table></figure></p>
+<h4 id="路由独享守卫"><a href="#路由独享守卫" class="headerlink" title="路由独享守卫"></a>路由独享守卫</h4><p>  直接可以在路由配置上设置的钩子函数<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 和beforeEach完全相同-如果两个都设置了，beforeEnter则在beforeEach之后紧随执行</span><br><span class="line">beforeEnter（to，from， next）</span><br></pre></td></tr></table></figure></p>
+<h4 id="组件守卫"><a href="#组件守卫" class="headerlink" title="组件守卫"></a>组件守卫</h4><p>  在组件内执行的钩子函数,类似于组件内的生命周期，相当于为配置路由的组件添加的生命周期钩子函数。</p>
+<p>  beforeRouteEnter（to，from， next）<br>    在进入路由组件之前调用<br>    在全局守卫的前置守卫和路由守卫之后触发，在全局解析守卫和全局后置守卫之前调用，<span style="color: #c7254e;">访问不到组件实例，即this为undefined</span></p>
+<p>  beforeRouteUpdate（to，from， next）</p>
+<p>  beforeRouteLeave（to，from， next）<br>    导航离开该组件的对应路由时调用，<span style="color: #c7254e;">beforeRouteLeave可以访问组件实例this</span>。这个离开守卫通常用来禁止用户在还未保存修改前突然离开。该导航可以通过next( false )来取消</p>
+<h3 id="完整的导航解析流程"><a href="#完整的导航解析流程" class="headerlink" title="完整的导航解析流程"></a>完整的导航解析流程</h3><ul>
+<li>1.触发进入其它路由</li>
+<li>2.调用要离开路由的组件守卫beforeRouteLeave</li>
+<li>3.调用全局的前置守卫beforeEach</li>
+<li>4.在重用的组件里调用 beforeRouteUpdate</li>
+<li>5.在路由配置里调用 beforeEnter</li>
+<li>6.解析异步路由组件</li>
+<li>7.在将要进入的路由组件中调用beforeRouteEnter</li>
+<li>8.调用全局的解析守卫beforeResolve</li>
+<li>9.导航被确认</li>
+<li>10.调用全局的后置钩子afterEach。</li>
+<li>11.触发 DOM 更新mounted。</li>
+<li>12执行beforeRouteEnter守卫中传给 next的回调函数。</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2019/9/12/16d2385e3732079d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="导航解析流程图"></p>
+<p>作者：dingFY<br>链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903924760051725">https://juejin.cn/post/6844903924760051725</a><br>来源：掘金<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/01/new%E7%9A%84%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/01/new%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">new的实现</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-06-01 10:57:57 / Modified: 11:26:30" itemprop="dateCreated datePublished" datetime="2021-06-01T10:57:57+08:00">2021-06-01</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="new的实现"><a href="#new的实现" class="headerlink" title="new的实现"></a>new的实现</h1><h3 id="new的实现思路"><a href="#new的实现思路" class="headerlink" title="new的实现思路"></a>new的实现思路</h3><ul>
+<li>定义一个myNew函数，第一个为构造函数，其他为解构的参数</li>
+<li>首先是创建一个实例对象  let obj = {}</li>
+<li>接着生成的实例对象 继承 构造函数的原型  obj.<strong>proto</strong> = fn.prototype</li>
+<li>接着改变构造函数的this指向为实例对象  let result = fn.call(obj, …args)</li>
+<li>如果构造函数fn的执行结果（result）返回的是一个对象或者函数，那么就直接返回这个对象或函数（result）</li>
+<li>如果不是上面的条件，则直接返回实例对象obj</li>
+</ul>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function myNew(fn, ...args)&#123;</span><br><span class="line">  let obj &#x3D; &#123;&#125;;</span><br><span class="line">  obj.__proto__ &#x3D; fn.prototype;</span><br><span class="line">  let result &#x3D; fn.call(obj, ...args)</span><br><span class="line">  if((result &amp;&amp; typeof result &#x3D;&#x3D; &#39;object&#39;) || typeof result &#x3D;&#x3D; &#39;function&#39;) &#123;</span><br><span class="line">    return result</span><br><span class="line">  &#125;</span><br><span class="line">  return obj</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  上述的myNew函数的使用<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function Person(name) &#123;</span><br><span class="line">    this.name &#x3D; name</span><br><span class="line">    return name;</span><br><span class="line">&#125;</span><br><span class="line">function myNew(fn, ...args)&#123;</span><br><span class="line">  let obj &#x3D; &#123;&#125;;</span><br><span class="line">  obj.__proto__ &#x3D; fn.prototype;</span><br><span class="line">  let result &#x3D; fn.call(obj, ...args)</span><br><span class="line">  if((result &amp;&amp; typeof result &#x3D;&#x3D; &#39;object&#39;) || typeof result &#x3D;&#x3D; &#39;function&#39;) &#123;</span><br><span class="line">    return result</span><br><span class="line">  &#125;</span><br><span class="line">  return obj</span><br><span class="line">&#125;</span><br><span class="line">let pp &#x3D; new Person(&#39;tom&#39;) &#x2F;&#x2F; Person &#123;name: &quot;tom&quot;&#125;   --返回的是构造函数的实例化对象</span><br><span class="line">let aa &#x3D; myNew(Person, &#39;tom&#39;)&#x2F;&#x2F; Person &#123;name: &quot;tom&quot;&#125;   --返回的是构造函数的实例化对象</span><br><span class="line">console.log(aa, pp)</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/01/vue3%E6%96%B0%E7%89%B9%E6%80%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/01/vue3%E6%96%B0%E7%89%B9%E6%80%A7/" class="post-title-link" itemprop="url">vue3新特性</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-01 09:40:27" itemprop="dateCreated datePublished" datetime="2021-06-01T09:40:27+08:00">2021-06-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-04-25 16:05:09" itemprop="dateModified" datetime="2022-04-25T16:05:09+08:00">2022-04-25</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="vue3新特性"><a href="#vue3新特性" class="headerlink" title="vue3新特性"></a>vue3新特性</h1><p>Vue 3 中一些需要关注的新功能包括：</p>
+<ul>
+<li><p>组合式(composition)API</p>
+</li>
+<li><p>Teleport-可称为任意门或瞬间移动组件</p>
+<ul>
+<li>Teleport 是一种能够将我们的模板渲染至指定DOM节点，不受父级style、v-show等属性影响，但data、prop数据依旧能够共用的技术</li>
+<li>teleport标签包含to属性用于指定挂载的目标DOM节点</li>
+</ul>
+</li>
+<li><p>片段(多根节点组件)</p>
+</li>
+<li><p>触发组件选项</p>
+</li>
+<li><p>来自【@vue/runtime-core】的 【createRender】API，用于创建自定义渲染器</p>
+</li>
+<li><p>单文件组件组合式API语法糖【<code>&lt;script setup&gt;</code>】</p>
+</li>
+<li><p>单文件组件状态驱动的CSS变量【<code>&lt;style&gt;</code>中的<code>v-bind</code>】【<code>&lt;style vars&gt;</code>】</p>
+<ul>
+<li><p>```</p>
+  <script setup>
+    const theme = {
+      color: 'red'
+    }
+  </script>
+
+  <template>
+    <p>hello</p>
+  </template>
+
+  <style scoped>
+    p {
+      color: v-bind('theme.color');
+    }
+  </style>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">    + 实际的值会被编译成 hash 的 CSS 自定义 property，CSS 本身仍然是静态的。自定义 property 会通过内联样式的方式应用到组件的根元素上，并且在源值变更的时候响应式更新</span><br><span class="line">  + SFC(单文件组件) 【&#96;&#96;&#96;&lt;style scoped&gt;&#96;&#96;&#96;】现在可以包含全局规则或只针对插槽内容的规则</span><br><span class="line">  + Suspense 【实验性】</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Vue 在线演示编译结果</span><br><span class="line"> + Vue3: https:&#x2F;&#x2F;vue-next-template-explorer.netlify.app&#x2F;</span><br><span class="line"> + Vue2: https:&#x2F;&#x2F;vue-template-explorer.netlify.app&#x2F;</span><br><span class="line"></span><br><span class="line">记录一下我能记住的vue3.0的新特性</span><br><span class="line">+ 首先是双向数据绑定的实现方式：</span><br><span class="line"></span><br><span class="line">  vue2.0使用的是Object.defineproperty()实现对数据对象的属性(data属性的属性)的监听，无法监听一些数组的变化，需要重写数组的原型方法来监听数组的变化</span><br><span class="line">  vue3.0使用的是Proxy构造函数来监听对象的，是通过底层的对象来监听的，不存在数组无法监听的情况，而且Proxy具有13种拦截操作</span><br></pre></td></tr></table></figure>
+<p>this.formModel[controlId] =<br>this.formModel[controlId].replace(/^\D*(\d*(?:.\d{0,3})?).*$/g, ‘$1’);</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">![vue3新特性](https:&#x2F;&#x2F;p3-juejin.byteimg.com&#x2F;tos-cn-i-k3u1fbpfcp&#x2F;be5fbebfad2b4863a8cf664843b2106e~tplv-k3u1fbpfcp-zoom-1.image)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## vue2 Options API 与vue3 Composition API的区别</span><br><span class="line">为什么要用composition API ?</span><br><span class="line">  + vue2对于复杂逻辑组件，在后期变得无法维护 - 当我们的组件开始变得更大时，逻辑关注点的列表也会增长，对于那些一开始没有编写这些组件的人来说，这会导致组件难以阅读和理解</span><br><span class="line">  + vue2中代码复用的方法，如Mixin,Filters都有缺陷</span><br><span class="line">    - Mixin中存在命名空间冲突的问题 - 在Mixin中定义的变量如果跟当前组件中的data中定义的变量冲突的话，会采用data中的变量。</span><br><span class="line">    - Mixin中存在逻辑不清晰的问题 - 在组件中插入Mixin的话，不能够直接看到Mixin的一个处理逻辑</span><br><span class="line">    - 作用域插槽(scoped slot) - 配置项多、代码分裂、性能差</span><br><span class="line">  + vue2对TS支持不充分（仅部分支持，vue3中从框架底层对TS进行了全面改写，可提高代码质量） </span><br><span class="line">  + Options API会使得代码逻辑割裂</span><br><span class="line">### VUE2 Options API</span><br><span class="line">vue2中使用Options API来开发，会把逻辑拆分为：</span><br><span class="line">  + components</span><br><span class="line">  + props</span><br><span class="line">  + data</span><br><span class="line">  + computed</span><br><span class="line">  + methods</span><br><span class="line">  + 生命周期的方法（创建[&#39;beforeCreate&#39;, &#39;created&#39;]&#x2F;挂载[&#39;beforeMount&#39;, &#39;mounted&#39;]&#x2F;更新[&#39;beforeUpdate&#39;, &#39;update&#39;]&#x2F;销毁[&#39;beforeDestory&#39;, &#39;destoryed&#39;]） </span><br><span class="line">此种方式约定了我们书写代码的一种方式</span><br><span class="line">### vue3 Composition API</span><br><span class="line">vue3 Composition API更加贴近自然语言，使用的函数式编程（通俗理解：[&#39;声明&#39;-&gt;&#39;逻辑定义&#39;-&gt;&#39;进行传参&#39;-&gt;&#39;进行函数的执行&#39;-&gt;&#39;返回执行的数据&#39;]）;</span><br><span class="line">  + 复杂组件的分离 - 代码逻辑成块，方便查找和区分</span><br><span class="line">  + 组件间逻辑共享</span><br><span class="line">  + 能够将同一个逻辑关注点相关代码收集在一起</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># vue3 中的变化</span><br><span class="line"> + 组合式API + 函数式编程</span><br><span class="line">    - setup - 组件选项</span><br><span class="line">        + setup选项在组件创建【之前】执行，一旦props被解析，就将作为组合式API的入口</span><br><span class="line">        + setup中避免使用this，因为它找不到组件实例。</span><br><span class="line">        + setup的调用发生在data property、computed property或methods被解析之前</span><br><span class="line">        + setup函数return返回的内容都暴露给组件的其余部分(计算属性、方法、生命周期钩子等等)以及组件的模板。</span><br><span class="line">        + 可以将功能抽离出来独立成一个单独的模块</span><br><span class="line">        + setup函数接收两个参数</span><br><span class="line">            - props</span><br><span class="line">            - context上下文对象（vue3中在setup里面无法获取到this，只能通过这个context上下文对象获取一些vue2中需要通过this才能访问的属性）</span><br><span class="line">        + setup 函数中访问路由，请调用 useRouter 或 useRoute 函数</span><br><span class="line">    - ref - 响应式变量-【ref 为我们的值创建了一个响应式引用】</span><br><span class="line">        + 通过ref函数使任何的响应式变量在任何地方起作用，返回的是一个将传递的参数包裹，放在一个带有value属性的对象&#123;value: &#39;传递给ref的参数&#39;&#125;返回。如ref(0)  返回为 &#123;value: 0&#125;。【为了保持 JavaScript 中不同数据类型的行为统一，因为在 JavaScript 中，Number 或 String 等基本类型是通过值而非引用传递的】</span><br><span class="line">        + 利用ref函数将某个对象中的属性变成响应式数据，修改响应式数据是不会影响到原始数据</span><br><span class="line">    - toRef &#x2F; toRefs</span><br><span class="line">        + toRef的本质是引用关系，修改响应式数据会影响原始数据</span><br><span class="line">        + toRef一次仅能设置一个数据</span><br><span class="line">        + toRefs用于批量设置多个数据为响应式数据</span><br><span class="line">        + toRefs接收一个对象作为参数，它会遍历对象身上的所有属性，然后挨个调用toRef执行</span><br><span class="line">        + ref和toRef的区别</span><br><span class="line">            - (1). ref本质是拷贝，修改响应式数据不会影响原始数据；toRef的本质是引用关系，修改响应式数据会影响原始数据</span><br><span class="line">            - (2). ref数据发生改变，界面会自动更新；toRef当数据发生改变是，界面不会自动更新</span><br><span class="line">            - (3). toRef传参与ref不同；toRef接收两个参数，第一个参数是哪个对象，第二个参数是对象的哪个属性</span><br><span class="line">    - reactive </span><br><span class="line">        + 它主要是处理你的对象让它经过 Proxy 的加工变为一个响应式的对象，类似于 Vue2.0 版本的 data 属性，需要注意的是加工后的对象跟原对象是不相等的，并且加工后的对象属于深度克隆的对象</span><br><span class="line">        + reactive的弊端是不能解构，解构就会失去响应性</span><br><span class="line">          + 据说解构reactive，是绕过了proxy代理，直接对原始数据进行拷贝，导致proxy代理的get和set无法触发</span><br><span class="line">    - 在 setup 内注册生命周期钩子</span><br><span class="line">        + 组合式 API 上的生命周期钩子与选项式 API 的名称相同，但前缀为 on：即 mounted 看起来会像 onMounted</span><br><span class="line">        + setup 是围绕 beforeCreate 和 created 生命周期钩子运行的,所以在setup中不需要显示定义这两个生命周期。</span><br><span class="line">        + 当生命周期混用时，主版本的钩子函数就会相对优先执行。为了产生不必要的麻烦就不要混用啦。</span><br><span class="line">    - watch - 响应式监听</span><br><span class="line">        + 需要从vue中引入</span><br><span class="line">        + 功能与vue2中的watch选项一样</span><br><span class="line">        + 接收三个参数：</span><br><span class="line">            - 一个想要监听的响应式引用(使用ref函数创建的响应式引用)或getter函数</span><br><span class="line">                + 例子 </span><br></pre></td></tr></table></figure>
+<pre><code>          import &#123;ref&#125; from &#39;vue&#39;;
+
+          export default &#123;
+            props: &#123;
+              title: String
+            &#125;,
+            setup(props, ctx) &#123;
+              const num = ref(0);
+              // 响应式引用
+              watch(num, (newValue, oldValue) =&gt; &#123;
+                console.log(&#39;The new num value is: &#39; + num.value)
+              &#125;)
+              // watch监听器可以监听一个getter函数
+              const state = reactive(&#123; count: 0 &#125;)
+              watch(() =&gt; state.count, (newValue, oldValue) =&gt; &#123;
+                  // 因为watch被观察的对象只能是getter/effect函数、ref、reactive对象或者这些类型是数组
+                  // 所以需要将state.count变成getter函数
+              &#125;)
+            &#125;
+          &#125;
+          <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">        - 一个回调</span><br><span class="line">        - 可选的配置选项</span><br><span class="line">- computed - 计算属性</span><br><span class="line">    + 可以像ref和watch一样在setup中使用，也可以在组件外部创建计算属性</span><br><span class="line">    + 访问计算属性的变量的值需要跟ref一样使用value属性来获取。</span><br><span class="line">    + 例子</span><br></pre></td></tr></table></figure>
+const counter = ref(0)
+const twiceTheCounter = computed(() =&gt; counter.value * 2)
+
+counter.value++
+console.log(counter.value) // 1
+console.log(twiceTheCounter.value) // 2
+```
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>组件间逻辑共享</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -591,500 +1142,6 @@
 </li>
 </ul>
 <h3 id="1-4-双向数据绑定原理"><a href="#1-4-双向数据绑定原理" class="headerlink" title="1.4 双向数据绑定原理"></a>1.4 双向数据绑定原理</h3><h3 id="1-5-Vue相关API"><a href="#1-5-Vue相关API" class="headerlink" title="1.5 Vue相关API"></a>1.5 Vue相关API</h3><h2 id="2-vuex-状态管理"><a href="#2-vuex-状态管理" class="headerlink" title="2. vuex 状态管理"></a>2. vuex 状态管理</h2><h3 id="2-1-模块化状态管理"><a href="#2-1-模块化状态管理" class="headerlink" title="2.1 模块化状态管理"></a>2.1 模块化状态管理</h3><h3 id="2-2-持久化管理"><a href="#2-2-持久化管理" class="headerlink" title="2.2 持久化管理"></a>2.2 持久化管理</h3><h3 id="2-3-Vuex五种属性"><a href="#2-3-Vuex五种属性" class="headerlink" title="2.3 Vuex五种属性"></a>2.3 Vuex五种属性</h3><h2 id="3-vue-router"><a href="#3-vue-router" class="headerlink" title="3. vue-router"></a>3. vue-router</h2><h2 id="4-组件开发"><a href="#4-组件开发" class="headerlink" title="4. 组件开发"></a>4. 组件开发</h2><h3 id="4-1-组件间通信与传值"><a href="#4-1-组件间通信与传值" class="headerlink" title="4.1 组件间通信与传值"></a>4.1 组件间通信与传值</h3><h3 id="4-2-Slot-插槽"><a href="#4-2-Slot-插槽" class="headerlink" title="4.2 Slot 插槽"></a>4.2 Slot 插槽</h3><h3 id="4-3-Mixin-混入"><a href="#4-3-Mixin-混入" class="headerlink" title="4.3 Mixin 混入"></a>4.3 Mixin 混入</h3><h3 id="4-4-高阶组件"><a href="#4-4-高阶组件" class="headerlink" title="4.4 高阶组件"></a>4.4 高阶组件</h3><h2 id="5-axios"><a href="#5-axios" class="headerlink" title="5. axios"></a>5. axios</h2><h2 id="6-vue-cli"><a href="#6-vue-cli" class="headerlink" title="6. vue-cli"></a>6. vue-cli</h2><h3 id="6-1-vue-cli-部署配置"><a href="#6-1-vue-cli-部署配置" class="headerlink" title="6.1 vue-cli 部署配置"></a>6.1 vue-cli 部署配置</h3><h3 id="6-2-配置最佳打包"><a href="#6-2-配置最佳打包" class="headerlink" title="6.2 配置最佳打包"></a>6.2 配置最佳打包</h3><h3 id="6-3-本地开发devServer"><a href="#6-3-本地开发devServer" class="headerlink" title="6.3 本地开发devServer"></a>6.3 本地开发devServer</h3>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/07/%E5%9F%BA%E7%A1%80%E7%89%88%E6%9C%AC-%E6%9F%A0%E6%AA%AC%E6%A9%99%E5%AD%90-vuecli3%E5%88%9D%E5%A7%8B%E5%8C%96-%E5%9F%BA%E4%BA%8EiviewPro-vue-config-js/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/07/%E5%9F%BA%E7%A1%80%E7%89%88%E6%9C%AC-%E6%9F%A0%E6%AA%AC%E6%A9%99%E5%AD%90-vuecli3%E5%88%9D%E5%A7%8B%E5%8C%96-%E5%9F%BA%E4%BA%8EiviewPro-vue-config-js/" class="post-title-link" itemprop="url">基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue.config.js</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-05-07 10:33:49 / Modified: 14:12:40" itemprop="dateCreated datePublished" datetime="2021-05-07T10:33:49+08:00">2021-05-07</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue-config-js"><a href="#基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue-config-js" class="headerlink" title="基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue.config.js"></a>基础版本-柠檬橙子-vuecli3初始化-基于iviewPro-vue.config.js</h1><ul>
-<li><p>1.初始化项目</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue create basic-lemon-oranges</span><br></pre></td></tr></table></figure></li>
-<li><p>2.创建vue.config.js进行项目配置(拷贝iviewPro的vue.config.js)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line">const Setting &#x3D; require(&#39;.&#x2F;src&#x2F;setting.env&#39;);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 拼接路径</span><br><span class="line">const resolve &#x3D; dir &#x3D;&gt; require(&#39;path&#39;).join(__dirname, dir);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 增加环境变量</span><br><span class="line">process.env.VUE_APP_VERSION &#x3D; require(&#39;.&#x2F;package.json&#39;).version;</span><br><span class="line">process.env.VUE_APP_BUILD_TIME &#x3D; require(&#39;dayjs&#39;)().format(&#39;YYYY-M-D HH:mm:ss&#39;);</span><br><span class="line"></span><br><span class="line">module.exports &#x3D; &#123;</span><br><span class="line">    publicPath: Setting.publicPath,</span><br><span class="line">    lintOnSave: Setting.lintOnSave,</span><br><span class="line">    outputDir: Setting.outputDir,</span><br><span class="line">    assetsDir: Setting.assetsDir,</span><br><span class="line">    runtimeCompiler: true,</span><br><span class="line">    productionSourceMap: false,</span><br><span class="line">    devServer: &#123;</span><br><span class="line">        publicPath: Setting.publicPath</span><br><span class="line">    &#125;,</span><br><span class="line">    css: &#123;</span><br><span class="line">        loaderOptions: &#123;</span><br><span class="line">            less: &#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    transpileDependencies: [&#39;view-design&#39;],</span><br><span class="line">    &#x2F;&#x2F; 默认设置: https:&#x2F;&#x2F;github.com&#x2F;vuejs&#x2F;vue-cli&#x2F;tree&#x2F;dev&#x2F;packages&#x2F;@vue&#x2F;cli-service&#x2F;lib&#x2F;config&#x2F;base.js</span><br><span class="line">    chainWebpack: config &#x3D;&gt; &#123;</span><br><span class="line">        &#x2F;**</span><br><span class="line">        * 删除懒加载模块的 prefetch preload，降低带宽压力</span><br><span class="line">        * https:&#x2F;&#x2F;cli.vuejs.org&#x2F;zh&#x2F;guide&#x2F;html-and-static-assets.html#prefetch</span><br><span class="line">        * https:&#x2F;&#x2F;cli.vuejs.org&#x2F;zh&#x2F;guide&#x2F;html-and-static-assets.html#preload</span><br><span class="line">        * 而且预渲染时生成的 prefetch 标签是 modern 版本的，低版本浏览器是不需要的</span><br><span class="line">        *&#x2F;</span><br><span class="line">        config.plugins</span><br><span class="line">            .delete(&#39;prefetch&#39;)</span><br><span class="line">            .delete(&#39;preload&#39;);</span><br><span class="line">        &#x2F;&#x2F; 解决 cli3 热更新失效 https:&#x2F;&#x2F;github.com&#x2F;vuejs&#x2F;vue-cli&#x2F;issues&#x2F;1559</span><br><span class="line">        config.resolve</span><br><span class="line">            .symlinks(true);</span><br><span class="line">        config</span><br><span class="line">            &#x2F;&#x2F; 开发环境</span><br><span class="line">            .when(process.env.NODE_ENV &#x3D;&#x3D;&#x3D; &#39;development&#39;,</span><br><span class="line">                  &#x2F;&#x2F; sourcemap不包含列信息</span><br><span class="line">                  config &#x3D;&gt; config.devtool(&#39;cheap-source-map&#39;)</span><br><span class="line">            )</span><br><span class="line">            &#x2F;&#x2F; 非开发环境</span><br><span class="line">            .when(process.env.NODE_ENV !&#x3D;&#x3D; &#39;development&#39;, config &#x3D;&gt; &#123;</span><br><span class="line"></span><br><span class="line">        &#125;);</span><br><span class="line">        &#x2F;&#x2F; 不编译 iView Pro</span><br><span class="line">        config.module</span><br><span class="line">            .rule(&#39;js&#39;)</span><br><span class="line">            .test(&#x2F;\.jsx?$&#x2F;)</span><br><span class="line">            .exclude</span><br><span class="line">            .add(resolve(&#39;src&#x2F;libs&#x2F;iview-pro&#39;))</span><br><span class="line">            .end();</span><br><span class="line">        &#x2F;&#x2F; 使用 iView Loader</span><br><span class="line">        config.module</span><br><span class="line">            .rule(&#39;vue&#39;)</span><br><span class="line">            .test(&#x2F;\.vue$&#x2F;)</span><br><span class="line">            .use(&#39;iview-loader&#39;)</span><br><span class="line">            .loader(&#39;iview-loader&#39;)</span><br><span class="line">            .tap(() &#x3D;&gt; &#123;</span><br><span class="line">                return Setting.iviewLoaderOptions</span><br><span class="line">            &#125;)</span><br><span class="line">            .end();</span><br><span class="line">        &#x2F;&#x2F; markdown</span><br><span class="line">        config.module</span><br><span class="line">            .rule(&#39;md&#39;)</span><br><span class="line">            .test(&#x2F;\.md$&#x2F;)</span><br><span class="line">            .use(&#39;text-loader&#39;)</span><br><span class="line">            .loader(&#39;text-loader&#39;)</span><br><span class="line">            .end();</span><br><span class="line">        &#x2F;&#x2F; i18n</span><br><span class="line">        config.module</span><br><span class="line">            .rule(&#39;i18n&#39;)</span><br><span class="line">            .resourceQuery(&#x2F;blockType&#x3D;i18n&#x2F;)</span><br><span class="line">            .use(&#39;i18n&#39;)</span><br><span class="line">            .loader(&#39;@kazupon&#x2F;vue-i18n-loader&#39;)</span><br><span class="line">            .end();</span><br><span class="line">        &#x2F;&#x2F; image exclude</span><br><span class="line">        const imagesRule &#x3D; config.module.rule(&#39;images&#39;);</span><br><span class="line">        imagesRule</span><br><span class="line">            .test(&#x2F;\.(png|jpe?g|gif|webp|svg)(\?.*)?$&#x2F;)</span><br><span class="line">            .exclude</span><br><span class="line">            .add(resolve(&#39;src&#x2F;assets&#x2F;svg&#39;))</span><br><span class="line">            .end();</span><br><span class="line">        &#x2F;&#x2F; 重新设置 alias</span><br><span class="line">        config.resolve.alias</span><br><span class="line">            .set(&#39;@api&#39;, resolve(&#39;src&#x2F;api&#39;));</span><br><span class="line">        &#x2F;&#x2F; node</span><br><span class="line">        config.node</span><br><span class="line">            .set(&#39;__dirname&#39;, true)</span><br><span class="line">            .set(&#39;__filename&#39;, true);</span><br><span class="line">        &#x2F;&#x2F; 判断是否需要加入模拟数据</span><br><span class="line">        const entry &#x3D; config.entry(&#39;app&#39;);</span><br><span class="line">        if (Setting.isMock) &#123;</span><br><span class="line">            entry</span><br><span class="line">                .add(&#39;@&#x2F;mock&#39;)</span><br><span class="line">                .end()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-<li><p>3.查看vue.config.js里面引入哪些外部文件，需要安装哪些插件，需要安装哪些依赖</p>
-</li>
-<li><p>4.尝试启动项目，根据报错信息安装对应的依赖</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn serve</span><br></pre></td></tr></table></figure>
-<ul>
-<li>4.1.报错信息<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ERROR  Error loading D:\GitHubProject\项目基础版本\basic-lemon-oranges\vue.config.js:</span><br><span class="line">ERROR  Error: Cannot find module &#39;dayjs&#39;</span><br></pre></td></tr></table></figure>
-根据此错误信息，安装dayjs<br>执行命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install dayjs --save</span><br></pre></td></tr></table></figure></li>
-<li>4.2.再次执行yarn serve<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">These dependencies were not found:</span><br><span class="line"></span><br><span class="line">* @&#x2F;mock in multi (webpack)-dev-server&#x2F;client?http:&#x2F;&#x2F;192.168.11.60:8081&amp;sockPath&#x3D;&#x2F;sockjs-node (webpack)&#x2F;hot&#x2F;dev-server.js .&#x2F;src&#x2F;main.js @&#x2F;mock</span><br><span class="line">* core-js&#x2F;modules&#x2F;es.object.to-string.js in .&#x2F;src&#x2F;router&#x2F;index.js</span><br><span class="line">* core-js&#x2F;modules&#x2F;es.string.iterator.js in .&#x2F;src&#x2F;router&#x2F;index.js</span><br><span class="line">* core-js&#x2F;modules&#x2F;web.dom-collections.iterator.js in .&#x2F;src&#x2F;router&#x2F;index.js</span><br><span class="line"></span><br><span class="line">To install them, you can run: npm install --save @&#x2F;mock core-js&#x2F;modules&#x2F;es.object.to-string.js core-js&#x2F;modules&#x2F;es.string.iterator.js core-js&#x2F;modules&#x2F;web.dom-collections.iterator.js</span><br><span class="line">Failed to resolve loader: iview-loader</span><br><span class="line">You may need to install it.</span><br><span class="line">Error from chokidar (D:\): Error: EBUSY: resource busy or locked, lstat &#39;D:\pagefile.sys&#39;</span><br></pre></td></tr></table></figure>
-从上面的错误信息可以看出，此处是缺少mock模块，此模块是用于模拟数据的，在vue.config.js是添加了此配置的，故此需要安装一下mock模块。<br>执行命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install mockjs</span><br></pre></td></tr></table></figure></li>
-<li>4.3.再次执行yarn serve(处理不了mock的问题，暂时在vue.config.js里面将mock的使用注释)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">These dependencies were not found:</span><br><span class="line"></span><br><span class="line">* core-js&#x2F;modules&#x2F;es.object.to-string.js in .&#x2F;src&#x2F;router&#x2F;index.js</span><br><span class="line">* core-js&#x2F;modules&#x2F;es.string.iterator.js in .&#x2F;src&#x2F;router&#x2F;index.js</span><br><span class="line">* core-js&#x2F;modules&#x2F;web.dom-collections.iterator.js in .&#x2F;src&#x2F;router&#x2F;index.js</span><br></pre></td></tr></table></figure>
-根据上面的错误，应该是创建项目初始化的时候，依赖并未安装完全，在此重新安装依赖即可<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i</span><br></pre></td></tr></table></figure></li>
-<li>4.4.再次执行yarn serve<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Failed to resolve loader: iview-loader</span><br><span class="line">You may need to install it.</span><br><span class="line">Error from chokidar (D:\): Error: EBUSY: resource busy or locked, lstat &#39;D:\pagefile.sys&#39;</span><br></pre></td></tr></table></figure>
-根据错误提示，安装iview-loader<br>执行命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install iview-loader --save-dev</span><br></pre></td></tr></table></figure></li>
-<li>4.5.再次执行yarn serve<br>至此，项目成功启动</li>
-</ul>
-</li>
-<li><p>5.打包部署到服务器</p>
-<ul>
-<li>5.1.需要修改src\setting.env.js中的publicPath的路径，修改为自己当前项目的名称<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 部署应用包时的基本 URL</span><br><span class="line">publicPath: env &#x3D;&#x3D;&#x3D; &#39;development&#39; ? &#39;&#x2F;&#39; : &#39;&#x2F;lemon&#x2F;&#39;,</span><br></pre></td></tr></table></figure></li>
-<li>5.2.修改打包后的名称，即打包输出的目录名称<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 生产环境构建文件的目录名</span><br><span class="line">outputDir: &#39;lemon&#39;,</span><br></pre></td></tr></table></figure></li>
-<li>5.3.执行打包命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure>
-至此打包成功，部署到服务器上，正常显示页面</li>
-</ul>
-</li>
-<li><p>6.参照iview-admin-Pro的router路由以及store仓库的写法</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/06/git%E7%9A%84%E4%BD%BF%E7%94%A8-%E8%BF%9E%E6%8E%A5github-%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/06/git%E7%9A%84%E4%BD%BF%E7%94%A8-%E8%BF%9E%E6%8E%A5github-%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81/" class="post-title-link" itemprop="url">git的使用-连接github-提交代码</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-05-06 16:33:59" itemprop="dateCreated datePublished" datetime="2021-05-06T16:33:59+08:00">2021-05-06</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-03 16:47:27" itemprop="dateModified" datetime="2021-06-03T16:47:27+08:00">2021-06-03</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="git的使用-连接github-提交代码"><a href="#git的使用-连接github-提交代码" class="headerlink" title="git的使用-连接github-提交代码"></a>git的使用-连接github-提交代码</h1><h3 id="github"><a href="#github" class="headerlink" title="github"></a>github</h3><p>首先，得有github账号，然后去创建一个新的项目仓库</p>
-<h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><ul>
-<li>安装git</li>
-<li>新建目录，作为本地仓库，进入目录，右键打开 git base here</li>
-<li>执行 git init,告知该目录参考用git来管理</li>
-<li>执行 git clone SSH地址，克隆github项目代码</li>
-<li>修改项目代码，然后需要提交代码需要执行一下操作<ul>
-<li>加入(指定文件)所有文件到暂存区<br><code>git add .</code><br><code>git add hello.txt</code></li>
-<li><code>git commit  -m &#39;修改原因，相关说明信息&#39;</code></li>
-<li>提交(根据情况选择)<ul>
-<li><code>git push</code> 直接到远程默认仓库</li>
-<li><code>git push orgin master</code> push到名为orgin的远程仓库的指定分支master</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>切换版本,然后再强行推送<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard 目标版本号</span><br><span class="line">&#x2F;&#x2F; 如果直接 git push 报错的话，就执行下面的命令</span><br><span class="line">git push -f</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="分支查看与切换"><a href="#分支查看与切换" class="headerlink" title="分支查看与切换"></a>分支查看与切换</h4><ul>
-<li>查看所有分支<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -a</span><br></pre></td></tr></table></figure></li>
-<li>查看当前使用分支(结果列表中前面标*号的表示当前使用分支)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></figure></li>
-<li>切换分支<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout 分支名</span><br></pre></td></tr></table></figure>
-<h3 id="多人协作"><a href="#多人协作" class="headerlink" title="多人协作"></a>多人协作</h3></li>
-</ul>
-<h4 id="gitlab"><a href="#gitlab" class="headerlink" title="gitlab"></a>gitlab</h4><ul>
-<li>安装了git小乌龟之后，拉取gitlab项目</li>
-<li>新建目录，然后执行git clone（或者右键选择git 克隆）</li>
-<li>输入账号密码成功后即可克隆到代码</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/06/%E6%8B%96%E6%8B%BD%E5%8A%A8%E6%80%81%E7%94%9F%E6%88%90%E7%BB%84%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/06/%E6%8B%96%E6%8B%BD%E5%8A%A8%E6%80%81%E7%94%9F%E6%88%90%E7%BB%84%E4%BB%B6/" class="post-title-link" itemprop="url">拖拽动态生成组件</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-05-06 09:26:36 / Modified: 11:36:18" itemprop="dateCreated datePublished" datetime="2021-05-06T09:26:36+08:00">2021-05-06</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="拖拽动态生成组件"><a href="#拖拽动态生成组件" class="headerlink" title="拖拽动态生成组件"></a>拖拽动态生成组件</h1><p>思路：<br>  首先，明确一下拖拽的话，我们可以使用现成的轮子，避免重复造轮子。其次就是如何处理动态生成组件，对于动态生成组件来说，每一次都是要生成一个全新的组件。</p>
-<p>  可以使用<component>中的is属性来加载对应的组件<br>  也可以通过$mount来挂载</p>
-<h2 id="拖拽库的选择"><a href="#拖拽库的选择" class="headerlink" title="拖拽库的选择"></a>拖拽库的选择</h2><ul>
-<li>vuedraggable<ul>
-<li><a target="_blank" rel="noopener" href="http://www.itxst.com/vue-draggable/tutorial.html">vuedraggable中文文档</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/SortableJS/Vue.Draggable">github地址</a></li>
-</ul>
-</li>
-</ul>
-<h2 id="动态生成组件"><a href="#动态生成组件" class="headerlink" title="动态生成组件"></a>动态生成组件</h2><ul>
-<li>定义一个创建组件的函数，接收生成组件需要的组件名称，和想要传递给组件的 props, 和 事件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ReturnNewCom(&#123;props, on&#125;)&#123;&#125; </span><br></pre></td></tr></table></figure></li>
-<li>在函数内部，使用Vue.extend()构造函数来生成一个Vue的子类，将子类实例化后返回<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import Vue from &quot;vue&quot;;</span><br><span class="line">&#x2F;&#x2F; 想要动态生成的组件，先引入这个文件。</span><br><span class="line">import components1 from &quot;.&#x2F;components&#x2F;TestCom1.vue&quot;;</span><br><span class="line">import components2 from &quot;.&#x2F;components&#x2F;TestCom2.vue&quot;;</span><br><span class="line">&#x2F;&#x2F; 将组件的名称和组件做一个对应Map</span><br><span class="line">const comMap &#x3D; &#123;</span><br><span class="line">  components1,</span><br><span class="line">  components2,</span><br><span class="line">&#125;;</span><br><span class="line">const ReturnNewCom &#x3D; function (&#123; props, on &#125;) &#123;</span><br><span class="line">  const &#123;</span><br><span class="line">    comItem: &#123; name &#125;,</span><br><span class="line">  &#125; &#x3D; props;</span><br><span class="line">  const newComponent &#x3D; Vue.extend(&#123;</span><br><span class="line">    render(createElement) &#123;</span><br><span class="line">      &#x2F;&#x2F; 使用传进来的组件name来决定渲染哪一个组件。</span><br><span class="line">      return createElement(comMap[name], &#123;</span><br><span class="line">        props,</span><br><span class="line">        on,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;);</span><br><span class="line">  return new newComponent();</span><br><span class="line">&#125;;</span><br><span class="line">export default ReturnNewCom;</span><br></pre></td></tr></table></figure></li>
-<li>在挂载页面，定义一个函数来处理渲染动态组件以及挂载组件<ul>
-<li>待dom元素加载完毕后，调用上面定义的ReturnNewCom函数，创建组件，并传递 props 和 事件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const com &#x3D; CreateCom(&#123;</span><br><span class="line">  props,</span><br><span class="line">  on: &#123;</span><br><span class="line">    handleDelete: this.handleDeleteCom,</span><br><span class="line">    ...on,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
-<li>生成组件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">com.$mount();</span><br></pre></td></tr></table></figure></li>
-<li>将生成的组件添加到对应的DOM中<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.$refs.comBody[index].appendChild(com.$el);</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/29/%E9%98%B2%E6%8A%96%E4%B8%8E%E8%8A%82%E6%B5%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/29/%E9%98%B2%E6%8A%96%E4%B8%8E%E8%8A%82%E6%B5%81/" class="post-title-link" itemprop="url">防抖与节流</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-04-29 16:41:23" itemprop="dateCreated datePublished" datetime="2021-04-29T16:41:23+08:00">2021-04-29</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-30 09:31:43" itemprop="dateModified" datetime="2021-04-30T09:31:43+08:00">2021-04-30</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="防抖与节流"><a href="#防抖与节流" class="headerlink" title="防抖与节流"></a>防抖与节流</h1><h2 id="防抖"><a href="#防抖" class="headerlink" title="防抖"></a>防抖</h2><p>  在触发事件后，等待一段时间后执行事件，如果在此等待时间内，再次触发事件，重置等待时间，再次等待一段时间后执行事件<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function debounce(fn, time) &#123;</span><br><span class="line">  let timeout;</span><br><span class="line">  return function () &#123;</span><br><span class="line">    let context &#x3D; this;</span><br><span class="line">    let args &#x3D; arguments;</span><br><span class="line">    if(timeout) clearTimeout(timeout)</span><br><span class="line">    timeout &#x3D; setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">      fn.call(context, args)</span><br><span class="line">    &#125;, time)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="节流-两种方式，一种是立即执行事件，另一种是延迟执行"><a href="#节流-两种方式，一种是立即执行事件，另一种是延迟执行" class="headerlink" title="节流(两种方式，一种是立即执行事件，另一种是延迟执行)"></a>节流(两种方式，一种是立即执行事件，另一种是延迟执行)</h2><p>  在触发事件之后，立马执行事件，然后在一段时间之内再次触发事件，不会执行事件，只有等待一段时间之后触发事件，才会执行事件<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function thorttle(fn, time) &#123;</span><br><span class="line">  let timeout;</span><br><span class="line">  return function () &#123;</span><br><span class="line">    let context &#x3D; this;</span><br><span class="line">    let args &#x3D; arguments;</span><br><span class="line">    if(timeout) return</span><br><span class="line">    fn.call(context, args)</span><br><span class="line">    timeout &#x3D; setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">      clearTimeout(timeout)</span><br><span class="line">      timeout &#x3D; null</span><br><span class="line">    &#125;, time)</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>  在触发事件时，设置定时器在一段时间之后再执行事件，在此段时间内，多次点击是不会执行事件的。<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">const throttle &#x3D; (fn, time) &#x3D;&gt; &#123;</span><br><span class="line">  let flag &#x3D; true;</span><br><span class="line">  return function() &#123;</span><br><span class="line">    if (!flag) return;</span><br><span class="line">    flag &#x3D; false;</span><br><span class="line">    setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">      fn.apply(this, arguments);</span><br><span class="line">      flag &#x3D; true;</span><br><span class="line">    &#125;, time);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/28/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/28/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">垃圾回收机制</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-04-28 16:19:16 / Modified: 16:29:56" itemprop="dateCreated datePublished" datetime="2021-04-28T16:19:16+08:00">2021-04-28</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="浏览器的垃圾回收机制"><a href="#浏览器的垃圾回收机制" class="headerlink" title="浏览器的垃圾回收机制"></a>浏览器的垃圾回收机制</h1><p>释放垃圾占用的空间，防止内存泄露</p>
-<h2 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h2><ul>
-<li>给每一个对象添加一个计数器，当该对象被引用的时，计数器+1，当引用失效是，计数器-1.用计数器是否为0来判断该对象是否可被回收。</li>
-<li>缺点：无法解决循环引用的问题。当两个对象互相引用时，这两个对象的计数器永远不为0 </li>
-</ul>
-<h2 id="标记清除"><a href="#标记清除" class="headerlink" title="标记清除"></a>标记清除</h2><ul>
-<li>先把内存中的对象进行标记，然后将标记为可回收的对象清理掉（有不同的标记状态。存活、可回收、未使用）</li>
-<li>缺点：碎片化（直接是在可回收对象的内存区域进行清除，然后会变成未使用的区域），可用新生代/老年代的算法来解决</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/23/%E5%A4%A7%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%BB%A5%E5%8F%8A%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/23/%E5%A4%A7%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%BB%A5%E5%8F%8A%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/" class="post-title-link" itemprop="url">大文件上传以及断点续传</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-04-23 11:08:04 / Modified: 11:22:02" itemprop="dateCreated datePublished" datetime="2021-04-23T11:08:04+08:00">2021-04-23</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="大文件上传以及断点续传"><a href="#大文件上传以及断点续传" class="headerlink" title="大文件上传以及断点续传"></a>大文件上传以及断点续传</h1><h2 id="大文件上传"><a href="#大文件上传" class="headerlink" title="大文件上传"></a>大文件上传</h2><p>  思路：大文件上传的基本思路是通过切片上传来实现，使用blod.prototype.slice来切割上传的文件，功能跟数组的slice相似。</p>
-<ul>
-<li>1.预设好切片的最大数量，使用slice()来切片，返回源文件的某一段的切片</li>
-<li>2.借助http请求的并发性，同时上传多个切片（Promise.all），减少上传时间</li>
-<li>3.由于是并发，上传的顺序可能发生变化，需要给每个切片记录一下顺序（传递hash参数，使用文件名+数组的形式记录每一个切片的顺序），方便后端合并</li>
-<li>4.上传之后还要给后端发送一个合并的请求，此处与切片上传是同步的，是需要文件上传完成之后才发送此请求</li>
-</ul>
-
       
     </div>
 

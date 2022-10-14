@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -23,20 +23,20 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="前端学习路线第一步: 掌握HTML&#x2F;CSS这是你最初必须掌握的是网站的构建元素没得选!随着你前端的学习进程,熟练掌握HTML&#x2F;CSS简单易学 第二步: 使用基础工具文本编辑器: Notepad2 &#x2F; Sublime Text &#x2F; http:&#x2F;&#x2F;Atom.io &#x2F; IDE图像编辑器:Photoshop, Illustrator, GIMP, Something slseFTP &#x2F; SSH 工具 :">
+<meta name="description" content="vue-vite中环境变量的使用-loadEnvvue3 + vite项目中使用环境变量有两种方式  在vite.config.js文件中使用 1234567&#x2F;&#x2F; 引入defineConfig与loadEnvimport &amp;#123; defineConfig, loadEnv &amp;#125; from &#39;vite&#39;&#x2F;&#x2F; 此处mode 是模式参">
 <meta property="og:type" content="article">
-<meta property="og:title" content="尘世幽梦的BLOG">
-<meta property="og:url" content="http://example.com/2021/08/11/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/index.html">
+<meta property="og:title" content="vue-vite中环境变量的使用-loadEnv">
+<meta property="og:url" content="http://example.com/2022/07/19/vue-vite%E4%B8%AD%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E7%9A%84%E4%BD%BF%E7%94%A8-loadEnv/index.html">
 <meta property="og:site_name" content="尘世幽梦的BLOG">
-<meta property="og:description" content="前端学习路线第一步: 掌握HTML&#x2F;CSS这是你最初必须掌握的是网站的构建元素没得选!随着你前端的学习进程,熟练掌握HTML&#x2F;CSS简单易学 第二步: 使用基础工具文本编辑器: Notepad2 &#x2F; Sublime Text &#x2F; http:&#x2F;&#x2F;Atom.io &#x2F; IDE图像编辑器:Photoshop, Illustrator, GIMP, Something slseFTP &#x2F; SSH 工具 :">
+<meta property="og:description" content="vue-vite中环境变量的使用-loadEnvvue3 + vite项目中使用环境变量有两种方式  在vite.config.js文件中使用 1234567&#x2F;&#x2F; 引入defineConfig与loadEnvimport &amp;#123; defineConfig, loadEnv &amp;#125; from &#39;vite&#39;&#x2F;&#x2F; 此处mode 是模式参">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-08-11T08:54:49.655Z">
-<meta property="article:modified_time" content="2021-08-11T08:55:17.252Z">
+<meta property="article:published_time" content="2022-07-19T02:12:54.000Z">
+<meta property="article:modified_time" content="2022-07-19T02:19:21.940Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2021/08/11/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/">
+<link rel="canonical" href="http://example.com/2022/07/19/vue-vite%E4%B8%AD%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E7%9A%84%E4%BD%BF%E7%94%A8-loadEnv/">
 
 
 <script class="page-configurations">
@@ -48,7 +48,7 @@
     lang   : 'en'
   };
 </script>
-<title> | 尘世幽梦的BLOG</title>
+<title>vue-vite中环境变量的使用-loadEnv | 尘世幽梦的BLOG</title>
   
 
 
@@ -147,7 +147,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF"><span class="nav-number">1.</span> <span class="nav-text">前端学习路线</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vue-vite%E4%B8%AD%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E7%9A%84%E4%BD%BF%E7%94%A8-loadEnv"><span class="nav-number">1.</span> <span class="nav-text">vue-vite中环境变量的使用-loadEnv</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -160,7 +160,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-count">59</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -200,7 +200,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/11/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/19/vue-vite%E4%B8%AD%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E7%9A%84%E4%BD%BF%E7%94%A8-loadEnv/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -213,7 +213,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          vue-vite中环境变量的使用-loadEnv
         </h1>
 
         <div class="post-meta-container">
@@ -225,7 +225,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2021-08-11 16:54:49 / Modified: 16:55:17" itemprop="dateCreated datePublished" datetime="2021-08-11T16:54:49+08:00">2021-08-11</time>
+      <time title="Created: 2022-07-19 10:12:54 / Modified: 10:19:21" itemprop="dateCreated datePublished" datetime="2022-07-19T10:12:54+08:00">2022-07-19</time>
     </span>
 
   
@@ -238,22 +238,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="前端学习路线"><a href="#前端学习路线" class="headerlink" title="前端学习路线"></a>前端学习路线</h1><p>第一步: 掌握HTML/CSS<br>这是你最初必须掌握的<br>是网站的构建元素<br>没得选!<br>随着你前端的学习进程,熟练掌握<br>HTML/CSS简单易学</p>
-<p>第二步: 使用基础工具<br>文本编辑器: Notepad2 / Sublime Text / <a target="_blank" rel="noopener" href="http://atom.io/">http://Atom.io</a> / IDE<br>图像编辑器:Photoshop, Illustrator, GIMP, Something slse<br>FTP / SSH 工具 : Filezilla ,Putty<br>好的浏览器: Chrome<br>云盘: Dropbox, Google Drive, Box</p>
-<p>第三步: 学习原生JavaScript<br>原生JavaScript(现阶段不需要理会Node.js 和任何框架)<br>理解数据类型: String, Number, Arrays, Objects, etc<br>理解函数, 条件表达式, 循环,操作符等<br>事件处理<br>JSON(JavaScript Object Notation), JavaScript对象表示法<br>jQuery框架</p>
-<p>第四步:搭建一个基础网站:<br>获取一个虚拟主机账户(Hostgator, InMotion, etc)<br>学习虚拟主机控制系统基础——cPanel (Email ,FTP Setup)<br>通过FPT(文件传输协议)上传你的项目<br>创建域名并和你的主机连接</p>
-<p>第五步:恭喜你! 你现在是一个网页设计师了!——(现阶段还不足以称Web Developer)<br>有能力搭建一个专业的简单网站<br>有能力搭建网页应用的界面<br>能够把一张PSD 转化为基于HTML/CSS的静态网页<br>有在公司上班的实力, 或者选择成为一名自由职业者</p>
-<p>第六步: 思考接下来的侧重点!<br>HTML/CSS框架: Bootstrap, Foudation(建议优先掌握!)<br>服务器端语言: PHP, Ruby…<br>JavaScript框架: React ,Angular<br>数据库: MySQL, PostgreSQL</p>
-<p>第七步: HTML/CSS框架<br>Bootstrap(强烈推荐学习该框架!)<br>Zurb Foundation<br>Skeleton<br>MUI<br>Pure</p>
-<p>第八步: 服务器端编程语言(专注于一个!)<br>PHP(不是最好的语言,但是是最可靠的服务器端语言)<br>Node.js(一款新型, 强大的后台语言)<br>Ruby on Rails (最好的框架,但已经到了瓶颈期)<br>Python(简单易学,但相对于主流语言并不流行)——可现在AI的爆红导致Python最近很火!</p>
-<p>第九步: 数据库(专注于一个!)<br>关系型数据库: MySQL 和 PostgreSQL<br>非机构化数据库: MongoDB 和 CouchDB<br>建议选择一个以下的组合:<br>PHP/ MySQL<br>Node.js/ MongoDB</p>
-<p>第十步: 需要学习的一些端技术<br>Git &amp; Github<br>SSH(安全外壳协议) &amp; Basic Command Line<br>CSS 预编译器: Sass/Less<br>APIS / REST Service<br>HTTPS / SSL</p>
-<p>第十一步: 部署应用<br>专用服务器/ VPS<br>应用云平台: Heroku, Digital Ocean, AWS<br>部署工具<br>Linux命令行<br>维护和升级</p>
-<p>第十二步:恭喜你,你现在成为一名网页开发者了!<br>能够创造出网页引用<br>能构建后端APIs<br>能连接服务器<br>能够管理数据库<br>你的选择: 得到一份很好的工作 / 成为自由职业者 / 开始一项事业</p>
-<p>第十三步:编程框架<br>JavaScript框架: React, Angular 2, Vue.js, Express(后端)<br>PHP框架: Laravel, Codeigniter, Symfony<br>Ruby on rails<br>MVC框架: Routing, Database Mapping, Helpers, Data Binding, Templating &amp; UI</p>
-<p>第十四步: 内容管理系统(基于PHP)<br>Wordpress(强烈推荐), Joomla, Drupal<br>有利用客户更新和维护<br>丰富的插件<br>开发速度快<br>模板的功能有限</p>
-<p>第十五步: 移动App发展<br>这是未来的趋势<br>你不需要学习Java 和C语言!<br>你只需要掌握JavaScript!我们可以使用React Native, Ionic, Cordova 等框架来构建移动App</p>
-<p>第十六步:现阶段,现在你需要考虑什么?<br>专注于你的事业<br>回去学习更多的数据结构<br>跟进现在的新技术<br>学习一门高级语言,类似于Java, C语言</p>
+        <h1 id="vue-vite中环境变量的使用-loadEnv"><a href="#vue-vite中环境变量的使用-loadEnv" class="headerlink" title="vue-vite中环境变量的使用-loadEnv"></a>vue-vite中环境变量的使用-loadEnv</h1><p>vue3 + vite项目中使用环境变量有两种方式</p>
+<ul>
+<li><p>在vite.config.js文件中使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 引入defineConfig与loadEnv</span><br><span class="line">import &#123; defineConfig, loadEnv &#125; from &#39;vite&#39;</span><br><span class="line">&#x2F;&#x2F; 此处mode 是模式参数 loadEnv(&#39;模式&#39;, process.cwd()).环境变量</span><br><span class="line">&#x2F;&#x2F; process.cwd() 返回当前工作目录</span><br><span class="line">export default (&#123;mode&#125;) &#x3D;&gt; defineConfig(&#123;</span><br><span class="line">  base: loadEnv(mdoe, process.cwd()).VITE_NAME</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+<li><p>在其他文件中使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 使用import.meta.env.环境变量获取</span><br><span class="line">import.meta.env.VITE_VISIT_NAME</span><br></pre></td></tr></table></figure></li>
+</ul>
 
     </div>
 
@@ -267,13 +258,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/08/11/VR%E7%9C%8B%E6%88%BF/" rel="prev" title="">
-                  <i class="fa fa-chevron-left"></i> 
+                <a href="/2022/07/11/webpack%E9%85%8D%E7%BD%AE/" rel="prev" title="webpack配置">
+                  <i class="fa fa-chevron-left"></i> webpack配置
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/10/20/vue%E6%89%8B%E5%8A%A8%E9%85%8D%E7%BD%AEpackage-json%E4%B8%AD%E7%9A%84%E6%89%93%E5%8C%85%E5%91%BD%E4%BB%A4/" rel="next" title="vue手动配置package.json中的打包命令">
-                  vue手动配置package.json中的打包命令 <i class="fa fa-chevron-right"></i>
+                <a href="/2022/09/27/01-%E5%8D%9A%E5%AE%A2%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" rel="next" title="Hello World-222">
+                  Hello World-222 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

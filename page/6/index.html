@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.2">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-count">59</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -185,6 +185,507 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/09/vue%E6%95%B0%E6%8D%AE%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/09/vue%E6%95%B0%E6%8D%AE%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">vue数据双向绑定原理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-09 16:17:16" itemprop="dateCreated datePublished" datetime="2021-04-09T16:17:16+08:00">2021-04-09</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-10-14 10:57:30" itemprop="dateModified" datetime="2022-10-14T10:57:30+08:00">2022-10-14</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="vue-数据双向绑定原理"><a href="#vue-数据双向绑定原理" class="headerlink" title="vue 数据双向绑定原理"></a>vue 数据双向绑定原理</h1><p>vue 数据双向绑定主要是依赖于 Object.defineProperty( )来做数据劫持。</p>
+<ul>
+<li>数据双向绑定即是视图变化更新数据，数据变化更新视图。</li>
+<li>视图变化更新数据，我们可以通过事件监听来实现，比如 input 标签的’input’事件。</li>
+<li>数据变化如何更新视图 ? vue 中是通过 Object.defineProperty(obj, ‘keyName’, {})方法来实现，该方法具有 get/set 方法，var o = obj[‘keyName’]会触发 get()方法，返回处理后的值。obj[‘keyName’] = ‘赋值’，会触发 set 方法赋值。</li>
+<li>那么 vue 中就是通过 Object.defineProperty()方法来劫持 data 属性的，遍历 data 对象中的所有属性，对其属性进行劫持，然后在对应的 get()方法中，判断是否需要监听该属性，需要就将其添加到订阅器中，，在对应的 set()方法中，如果数据发生变化，那就去通知(notify())订阅者，订阅者就会执行对应的更新(update())的函数（所有订阅者都会更新）。</li>
+<li>当对数据进行更新操作时，比如 obj.key = ‘new val’ 就会触发 setter 的拦截，从而检测新值和旧值是否相等，如果相等什么也不做，如果不相等，则更新值，然后由 dep 通知 watcher 进行更新。所以，异步更新 的入口点就是 setter 中最后调用的 dep.notify() 方法。</li>
+</ul>
+<h1 id="Vue-如何检测数组变化"><a href="#Vue-如何检测数组变化" class="headerlink" title="Vue 如何检测数组变化"></a>Vue 如何检测数组变化</h1><p>在 vue 中使用 Object.defineProperty 通过对象的 getter/setter 来实现对象属性变化的监听，但是存在一个问题，就是当某个属性的值是数组时，vue 无法检测到一些数组的变化：</p>
+<ul>
+<li>如使用索引直接设置一项数组的值 : vm.items[indexOfItem] = newValue<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;解决</span><br><span class="line">&#x2F;&#x2F; Vue.set</span><br><span class="line">Vue.set(vm.items, indexOfItem, newValue)</span><br><span class="line">&#x2F;&#x2F; vm.$set，Vue.set的一个别名</span><br><span class="line">vm.$set(vm.items, indexOfItem, newValue)</span><br><span class="line">&#x2F;&#x2F; Array.prototype.splice</span><br><span class="line">vm.items.splice(indexOfItem, 1, newValue)</span><br></pre></td></tr></table></figure></li>
+<li>如修改数组长度: vm.items.length = newLength<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Array.prototype.splice   vue中重写了数组的一些方法</span><br><span class="line">vm.items.splice(newLength)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>解决方案:</p>
+<ul>
+<li>在 vue 源码中，是对数组的常用方法进行重写，通过包装后的数组方法就能够在调用的时候被监听到。</li>
+<li>通过原型链去拦截数组的操作，从而实现对操作数组这个行为的监听。</li>
+<li>定义一个变量继承 Array 本身的属性<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 这里是面向切片编程思想（AOP）--不破坏封装的前提下，动态的扩展功能</span><br><span class="line">const arrExtend &#x3D; Object.create(Array.prototype)</span><br><span class="line">let methodsToPatch &#x3D; [</span><br><span class="line">    &quot;push&quot;,</span><br><span class="line">    &quot;pop&quot;,</span><br><span class="line">    &quot;shift&quot;,</span><br><span class="line">    &quot;unshift&quot;,</span><br><span class="line">    &quot;splice&quot;,</span><br><span class="line">    &quot;reverse&quot;,</span><br><span class="line">    &quot;sort&quot;,</span><br><span class="line">];</span><br></pre></td></tr></table></figure></li>
+<li>arrExtend 作为一个拦截对象, 对其中的方法进行重写<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">arrMethods.forEach(method &#x3D;&gt; &#123;</span><br><span class="line">    const oldMethod &#x3D; Array.prototype[method]</span><br><span class="line">    const newMethod &#x3D; function(...args) &#123;</span><br><span class="line">        return oldMethod.apply(this, args) &#x2F;&#x2F; 保留原型  方法的执行结果</span><br><span class="line">        console.log(&#96;$&#123;method&#125;方法被执行了&#96;)</span><br><span class="line">    &#125;</span><br><span class="line">    arrExtend[method] &#x3D; newMethod</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+<li>需要在 defineReactive 函数中添加的代码为<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (Array.isArray(value)) &#123;</span><br><span class="line">    value.__proto__ &#x3D; arrExtend</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="vue3-中使用-Proxy-来实现的对象属性变化的监听"><a href="#vue3-中使用-Proxy-来实现的对象属性变化的监听" class="headerlink" title="vue3 中使用 Proxy 来实现的对象属性变化的监听"></a>vue3 中使用 Proxy 来实现的对象属性变化的监听</h1><ul>
+<li>通过调用 new Proxy() ，你可以创建一个代理用来替代另一个对象(被称为目标)，这个代理对目标对象进行了虚拟，因此该代理与该目标对象表面上可以被当作同一个对象来对待。<br>代理允许你拦截在目标对象上的底层操作，而这原本是 JS 引擎的内部能力。拦截行为使用了一个能够响应特定操作的函数(被称为陷阱)。</li>
+<li>Proxy 所带来的，是对底层操作的拦截。前面我们在实现对对象监听时使用了 Object.defineProperty，这个其实是 JS 提供给我们的高级操作，也就是通过底层封装之后暴露出来的方法。Proxy 的强大之处在于，我们可以直接拦截对代理对象的底层操作。这样我们相当于从一个对象的底层操作开始实现对它的监听</li>
+<li>Object.defineProperty 监听的是对象的每一个属性，而 Proxy 监听的是对象自身</li>
+<li>使用 Object.defineProperty 需要遍历对象的每一个属性，对于性能会有一定的影响</li>
+<li>Proxy 对新增的属性也能监听到，但 Object.defineProperty 无法监听到</li>
+<li>语法:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new Proxy(target,handler)</span><br></pre></td></tr></table></figure></li>
+<li>target:目标对象</li>
+<li>handler：是一个对象，声明了代理 target 的指定行为，支持的拦截操作，一共 13 种：<ul>
+<li>get(target,propKey,receiver)：拦截对象属性的读取。</li>
+<li>set(target,propKey,value,receiver)：拦截对象属性的设置，返回一个布尔值（修改成功）。</li>
+<li>has(target,propKey)：拦截  propKey in proxy  的操作，返回一个布尔值。</li>
+<li>deleteProterty(target,propKey)：拦截 delete proxy[propKey]的操作，返回一个布尔值。</li>
+<li>ownKeys(target)：拦截 Object.getOwnPropertyNames(proxy)、Object.getOwnPropertySymbols(proxy)、Object.keys(proxy)、for…in  循环，返回一个数组。该方法返回目标对象所有自身的属性的属性名，而 Object.keys()的返回结果仅包括目标对象自身的可遍历属性。</li>
+<li>getOwmPropertyDescript(target,propKey)：拦截 Object.getOwnPropertyDescriptor(proxy,propKey)，返回属性的描述对象。</li>
+<li>defineProperty(target,propKey,propDesc)：拦截 Object.defineProperty(proxy,propKey,propDesc)、Object.defineProperties(proxy,propDesc),返回一个布尔值。</li>
+<li>preventExtensions(target)：.拦截 Object.preventExtensions(proxy),返回一个布尔值。</li>
+<li>getPrototypeOf(target)：拦截 Object.getPrototypeOf(proxy),返回一个对象。</li>
+<li>isExtensible(target)：拦截 Object.isExtensible(proxy),返回一个布尔值。</li>
+<li>setPrototypeOf(target,proto)：  拦截 Object.setPrototypeOf(proxy,proto)，返回一个布尔值。如果目标对象是函数，那么还有两种额外操作可以拦截。</li>
+<li>apply(target,object,args)：拦截 Proxy 实例作为函数调用的操作，比如 proxy(…args)、proxy.call(object,…args)、proxy.apply(…)。</li>
+<li>construct(target,args)：拦截 Proxy 实例作为构造函数调用的操作，比如：new proxy(…args)。</li>
+</ul>
+</li>
+</ul>
+<h2 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">function selfVue(options) &#123;</span><br><span class="line">    var self &#x3D; this;</span><br><span class="line">    this.data &#x3D; options.data;</span><br><span class="line">    this.methods &#x3D; option.methods;</span><br><span class="line">    &#x2F;&#x2F; 在new SelfVue的时候做一个代理处理，让访问selfVue的属性代理为访问selfVue.data的属性</span><br><span class="line">    Object.keys(this.data).forEach(function(key) &#123;</span><br><span class="line">        self.proxyKeys(key);</span><br><span class="line">    &#125;);</span><br><span class="line">    &#x2F;&#x2F; 递归遍历所有属性，Object.defineProperty()监听所有属性</span><br><span class="line">    observe(this.data);</span><br><span class="line">    &#x2F;&#x2F; 1.解析模板指令，并替换模板数据，初始化视图。2将模板指令对应的节点绑定对应的更新函数，初始化相应的订阅器</span><br><span class="line">    &#x2F;&#x2F; 1.el.innerHTML &#x3D; this.data[exp];  &#x2F;&#x2F; 初始化模板数据的值</span><br><span class="line">    &#x2F;&#x2F; 2.new Watcher(this, exp, function (value) &#123;el.innerHTML &#x3D; value;&#125;);</span><br><span class="line">    new Compile(options.el, this);</span><br><span class="line">    &#x2F;&#x2F; 所有事情处理好后执行mounted函数</span><br><span class="line">    options.mounted.call(this);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Object-defineProperty"><a href="#Object-defineProperty" class="headerlink" title="Object.defineProperty( )"></a>Object.defineProperty( )</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var Book &#x3D; &#123;&#125;</span><br><span class="line">var name &#x3D; &#39;&#39;;</span><br><span class="line">Object.defineProperty(Book, &#39;name&#39;, &#123;</span><br><span class="line">  set: function (value) &#123;</span><br><span class="line">    name &#x3D; value;</span><br><span class="line">    console.log(&#39;你取了一个书名叫做&#39; + value);</span><br><span class="line">  &#125;,</span><br><span class="line">  get: function () &#123;</span><br><span class="line">    return &#39;《&#39; + name + &#39;》&#39;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">Book.name &#x3D; &#39;vue权威指南&#39;;  &#x2F;&#x2F; 你取了一个书名叫做vue权威指南</span><br><span class="line">console.log(Book.name);  &#x2F;&#x2F; 《vue权威指南》</span><br></pre></td></tr></table></figure>
+
+<p>我们通过 Object.defineProperty( )设置了对象 Book 的 name 属性，对其 get 和 set 进行重写操作，顾名思义，get 就是在读取 name 属性这个值触发的函数，set 就是在设置 name 属性这个值触发的函数，所以当执行 Book.name = ‘vue 权威指南’ 这个语句时，控制台会打印出 “你取了一个书名叫做 vue 权威指南”，紧接着，当读取这个属性时，就会输出 “《vue 权威指南》”，因为我们在 get 函数里面对该值做了加工了。如果这个时候我们执行下下面的语句，控制台会输出什么？</p>
+<p>我们先从 Vue 构造函数出发，把 vue 的执行思路过一遍</p>
+<ol>
+<li>vue 初始化对象</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var vm &#x3D; new Vue(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    obj: &#123;</span><br><span class="line">      a: &#39;1&#39;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  created: function() &#123;</span><br><span class="line">    console.log(this.obj);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225032257-1498304708.png" alt="结果"></p>
+<ol start="2">
+<li>对比一下 Object.defineProperty 数据劫持一个对象，看看输出什么</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var Book &#x3D; &#123;&#125;</span><br><span class="line">var name &#x3D; &#39;&#39;;</span><br><span class="line">Object.defineProperty(Book, &#39;name&#39;, &#123;</span><br><span class="line">  set: function (value) &#123;</span><br><span class="line">    name &#x3D; value;</span><br><span class="line">    console.log(&#39;你取了一个书名叫做&#39; + value);</span><br><span class="line">  &#125;,</span><br><span class="line">  get: function () &#123;</span><br><span class="line">    return &#39;《&#39; + name + &#39;》&#39;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">Book.name &#x3D; &#39;vue权威指南&#39;;  &#x2F;&#x2F; 你取了一个书名叫做vue权威指南</span><br><span class="line">console.log(Book.name);  &#x2F;&#x2F; 《vue权威指南》</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225238960-1133794938.png"></p>
+<ol start="3">
+<li>实现 mvvm 主要包含两个方面，数据变化更新视图，视图变化更新数据：</li>
+</ol>
+<p>实现数据的双向绑定：</p>
+<ol>
+<li><p>实现一个监听器 Observer，用来劫持并监听所有属性，如果有变动的，就通知订阅者。</p>
+</li>
+<li><p>实现一个订阅者 Watcher，可以收到属性的变化通知并执行相应的函数，从而更新视图。</p>
+</li>
+<li><p>实现一个解析器 Compile，可以扫描和解析每个节点的相关指令，并根据初始化模板数据以及初始化相应的订阅器。<br><img src="https://images2015.cnblogs.com/blog/938664/201705/938664-20170522225458132-1434604303.png"></p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line">function defineReactive(data, key, val) &#123;</span><br><span class="line">    observe(val); &#x2F;&#x2F; 递归遍历所有子属性</span><br><span class="line">    var dep &#x3D; new Dep();</span><br><span class="line">    Object.defineProperty(data, key, &#123;</span><br><span class="line">        enumerable: true,</span><br><span class="line">        configurable: true,</span><br><span class="line">        get: function() &#123;</span><br><span class="line">            if (Dep.target) &#123;.  &#x2F;&#x2F; 判断是否需要添加订阅者</span><br><span class="line">                dep.addSub(Dep.target); &#x2F;&#x2F; 在这里添加一个订阅者</span><br><span class="line">            &#125;</span><br><span class="line">            return val;</span><br><span class="line">        &#125;,</span><br><span class="line">        set: function(newVal) &#123;</span><br><span class="line">            if (val &#x3D;&#x3D;&#x3D; newVal) &#123;</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line">            val &#x3D; newVal;</span><br><span class="line">            console.log(&#39;属性&#39; + key + &#39;已经被监听了，现在值为：“&#39; + newVal.toString() + &#39;”&#39;);</span><br><span class="line">            dep.notify(); &#x2F;&#x2F; 如果数据变化，通知所有订阅者</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line">Dep.target &#x3D; null;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 订阅器-负责收集订阅者-在属性变化的时候执行对应订阅者的更新函数</span><br><span class="line">function Dep () &#123;</span><br><span class="line">    this.subs &#x3D; [];</span><br><span class="line">&#125;</span><br><span class="line">Dep.prototype &#x3D; &#123;</span><br><span class="line">    addSub: function(sub) &#123;</span><br><span class="line">        this.subs.push(sub);</span><br><span class="line">    &#125;,</span><br><span class="line">    notify: function() &#123;</span><br><span class="line">        this.subs.forEach(function(sub) &#123;</span><br><span class="line">            sub.update();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 监听器-观察者</span><br><span class="line">function observe(data) &#123;</span><br><span class="line">    if (!data || typeof data !&#x3D;&#x3D; &#39;object&#39;) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    Object.keys(data).forEach(function(key) &#123;</span><br><span class="line">        defineReactive(data, key, data[key]);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br><span class="line">&#x2F;&#x2F; 订阅者</span><br><span class="line">function Watcher(vm, exp, cb) &#123;</span><br><span class="line">    this.cb &#x3D; cb;</span><br><span class="line">    this.vm &#x3D; vm;</span><br><span class="line">    this.exp &#x3D; exp;</span><br><span class="line">    this.value &#x3D; this.get();  &#x2F;&#x2F; 将自己添加到订阅器的操作</span><br><span class="line">&#125;</span><br><span class="line">Watcher.prototype &#x3D; &#123;</span><br><span class="line">    update: function() &#123;</span><br><span class="line">        this.run();</span><br><span class="line">    &#125;,</span><br><span class="line">    run: function() &#123;</span><br><span class="line">        var value &#x3D; this.vm.data[this.exp];</span><br><span class="line">        var oldVal &#x3D; this.value;</span><br><span class="line">        if (value !&#x3D;&#x3D; oldVal) &#123;</span><br><span class="line">            this.value &#x3D; value;</span><br><span class="line">            this.cb.call(this.vm, value, oldVal);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    get: function() &#123;</span><br><span class="line">        Dep.target &#x3D; this;  &#x2F;&#x2F; 缓存自己</span><br><span class="line">        var value &#x3D; this.vm.data[this.exp]  &#x2F;&#x2F; 强制执行监听器里的get函数</span><br><span class="line">        Dep.target &#x3D; null;  &#x2F;&#x2F; 释放自己</span><br><span class="line">        return value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 构造函数-将Observer和Watcher关联起来</span><br><span class="line">function SelfVue (data, el, exp) &#123;</span><br><span class="line">    var self &#x3D; this;</span><br><span class="line">    this.data &#x3D; data;</span><br><span class="line"></span><br><span class="line">    Object.keys(data).forEach(function(key) &#123;</span><br><span class="line">        self.proxyKeys(key);  &#x2F;&#x2F; 绑定代理属性</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    observe(data); &#x2F;&#x2F; 监听器-观察者</span><br><span class="line">    el.innerHTML &#x3D; this.data[exp];  &#x2F;&#x2F; 初始化模板数据的值</span><br><span class="line">    &#x2F;&#x2F; 初始化订阅者-将自己添加到订阅器的操作</span><br><span class="line">    new Watcher(this, exp, function (value) &#123;</span><br><span class="line">        el.innerHTML &#x3D; value;</span><br><span class="line">    &#125;);</span><br><span class="line">    return this;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 在new SelfVue的时候做一个代理处理，让访问selfVue的属性代理为访问selfVue.data的属性</span><br><span class="line">SelfVue.prototype &#x3D; &#123;</span><br><span class="line">    proxyKeys: function (key) &#123;</span><br><span class="line">        var self &#x3D; this;</span><br><span class="line">        Object.defineProperty(this, key, &#123;</span><br><span class="line">            enumerable: false,</span><br><span class="line">            configurable: true,</span><br><span class="line">            get: function proxyGetter() &#123;</span><br><span class="line">                return self.data[key];</span><br><span class="line">            &#125;,</span><br><span class="line">            set: function proxySetter(newVal) &#123;</span><br><span class="line">                self.data[key] &#x3D; newVal;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">var library &#x3D; &#123;</span><br><span class="line">    book1: &#123;</span><br><span class="line">        name: &#39;&#39;</span><br><span class="line">    &#125;,</span><br><span class="line">    book2: &#39;&#39;</span><br><span class="line">&#125;;</span><br><span class="line">observe(library);</span><br><span class="line">library.book1.name &#x3D; &#39;vue权威指南&#39;; &#x2F;&#x2F; 属性name已经被监听了，现在值为：“vue权威指南”</span><br><span class="line">library.book2 &#x3D; &#39;没有此书籍&#39;;  &#x2F;&#x2F; 属性book2已经被监听了，现在值为：“没有此书籍”</span><br></pre></td></tr></table></figure>
+
+<p>简单实现（不带 DOM 节点解析）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h1 id&#x3D;&quot;name&quot;&gt;&#123;&#123;name&#125;&#125;&lt;&#x2F;h1&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;script src&#x3D;&quot;js&#x2F;observer.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;script src&#x3D;&quot;js&#x2F;watcher.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;script src&#x3D;&quot;js&#x2F;index.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;script type&#x3D;&quot;text&#x2F;javascript&quot;&gt;</span><br><span class="line">    var ele &#x3D; document.querySelector(&#39;#name&#39;);</span><br><span class="line">    var selfVue &#x3D; new SelfVue(&#123;</span><br><span class="line">        name: &#39;hello world&#39;</span><br><span class="line">    &#125;, ele, &#39;name&#39;);</span><br><span class="line"></span><br><span class="line">    window.setTimeout(function () &#123;</span><br><span class="line">        console.log(&#39;name值改变了&#39;);</span><br><span class="line">        selfVue.data.name &#x3D; &#39;canfoo&#39;;</span><br><span class="line">    &#125;, 2000);</span><br><span class="line"></span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Compile 解析器的实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>此文详解来源于此博客[<a target="_blank" rel="noopener" href="https://www.cnblogs.com/canfoo/p/6891868.html]">https://www.cnblogs.com/canfoo/p/6891868.html]</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/08/%E9%97%AD%E5%8C%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/08/%E9%97%AD%E5%8C%85/" class="post-title-link" itemprop="url">闭包</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-08 14:50:14" itemprop="dateCreated datePublished" datetime="2021-04-08T14:50:14+08:00">2021-04-08</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-08 16:49:12" itemprop="dateModified" datetime="2021-07-08T16:49:12+08:00">2021-07-08</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h1><p>最近几天刷题都刷到与闭包有关的题目，发现对于闭包一知半解的，感觉很难受，于是打算深入了解一下闭包。</p>
+<h3 id="一、概念"><a href="#一、概念" class="headerlink" title="一、概念"></a>一、概念</h3><p>闭包就是能够读取其他函数内部变量的函数。在js中可以理解为”函数中的函数”</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">functon fn1() &#123;</span><br><span class="line">  var mm &#x3D; &#39;妹妹&#39;</span><br><span class="line">  function fn2() &#123;</span><br><span class="line">    alert(mm); &#x2F;&#x2F; 妹妹</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="面试题目"><a href="#面试题目" class="headerlink" title="面试题目"></a>面试题目</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var a &#x3D; &#123;&#39;sex&#39;: &#39;男&#39;&#125;</span><br><span class="line">var b &#x3D; a;</span><br><span class="line">b &#x3D; 2</span><br><span class="line">console.log(a); &#x2F;&#x2F; &#123;&#39;sex&#39;: &#39;男&#39;&#125;</span><br></pre></td></tr></table></figure>
+<p>解析：a变量是对象，是引用类型。那么此时a的值指向的是对象在内存中的地址。然后a赋值给b,此时是b的值指向的也是a在内存中的地址，接着给b赋值一个基础类型，此时b的指向就变了，b的值就是基础类型，就是2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var a &#x3D; &#123;&#39;sex&#39;: &#39;男&#39;&#125;</span><br><span class="line">var b &#x3D; a;</span><br><span class="line">console.log(a &#x3D;&#x3D;&#x3D; b); &#x2F;&#x2F; true  指向的是同一内存空间地址</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var a &#x3D; &#123;&#39;sex&#39;: &#39;男&#39;&#125;</span><br><span class="line">var b &#x3D; a;</span><br><span class="line">b.m &#x3D; 2</span><br><span class="line">console.log(a &#x3D;&#x3D;&#x3D; b); &#x2F;&#x2F; true  指向的是同一内存空间地址</span><br><span class="line">console.log(a); &#x2F;&#x2F; &#123;man: &quot;1111&quot;, m: 2&#125;</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; setTimeout是异步方法，在执行setTimeout内部方法时，for循环已经强制执行完毕了</span><br><span class="line">for (var i &#x3D; 1; i &lt; 5; i++) &#123;</span><br><span class="line">    setTimeout(() &#x3D;&gt; console.log(i), 0) &#x2F;&#x2F; 5 5 5 5</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; let 块级作用域</span><br><span class="line">for (let i &#x3D; 1; i &lt; 5; i++) &#123;</span><br><span class="line">    setTimeout(() &#x3D;&gt; console.log(i), 0) &#x2F;&#x2F; 1 2 3 4</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; promise的立即执行作用</span><br><span class="line">for (let i &#x3D; 1; i &lt; 5; i++) &#123;</span><br><span class="line">    new Promise(() &#x3D;&gt; &#123;</span><br><span class="line">      setTimeout(() &#x3D;&gt; console.log(i), 0) &#x2F;&#x2F; 1 2 3 4</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 自闭自执行函数</span><br><span class="line">for (let i &#x3D; 1; i &lt; 5; i++) &#123;</span><br><span class="line">    (function()&#123;</span><br><span class="line">      setTimeout(() &#x3D;&gt; console.log(i), 0) &#x2F;&#x2F; 1 2 3 4</span><br><span class="line">    &#125;)()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、闭包的作用"><a href="#二、闭包的作用" class="headerlink" title="二、闭包的作用"></a>二、闭包的作用</h3><ul>
+<li>可以读取内部函数的变量</li>
+<li>变量私有化</li>
+<li>可以将变量始终保存在内存中</li>
+</ul>
+<h3 id="三、使用闭包的注意事项"><a href="#三、使用闭包的注意事项" class="headerlink" title="三、使用闭包的注意事项"></a>三、使用闭包的注意事项</h3><ul>
+<li>滥用闭包的话，可能会导致内存泄露。因为闭包会使得函数内部的变量都保存到内存中，是内存的消耗过大，会造成网页性能问题。</li>
+<li>闭包会在父函数外部，改变父函数内部变量的值</li>
+</ul>
+<h3 id="四、一道非常经典的闭包题目"><a href="#四、一道非常经典的闭包题目" class="headerlink" title="四、一道非常经典的闭包题目"></a>四、一道非常经典的闭包题目</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function fun(n,o)&#123;</span><br><span class="line">    console.log(o);</span><br><span class="line">    return &#123;</span><br><span class="line">        fun:function(m)&#123;</span><br><span class="line">            return fun(m,n);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> var a &#x3D; fun(0);   a.fun(1);   a.fun(2);  a.fun(3);</span><br><span class="line"> var b &#x3D; fun(0).fun(1).fun(2).fun(3);</span><br><span class="line"> var c &#x3D; fun(0).fun(1);  c.fun(2);  c.fun(3);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function add(a,b)&#123;</span><br><span class="line">  if(b &#x3D;&#x3D; undefined)&#123;</span><br><span class="line">    return function(x) &#123;</span><br><span class="line">      return a + x</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return a + b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解答：</p>
+<ul>
+<li><p>首先，我们仔细看看定义的fun函数，里面第一层返回了一个对象{fun: function(){}}，对象里面定义了一个fun函数，然后返回了fun(m,n)方法</p>
+</li>
+<li><p>一、var a = fun(0);   a.fun(1);   a.fun(2);  a.fun(3);输出什么</p>
+<ul>
+<li>首先，a = fun(0);此时我们根据上面定义的函数可以得知，a其实等于一个对象{fun: function(){}}。所以此时会输出undefined</li>
+<li>接着，a.fun(1);由于此时a是一个对象，里面定义了fun函数，所以此时调用的对象内部的fun方法，此方法返回了fun(m,n)函数，那么此时就相当于是调用的fun(1, 0),故输出0</li>
+<li>紧接着的都跟第二步一样，都是输出0</li>
+</ul>
+</li>
+<li><p>二、var b = fun(0).fun(1).fun(2).fun(3);</p>
+<ul>
+<li>首先，在调用fun(0)时，得到一个对象{}，里面包含fun函数，此时fun(0)输出undefined</li>
+<li>接着，在上面的基础上调用fun(1),此时的fun函数是返回的对象的fun匿名函数，此匿名函数返回fun(m,n)函数，那么此时相当于是直接调用了fun(1,0),返回一个对象{fun: function(m){return fun(m, 1)}}，此时输出 0</li>
+<li>再接着，调用fun(2),此时调用的fun(2)返回的对象里的fun匿名函数，那么此时也就是调用的外部的fun(n,o)函数，即fun(2,1),返回的是一个对象{fun: function(m){return fun(m, 2)}},此时输出 1</li>
+<li>最后一个fun(3),调用的就是上一个的对象里的fun函数，那么此时执行的就是fun(3,2),故此时输出 2</li>
+</ul>
+</li>
+<li><p>三、var c = fun(0).fun(1);  c.fun(2);  c.fun(3);</p>
+<ul>
+<li>首先，fun(0)相当于是fun(0, undefined)，返回一个对象{fun: function(m){return fun(m, 0)}},故直接输出0.</li>
+<li>接着fun(0).fun(1)就相当于是对象里的fun函数，即执行的是fun(1, 0)，返回一个对象{fun: function(m){return fun(m, 1)}},故输出 0</li>
+<li>再接着c.fun(2)就是执行的对象里的fun函数，即fun(2,1),故输出1</li>
+<li>最后c.fun(3)与c.fun(2)一样，输出 1</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/07/%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/07/%E9%9D%A2%E8%AF%95%E9%A2%98%E6%B1%87%E6%80%BB/" class="post-title-link" itemprop="url">面试题汇总</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-07 10:30:03" itemprop="dateCreated datePublished" datetime="2021-04-07T10:30:03+08:00">2021-04-07</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-25 08:54:27" itemprop="dateModified" datetime="2021-04-25T08:54:27+08:00">2021-04-25</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="面试题汇总"><a href="#面试题汇总" class="headerlink" title="面试题汇总"></a>面试题汇总</h1><p>今日偶然在掘金中看到了一篇关于面试题的文章，里面的题目非常经典，能够考察到的知识点非常丰富，有利于我们查漏补缺。我在此做个记录，便于自己日后方便查找。此处放一个文章作者的github地址[<a target="_blank" rel="noopener" href="https://github.com/Advanced-Frontend/Daily-Interview-Question]%E3%80%82%E9%82%A3%E4%B9%88%E5%B0%B1%E8%AE%A9%E6%88%91%E4%BB%AC%E4%B8%80%E8%B5%B7%E6%9D%A5%E6%84%89%E5%BF%AB%E5%9C%B0%E5%81%9A%E9%A2%98%E5%90%A7%E3%80%82%E3%80%82%E3%80%82">https://github.com/Advanced-Frontend/Daily-Interview-Question]。那么就让我们一起来愉快地做题吧。。。</a></p>
+<h2 id="第-162-题：实现对象的-Map-函数类似-Array-prototype-map"><a href="#第-162-题：实现对象的-Map-函数类似-Array-prototype-map" class="headerlink" title="第 162 题：实现对象的 Map 函数类似 Array.prototype.map"></a>第 162 题：实现对象的 Map 函数类似 Array.prototype.map</h2><p>  实现思路：<br>    + 首先，要求实现对象Map，那么就需要先搞清楚Array.prototype.map的内部实现逻辑<br>      + array.map(function(currentValue,index,arr), thisValue)<br>      + Array.prototype.map是返回一个新的数组<br>      + Array.prototype.map有两个参数，第一个参数是回调函数有三个参数value, index, arr，第二个参数是对象作为该执行回调时使用，传递给函数，用作 “this” 的值。如果省略了 thisValue，或者传入 null、undefined，那么回调函数的 this 为全局对象</p>
+<p>  Array.prototype.map的实现：<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; callbackFn--回调函数，thisArg--this指向，默认不传为全局对象</span><br><span class="line">Array.prototype.map &#x3D; function (callbackFn, thisArg) &#123;</span><br><span class="line">  let arr &#x3D; [];</span><br><span class="line">  const _me &#x3D; this;</span><br><span class="line">  const _context &#x3D; thisArg ? thisArg : _me; &#x2F;&#x2F; 定义上下文对象</span><br><span class="line">  let curArr &#x3D; Object(_me); &#x2F;&#x2F; 获取调用map方法的数组</span><br><span class="line">  if(typeof callbackFn !&#x3D; &#39;function&#39;) &#123;</span><br><span class="line">    throw new TypeError(&#96;$&#123;callbackFn&#125; is no function&#96;);</span><br><span class="line">  &#125;</span><br><span class="line">  curArr.forEach((item, index) &#x3D;&gt; &#123;</span><br><span class="line">    arr.push(callbackFn.call(_context, item, index, curArr)) &#x2F;&#x2F; 将回调结果放入数组中</span><br><span class="line">  &#125;)</span><br><span class="line">  return arr; &#x2F;&#x2F; 返回map后的数组</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>  对象的 Map 函数的实现<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">function Map(callback, thisValue) &#123;</span><br><span class="line">  let _this &#x3D; this;</span><br><span class="line">  let _obj &#x3D; &#123;&#125;;</span><br><span class="line">  let curObj &#x3D; Object(this); &#x2F;&#x2F; 获取调用Map方法的对象</span><br><span class="line">  &#x2F;&#x2F;如果callback不是函数,则抛出TypeError异常.  </span><br><span class="line">  &#x2F;&#x2F;Object.prototype.toString.call(callback) !&#x3D; &quot;[object Function]&quot;</span><br><span class="line">  if(typeof callback !&#x3D; &#39;function&#39;) &#123;</span><br><span class="line">    throw new TypeError(callback + &quot; is not a function&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  if(thisValue) &#123;</span><br><span class="line">    _this &#x3D; thisValue</span><br><span class="line">  &#125;</span><br><span class="line">  for(let key in curObj)&#123;</span><br><span class="line">    &#x2F;&#x2F; 判断当前属性是否属于当前对象，若不加这层判断的话，该循环会将Map本身也遍历进去</span><br><span class="line">    if(curObj.hasOwnProperty(key)) &#123;</span><br><span class="line">      &#x2F;&#x2F; 三个参数：curObj[key]-当前key对应的值，key-当前的key，curObj-原对象</span><br><span class="line">      _obj[key] &#x3D; callback.call(_this, curObj[key], key, curObj)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return _obj</span><br><span class="line">&#125;</span><br><span class="line">Object.prototype.Map &#x3D; Map; &#x2F;&#x2F; 挂载到对象原型上</span><br><span class="line">var a &#x3D; &#123;&#39;name&#39;: &#39;cwj&#39;,&#39;age&#39;: 18, &#39;sex&#39;: &#39;男&#39;&#125;</span><br><span class="line">var o &#x3D; a.Map(function(value,key,obj)&#123;</span><br><span class="line">  return value + &#39;11&#39;</span><br><span class="line">&#125;)</span><br><span class="line">console.log(a) &#x2F;&#x2F; &#123;name: &quot;cwj&quot;, age: 18, sex: &quot;男&quot;&#125;</span><br><span class="line">console.log(o) &#x2F;&#x2F; &#123;name: &quot;cwj11&quot;, age: &quot;1811&quot;, sex: &quot;男11&quot;&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="第161题-用最精炼的代码实现数组非零非负最小值-index"><a href="#第161题-用最精炼的代码实现数组非零非负最小值-index" class="headerlink" title="第161题 用最精炼的代码实现数组非零非负最小值 index"></a>第161题 用最精炼的代码实现数组非零非负最小值 index</h2>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 例如：[10,21,0,-7,35,7,9,23,18] 输出 5, 7 最小</span><br><span class="line">function getIndex(arr)&#123;</span><br><span class="line">      let index&#x3D;null;</span><br><span class="line">      ...</span><br><span class="line">      return index;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  实现：</p>
+<ul>
+<li>首先，仔细阅读题目要求，要求的是非零非负，那么就可以用大于0(&gt; 0)表示</li>
+<li>其次，要求是最小值，那么我们就应该想到直接使用Math.min()方法,要注意min()方法的参数不是数组哈，需要将数组解构</li>
+<li>接着，要求输出的是最小值的索引值index，那么数组有一个方法是可以返回数组中元素所在的索引findIndex(). </li>
+</ul>
+<p>  此处可以扩展一下find()和findIndex()方法的比较</p>
+<ul>
+<li>find()–find()函数用来查找目标元素，找到就返回该元素，找不到返回undefined</li>
+<li>findIndex()–findIndex()函数也是查找目标元素，找到就返回元素的位置，找不到就返回-1</li>
+<li>都是查找回调函数,都含有三个参数，<ul>
+<li>value–每一次迭代查找的数组元素</li>
+<li>index–每一次迭代查找的数组元素索引</li>
+<li>arr–被查找的数组</li>
+</ul>
+</li>
+<li>语法<ul>
+<li>[1,2,3,4].find((value, index, arr) =&gt; { return value &gt; 1}) // 2</li>
+<li>[1,2,3,4].findIndex((value, index, arr) =&gt; { return value &gt; 1}) // 1</li>
+</ul>
+</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function getIndex(arr)&#123;</span><br><span class="line">      let index&#x3D;null;</span><br><span class="line">      &#x2F;&#x2F; 此处是实现代码开始</span><br><span class="line">      let newArr &#x3D; arr.filter(v &#x3D;&gt; v &gt; 0)</span><br><span class="line">      index &#x3D; arr.findIndex(i &#x3D;&gt; i &#x3D;&#x3D; Math.min(...newArr))</span><br><span class="line">      &#x2F;&#x2F; 此处是实现代码结束</span><br><span class="line">      return index;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="第-160-题：输出以下代码运行结果，为什么？如果希望每隔-1s-输出一个结果，应该如何改造？注意不可改动-square-方法"><a href="#第-160-题：输出以下代码运行结果，为什么？如果希望每隔-1s-输出一个结果，应该如何改造？注意不可改动-square-方法" class="headerlink" title="第 160 题：输出以下代码运行结果，为什么？如果希望每隔 1s 输出一个结果，应该如何改造？注意不可改动 square 方法"></a>第 160 题：输出以下代码运行结果，为什么？如果希望每隔 1s 输出一个结果，应该如何改造？注意不可改动 square 方法</h2>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">const list &#x3D; [1, 2, 3]</span><br><span class="line">const square &#x3D; num &#x3D;&gt; &#123;</span><br><span class="line">  return new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">    setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">      resolve(num * num)</span><br><span class="line">    &#125;, 1000)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function test() &#123;</span><br><span class="line">  list.forEach(async x&#x3D;&gt; &#123;</span><br><span class="line">    const res &#x3D; await square(x)</span><br><span class="line">    console.log(res)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line">test()</span><br></pre></td></tr></table></figure>
+
+<p>  实现：forEach是不能阻塞的，默认是请求并行发起，所以是同时输出1、4、9</p>
+<ul>
+<li>forEach是不能阻塞的，默认是请求并行发起</li>
+</ul>
+<p>  扩展：</p>
+<ul>
+<li>数组的其他常用循环方法<ul>
+<li>forEach()–不能终止循环(无法使用break语句或者return语句终止)，forEach方法对数组的每个元素执行一次提供的函数，forEach循环里不能有break或continue， 会产生报错 callback可以使用return但return的结果没有作用，只是提前结束函数运行，也就是calback总是返回undefined forEach返回值undefined</li>
+<li>for of–for…of语句在可迭代对象上创建一个迭代循环，执行语句; 和for循环一样，会等待await执行完后继续执行</li>
+<li>forEach和map,await不生效；使用break或continue会报错</li>
+<li>for循环、for…in,for…of，支持await，for和for…of中可以使用break和continue；for…in会忽略continue和break<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">async function test() &#123;</span><br><span class="line">  for (let i &#x3D; 0; i &lt; list.length; i++) &#123;</span><br><span class="line">    let x &#x3D; list[i]</span><br><span class="line">    const res &#x3D; await square(x)</span><br><span class="line">    console.log(res)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+for of 语法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">async function test() &#123;</span><br><span class="line">  for (let x of list) &#123;</span><br><span class="line">    const res &#x3D; await square(x)</span><br><span class="line">    console.log(res)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+axios 源码里所用到的，利用 promise 本身的链式调用来实现串行<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let promise &#x3D; Promise.resolve()</span><br><span class="line">function test(i &#x3D; 0) &#123;</span><br><span class="line">  if (i &#x3D;&#x3D;&#x3D; list.length) return</span><br><span class="line">  promise &#x3D; promise.then(() &#x3D;&gt; square(list[i]))</span><br><span class="line">  test(i + 1)</span><br><span class="line">&#125;</span><br><span class="line">test()</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="第-159-题：实现-Promise-retry，成功后-resolve-结果，失败后重试，尝试超过一定次数才真正的-reject"><a href="#第-159-题：实现-Promise-retry，成功后-resolve-结果，失败后重试，尝试超过一定次数才真正的-reject" class="headerlink" title="第 159 题：实现 Promise.retry，成功后 resolve 结果，失败后重试，尝试超过一定次数才真正的 reject"></a>第 159 题：实现 Promise.retry，成功后 resolve 结果，失败后重试，尝试超过一定次数才真正的 reject</h2><p>  实现：</p>
+<ul>
+<li>首先，了解题目需求，理解retry函数有哪些参数，接收一个函数fn，然后还有一个次数参数num</li>
+<li>接着，内部返回一个Promise实例对象，题目要求一定次数内失败循环请求，所以用while来实现循环，用try/catch来抛出异常<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Promise.retry &#x3D; function(fn, num &#x3D; 3) &#123;</span><br><span class="line">  return new Promise(async (resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">    while(num &gt; 0)&#123;</span><br><span class="line">      try &#123;</span><br><span class="line">        var res &#x3D; await fn();</span><br><span class="line">        resolve(res);</span><br><span class="line">        break;</span><br><span class="line">      &#125;catch &#123;</span><br><span class="line">        if (!num) reject(error); &#x2F;&#x2F; !0 &#x3D;&#x3D; true   !-1 &#x3D;&#x3D; false !1 &#x3D;&#x3D; false</span><br><span class="line">      &#125;</span><br><span class="line">      num--</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="第-158-题：如何模拟实现-Array-prototype-splice"><a href="#第-158-题：如何模拟实现-Array-prototype-splice" class="headerlink" title="第 158 题：如何模拟实现 Array.prototype.splice"></a>第 158 题：如何模拟实现 Array.prototype.splice</h2><p>  实现：</p>
+<ul>
+<li>首先，要了解原生splice的定义,splice() 方法向/从数组中添加/删除项目，然后返回被删除的项目。</li>
+<li>接着，了解其语法，arrayObject.splice(index,howmany,item1,…..,itemX)<ul>
+<li>index - 必需。整数，规定添加/删除项目的位置，使用负数可从数组结尾处规定位置。</li>
+<li>howmany - 必需。要删除的项目数量。如果设置为 0，则不会删除项目。</li>
+<li>item1, …, itemX - 可选。向数组添加的新项目。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Array.prototype._splice &#x3D; function (start, deleteCount, ...addList) &#123;</span><br><span class="line">  if (start &lt; 0) &#123;</span><br><span class="line">    if (Math.abs(start) &gt; this.length) &#123; &#x2F;&#x2F; Math.abs() - 将负数转化为正数</span><br><span class="line">      start &#x3D; 0</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      start +&#x3D; this.length &#x2F;&#x2F; 相当于 start &#x3D; this.length - |start|</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  if (typeof deleteCount &#x3D;&#x3D;&#x3D; &#39;undefined&#39;) &#123;</span><br><span class="line">    deleteCount &#x3D; this.length - start</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  const removeList &#x3D;  this.slice(start, start + deleteCount) &#x2F;&#x2F; 返回选择的新数组</span><br><span class="line"></span><br><span class="line">  const right &#x3D; this.slice(start + deleteCount)</span><br><span class="line"></span><br><span class="line">  let addIndex &#x3D; start</span><br><span class="line">  addList.concat(right).forEach(item &#x3D;&gt; &#123;</span><br><span class="line">      this[addIndex] &#x3D; item</span><br><span class="line">      addIndex++</span><br><span class="line">  &#125;)</span><br><span class="line">  this.length &#x3D; addIndex</span><br><span class="line"></span><br><span class="line">  return removeList</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="第-156-题：求最终-left、right-的宽度（变形）"><a href="#第-156-题：求最终-left、right-的宽度（变形）" class="headerlink" title="第 156 题：求最终 left、right 的宽度（变形）"></a>第 156 题：求最终 left、right 的宽度（变形）</h2>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;container&quot;&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;left&quot;&gt;&lt;&#x2F;div&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;right&quot;&gt;&lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">  * &#123;</span><br><span class="line">    padding: 0;</span><br><span class="line">    margin: 0;</span><br><span class="line">  &#125;</span><br><span class="line">  .container &#123;</span><br><span class="line">    width: 600px;</span><br><span class="line">    height: 300px;</span><br><span class="line">    display: flex;</span><br><span class="line">  &#125;</span><br><span class="line">  .left &#123;</span><br><span class="line">    flex: 1 2 300px;</span><br><span class="line">    background: red;</span><br><span class="line">  &#125;</span><br><span class="line">  .right &#123;</span><br><span class="line">    flex: 2 1 200px;</span><br><span class="line">    background: blue;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br></pre></td></tr></table></figure>
+<p>  实现：</p>
+<ul>
+<li>先了解该题目要考察的是什么。该题目考察的flex布局的知识点，考察对css的flex属性的了解</li>
+<li>flex: flex-grow flex-shrink flex-basis|auto|initial|inherit;<ul>
+<li>flex-grow: 一个数字，规定项目将相对于其他灵活的项目进行扩展的量</li>
+<li>flex-shrink: 一个数字，规定项目将相对于其他灵活的项目进行收缩的量</li>
+<li>flex-basis:    项目的长度。合法值：”auto”、”inherit” 或一个后跟 “%”、”px”、”em” 或任何其他长度单位的数字</li>
+<li>auto:    与 1 1 auto 相同。</li>
+<li>none:    与 0 0 auto 相同。</li>
+<li>initial:    设置该属性为它的默认值，即为 0 1 auto。请参阅 initial。</li>
+<li>inherit:    从父元素继承该属性。请参阅 inherit。</li>
+</ul>
+</li>
+<li>在flex-basis设置了具体的长度之后，当flex-basis的总和未撑满容器时，执行的是flex-grow，反之执行flex-shrink</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/06/%E6%B7%B1%E6%8B%B7%E8%B4%9D-%E6%B5%85%E6%8B%B7%E8%B4%9D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="尘世幽梦的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/06/%E6%B7%B1%E6%8B%B7%E8%B4%9D-%E6%B5%85%E6%8B%B7%E8%B4%9D/" class="post-title-link" itemprop="url">深拷贝&&浅拷贝</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-06 15:42:08" itemprop="dateCreated datePublished" datetime="2021-04-06T15:42:08+08:00">2021-04-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-22 10:30:35" itemprop="dateModified" datetime="2021-04-22T10:30:35+08:00">2021-04-22</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="深拷贝的原理"><a href="#深拷贝的原理" class="headerlink" title="深拷贝的原理"></a>深拷贝的原理</h2><p>深复制—&gt;实现原理，先新建一个空对象，内存中新开辟一块地址，把被复制对象的所有可枚举的(注意可枚举的对象)属性方法一一复制过来，注意要用递归来复制子对象里面的所有属性和方法，直到子子…..属性为基本数据类型</p>
+<h2 id="浅拷贝的原理"><a href="#浅拷贝的原理" class="headerlink" title="浅拷贝的原理"></a>浅拷贝的原理</h2><p>浅复制—&gt;就是将一个对象的内存地址的”编号”复制给另一个对象</p>
+<h2 id="深拷贝实现方法"><a href="#深拷贝实现方法" class="headerlink" title="深拷贝实现方法"></a>深拷贝实现方法</h2><h3 id="深拷贝-递归去复制所有层级属性"><a href="#深拷贝-递归去复制所有层级属性" class="headerlink" title="深拷贝-递归去复制所有层级属性"></a>深拷贝-递归去复制所有层级属性</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">function deepClone(obj)&#123;</span><br><span class="line">  let objClone &#x3D; Array.isArray(obj)?[]:&#123;&#125;;    </span><br><span class="line">  if(obj &amp;&amp; typeof obj&#x3D;&#x3D;&#x3D;&quot;object&quot;)&#123;</span><br><span class="line">    for(key in obj)&#123;</span><br><span class="line">      if(obj.hasOwnProperty(key))&#123;  &#x2F;&#x2F; 判断对象是否包含特定的自身（非继承）属性，返回一个布尔值</span><br><span class="line">        if(obj[key]&amp;&amp;typeof obj[key] &#x3D;&#x3D;&#x3D;&quot;object&quot;)&#123; &#x2F;&#x2F;判断ojb子元素是否为对象，如果是，递归复制</span><br><span class="line">          objClone[key] &#x3D; deepClone(obj[key]);</span><br><span class="line">        &#125;else&#123; &#x2F;&#x2F;如果不是，简单复制</span><br><span class="line">          objClone[key] &#x3D; obj[key];</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;    </span><br><span class="line">  return objClone;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function deepCopy(s) &#123;</span><br><span class="line">    const d &#x3D; &#123;&#125;</span><br><span class="line">    for (let k in s) &#123;</span><br><span class="line">        if (typeof s[k] &#x3D;&#x3D; &#39;object&#39;) &#123;</span><br><span class="line">            d[k] &#x3D; deepCopy(s[k])</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            d[k] &#x3D; s[k]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return d</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="深拷贝-JSON对象的parse和stringify"><a href="#深拷贝-JSON对象的parse和stringify" class="headerlink" title="深拷贝-JSON对象的parse和stringify"></a>深拷贝-JSON对象的parse和stringify</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JSON.parse(JSON.stringify(obj))</span><br></pre></td></tr></table></figure>
+
+<h3 id="深拷贝-…扩展符"><a href="#深拷贝-…扩展符" class="headerlink" title="深拷贝-…扩展符"></a>深拷贝-…扩展符</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let bb &#x3D; [1,2,&#123;w: &#39;1&#39;&#125;]</span><br><span class="line">let aa &#x3D; [...bb]</span><br><span class="line">aa[0] &#x3D; &#39;2&#39;</span><br><span class="line">&#x2F;&#x2F;bb[0] &#x3D; &#39;3&#39;</span><br><span class="line">console.log(bb) &#x2F;&#x2F; [1,2,&#123;w: &#39;1&#39;&#125;]</span><br><span class="line">console.log(aa) &#x2F;&#x2F; [&#39;&#39;,2,&#123;w: &#39;1&#39;&#125;]</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -561,89 +1062,6 @@
     <div class="post-body" itemprop="articleBody">
           <p>欢迎大家来到我的博客，这是搭建的第一个博客，若有不妥之处，请联系我。<br>本博客是使用的hexo来搭建的，具体的使用方法在上一篇《hello-world》中已经注明。<br>如果想看具体的搭建过程的话，我一会整理一个较为完整的文档出来，方便大家一起学习。</p>
 
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/31/01-%E5%8D%9A%E5%AE%A2%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="尘世幽梦的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/31/01-%E5%8D%9A%E5%AE%A2%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" class="post-title-link" itemprop="url">Hello World-222</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-03-31 16:07:40" itemprop="dateCreated datePublished" datetime="2021-03-31T16:07:40+08:00">2021-03-31</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-12-20 10:33:24" itemprop="dateModified" datetime="2021-12-20T10:33:24+08:00">2021-12-20</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start-快速启动"><a href="#Quick-Start-快速启动" class="headerlink" title="Quick Start 快速启动"></a>Quick Start 快速启动</h2><h3 id="Create-a-new-post-创建一个新的帖子"><a href="#Create-a-new-post-创建一个新的帖子" class="headerlink" title="Create a new post 创建一个新的帖子"></a>Create a new post 创建一个新的帖子</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server-运行服务器"><a href="#Run-server-运行服务器" class="headerlink" title="Run server 运行服务器"></a>Run server 运行服务器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files-生成静态文件"><a href="#Generate-static-files-生成静态文件" class="headerlink" title="Generate static files 生成静态文件"></a>Generate static files 生成静态文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites-部署到远程站点"><a href="#Deploy-to-remote-sites-部署到远程站点" class="headerlink" title="Deploy to remote sites 部署到远程站点"></a>Deploy to remote sites 部署到远程站点</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-<h3 id="上传到远程服务器的步骤"><a href="#上传到远程服务器的步骤" class="headerlink" title="上传到远程服务器的步骤"></a>上传到远程服务器的步骤</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean // 清除缓存文件 (db.json) 和已生成的静态文件 (public)</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
       
     </div>
 
